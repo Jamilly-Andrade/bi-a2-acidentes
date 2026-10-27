@@ -48,46 +48,47 @@ import {
   CAUSAS_VEICULOS_DATA,
   FAIXAS_VEICULOS_DATA
 } from './data/causasVeiculosData';
+import { BRAZIL_MAP_PATHS } from './data/brazilMapPaths';
 
-// Fotos conceituais da galeria horizontal
+// Fotos conceituais da galeria horizontal (inspecionadas e verificadas por cenário)
 const HERO_PHOTOS = [
   {
-    url: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=800&q=80',
+    url: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80',
     title: 'O Asfalto Molhado',
     caption: 'Falta de aderência e velocidade incompatível'
   },
   {
-    url: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80',
+    url: 'https://images.unsplash.com/photo-1485236715568-ddc5ee6ca227?auto=format&fit=crop&w=800&q=80',
     title: 'A Neblina da Madrugada',
     caption: 'Amanhecer com visibilidade crítica'
   },
   {
-    url: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&q=80',
+    url: 'https://images.unsplash.com/photo-1686074972969-df8b69078842?auto=format&fit=crop&w=800&q=80',
     title: 'A Velocidade Noturna',
     caption: 'O silêncio mortal das rodovias vazias'
   },
   {
-    url: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=800&q=80',
+    url: 'https://images.unsplash.com/photo-1743069624957-1769926c2ba2?auto=format&fit=crop&w=800&q=80',
     title: 'Faróis na Escuridão',
     caption: 'Ofuscamento visual e pista simples'
   },
   {
-    url: 'https://images.unsplash.com/photo-1476820865390-c52aeebb9891?auto=format&fit=crop&w=800&q=80',
+    url: 'https://images.unsplash.com/photo-1569121966307-c515136e6db0?auto=format&fit=crop&w=800&q=80',
     title: 'O Crepúsculo Cego',
     caption: 'Anoitecer: a transição mais perigosa'
   },
   {
-    url: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80',
+    url: 'https://images.unsplash.com/photo-1465447142348-e9952c393450?auto=format&fit=crop&w=800&q=80',
     title: 'A Extensão Federal',
     caption: 'Milhares de quilômetros sob vigília da PRF'
   },
   {
-    url: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80',
+    url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
     title: 'Lanternas Vermelhas',
     caption: 'O rastro das frenagens de emergência'
   },
   {
-    url: 'https://images.unsplash.com/photo-1508873696983-2df5293cb32f?auto=format&fit=crop&w=800&q=80',
+    url: 'https://images.unsplash.com/photo-1494783367193-149034c05e8f?auto=format&fit=crop&w=800&q=80',
     title: 'A Reta Interminável',
     caption: 'Monotonia que induz ao sono ao volante'
   }
@@ -154,7 +155,7 @@ const QUIZ_QUESTIONS = [
       { texto: 'Pleno Dia (horário de pico)', correta: false },
       { texto: 'Amanhecer (4h30 às 6h30)', correta: true }
     ],
-    explicacao: 'Correto: No Amanhecer, embora ocorram menos batidas (19.001), a taxa de mortalidade atinge 12,84% (11,55 mortes a cada 100 feridos), mais que o dobro do Pleno Dia (5,12 mortes a cada 100 feridos).'
+    explicacao: 'No Amanhecer, embora ocorram menos batidas (19.001), a taxa de mortalidade atinge 12,84% (11,55 mortes a cada 100 feridos), mais que o dobro do Pleno Dia (5,12 mortes a cada 100 feridos).'
   },
   {
     id: 2,
@@ -163,7 +164,7 @@ const QUIZ_QUESTIONS = [
       { texto: 'Transitar na contramão', correta: true },
       { texto: 'Pista escorregadia / chuva', correta: false }
     ],
-    explicacao: 'Exato: Transitar na contramão gera colisões frontais que envolvem em média 2,57 veículos por ocorrência e matam quase 42 pessoas a cada 100 acidentes.'
+    explicacao: 'Transitar na contramão gera colisões frontais que envolvem em média 2,57 veículos por ocorrência e matam quase 42 pessoas a cada 100 acidentes.'
   },
   {
     id: 3,
@@ -172,7 +173,7 @@ const QUIZ_QUESTIONS = [
       { texto: 'Sexta-feira (saída para o fim de semana)', correta: false },
       { texto: 'Domingo (retorno de viagens)', correta: true }
     ],
-    explicacao: 'Confirmado pela PRF: O Domingo lidera tanto em acidentes (64.093) quanto em vítimas fatais (6.582 mortes), quase o dobro de uma terça-feira (3.583 mortes).'
+    explicacao: 'O Domingo lidera tanto em acidentes (64.093) quanto em vítimas fatais (6.582 mortes), quase o dobro de uma terça-feira (3.583 mortes).'
   }
 ];
 
@@ -205,8 +206,19 @@ const ORDEM_PAGINAS = [
   { id: 'temporal', titulo: 'Análise Temporal' },
   { id: 'fase_dia', titulo: 'Fase do Dia' },
   { id: 'causas', titulo: 'Causas & Veículos' },
-  { id: 'estados', titulo: 'Estados' }
+  { id: 'estados', titulo: 'Estados (27 UFs)' }
 ];
+
+// Escala de cores para o Mapa Interativo do Brasil conforme o volume de acidentes
+function getUfMapColor(acidentes, isSelected, isHovered) {
+  if (isSelected) return '#dc2626';
+  if (isHovered) return '#a855f7';
+  if (acidentes >= 40000) return '#6b0f6b';
+  if (acidentes >= 20000) return '#581c87';
+  if (acidentes >= 10000) return '#3b0764';
+  if (acidentes >= 5000) return '#271238';
+  return '#161321';
+}
 
 // Tooltip rico e didático para leitura imediata por qualquer usuário
 function CustomChartTooltip({ active, payload, label, unitSuffix = '', contextNote = '' }) {
@@ -262,6 +274,7 @@ function CustomChartTooltip({ active, payload, label, unitSuffix = '', contextNo
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedUf, setSelectedUf] = useState('MG');
+  const [hoveredUf, setHoveredUf] = useState(null);
   const [ufSearch, setUfSearch] = useState('');
   const [regiaoFiltro, setRegiaoFiltro] = useState('Todas');
   const [metricaTopEstados, setMetricaTopEstados] = useState('acidentes');
@@ -354,6 +367,7 @@ export default function App() {
   }, [simFase, simDia, simCausa]);
 
   const ufAtual = ESTADOS_DIAS_DATA[selectedUf] || ESTADOS_DIAS_DATA['MG'];
+  const ufMapaAtiva = ESTADOS_DIAS_DATA[hoveredUf || selectedUf] || ufAtual;
   const currentTabIndex = ORDEM_PAGINAS.findIndex((p) => p.id === (currentPage === 'historico' ? 'temporal' : currentPage));
   const prevTab = currentTabIndex > 0 ? ORDEM_PAGINAS[currentTabIndex - 1] : null;
   const nextTab = currentTabIndex < ORDEM_PAGINAS.length - 1 ? ORDEM_PAGINAS[currentTabIndex + 1] : null;
@@ -634,18 +648,18 @@ export default function App() {
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-mono text-neutral-400 uppercase">Território Nacional</span>
                     <span className="text-xs px-2 py-0.5 rounded bg-red-950/80 text-red-300 border border-red-800/60">
-                      Raio-X das 27 UFs
+                      Mapa & 27 UFs
                     </span>
                   </div>
                   <h3 className="text-xl font-bold text-white group-hover:text-red-400 transition">
                     Linhas de Asfalto: Os Trechos Mais Perigosos do País
                   </h3>
                   <p className="text-sm sm:text-base text-neutral-300 mt-2 leading-relaxed text-justify">
-                    Minas Gerais, Santa Catarina e Paraná lideram o volume nacional de acidentes. Explore as 27 Unidades da Federação, suas rodovias críticas e o dia da semana mais perigoso em cada estado.
+                    Minas Gerais, Santa Catarina e Paraná lideram o volume nacional de acidentes. Explore o Mapa Interativo do Brasil, as 27 Unidades da Federação e o dia mais crítico em cada estado.
                   </p>
                 </div>
                 <div className="mt-6 pt-4 border-t border-neutral-800 flex items-center justify-between text-xs font-medium text-red-400 group-hover:text-red-300">
-                  <span>Explorar Raio-X interativo dos 27 Estados</span>
+                  <span>Explorar Mapa do Brasil e Raio-X dos 27 Estados</span>
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition" />
                 </div>
               </div>
@@ -697,6 +711,7 @@ export default function App() {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {QUIZ_QUESTIONS.map((q) => {
                   const escolhida = quizAnswers[q.id];
+                  const acertou = escolhida !== undefined && Boolean(q.opcoes[escolhida]?.correta);
                   return (
                     <div key={q.id} className="bg-black/60 border border-neutral-800 p-5 rounded-xl flex flex-col justify-between space-y-4">
                       <div className="space-y-3">
@@ -723,6 +738,9 @@ export default function App() {
                                 {escolhida !== undefined && op.correta && (
                                   <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                                 )}
+                                {escolhida !== undefined && selecionada && !op.correta && (
+                                  <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                                )}
                               </button>
                             );
                           })}
@@ -730,8 +748,23 @@ export default function App() {
                       </div>
 
                       {escolhida !== undefined && (
-                        <div className="p-3.5 rounded-lg bg-neutral-950 border border-neutral-800 text-xs sm:text-sm text-neutral-200 leading-relaxed text-justify">
-                          {q.explicacao}
+                        <div
+                          className={`p-3.5 rounded-lg border text-xs sm:text-sm leading-relaxed text-justify space-y-1.5 ${
+                            acertou
+                              ? 'bg-emerald-950/30 border-emerald-800/70 text-neutral-100'
+                              : 'bg-red-950/30 border-red-800/70 text-neutral-100'
+                          }`}
+                        >
+                          <span
+                            className={`font-bold block text-xs uppercase font-mono ${
+                              acertou ? 'text-emerald-400' : 'text-red-400'
+                            }`}
+                          >
+                            {acertou
+                              ? 'Você acertou! Veja o dado oficial:'
+                              : 'Resposta incorreta. Veja o que os dados reais mostram:'}
+                          </span>
+                          <p>{q.explicacao}</p>
                         </div>
                       )}
                     </div>
@@ -953,11 +986,16 @@ export default function App() {
           {/* DASHBOARD 2: TAXAS (%) E RÉGUA DIDÁTICA (MORTES A CADA 100 FERIDOS) */}
           {/* ========================================================= */}
           <section className="bg-[#09090c] border border-neutral-800 p-6 sm:p-8 rounded-xl space-y-6">
-            <div>
-              <span className="text-xs font-mono text-neutral-400 uppercase tracking-widest block">Dashboard 02</span>
-              <h3 className="text-xl font-bold text-white mt-1">
-                Taxas Proporcionais: Mortalidade vs. Feridos (%)
-              </h3>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <span className="text-xs font-mono text-neutral-400 uppercase tracking-widest block">Dashboard 02</span>
+                <h3 className="text-xl font-bold text-white mt-1">
+                  Taxas Proporcionais: Mortalidade vs. Feridos (%)
+                </h3>
+              </div>
+              <span className="text-xs font-mono text-red-300 bg-red-950/50 border border-red-800/60 px-3 py-1 rounded-lg">
+                Linha tracejada: Média Nacional de Mortalidade (8,38%)
+              </span>
             </div>
 
             <div className="h-80 sm:h-96 w-full">
@@ -968,12 +1006,7 @@ export default function App() {
                   <YAxis stroke="#a3a3a3" fontSize={12} unit="%" />
                   <Tooltip content={<CustomChartTooltip unitSuffix="%" />} />
                   <Legend />
-                  <ReferenceLine
-                    y={8.38}
-                    stroke="#ef4444"
-                    strokeDasharray="4 4"
-                    label={{ value: 'Média Nacional de Mortalidade (8,38%)', position: 'insideTopRight', fill: '#fca5a5', fontSize: 11 }}
-                  />
+                  <ReferenceLine y={8.38} stroke="#ef4444" strokeDasharray="4 4" />
                   <Bar dataKey="taxa_mortalidade_pct" name="Taxa de Mortalidade (%)" fill="#dc2626" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="taxa_feridos_pct" name="Taxa de Feridos (%)" fill="#eab308" radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -1200,16 +1233,21 @@ export default function App() {
           {/* DASHBOARD 01: MÉDIA DE VEÍCULOS POR CAUSA DO ACIDENTE     */}
           {/* ========================================================= */}
           <section className="bg-[#09090c] border border-neutral-800 p-6 sm:p-8 rounded-xl space-y-6">
-            <div>
-              <span className="text-xs font-mono text-purple-400 uppercase tracking-widest block">Dashboard 01</span>
-              <h3 className="text-xl font-bold text-white mt-1">
-                Média de Veículos Envolvidos por Causa do Acidente
-              </h3>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <span className="text-xs font-mono text-purple-400 uppercase tracking-widest block">Dashboard 01</span>
+                <h3 className="text-xl font-bold text-white mt-1">
+                  Média de Veículos Envolvidos por Causa do Acidente
+                </h3>
+              </div>
+              <span className="text-xs font-mono text-amber-300 bg-amber-950/50 border border-amber-800/60 px-3 py-1 rounded-lg">
+                Linha tracejada: Média Nacional (1,91 veículos por acidente)
+              </span>
             </div>
 
             <div className="h-[420px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={sortedCausasData} layout="vertical" margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
+                <BarChart data={sortedCausasData} layout="vertical" margin={{ top: 15, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1c1917" />
                   <XAxis type="number" domain={[1.2, 2.8]} stroke="#a3a3a3" fontSize={11} unit=" veíc" />
                   <YAxis dataKey="causa" type="category" stroke="#a3a3a3" fontSize={11} width={230} />
@@ -1221,12 +1259,7 @@ export default function App() {
                       />
                     }
                   />
-                  <ReferenceLine
-                    x={1.91}
-                    stroke="#f59e0b"
-                    strokeDasharray="4 4"
-                    label={{ value: 'Média Nacional (1,91)', position: 'top', fill: '#fcd34d', fontSize: 11 }}
-                  />
+                  <ReferenceLine x={1.91} stroke="#f59e0b" strokeDasharray="4 4" />
                   <Bar dataKey="media_veiculos" name="Média de Veículos por Acidente" fill="#800080" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -1304,7 +1337,7 @@ export default function App() {
 
             <div className="h-[420px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={sortedCausasData} layout="vertical" margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
+                <BarChart data={sortedCausasData} layout="vertical" margin={{ top: 15, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1c1917" />
                   <XAxis type="number" stroke="#a3a3a3" fontSize={11} tickFormatter={(v) => v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v} />
                   <YAxis dataKey="causa" type="category" stroke="#a3a3a3" fontSize={11} width={230} />
@@ -1321,7 +1354,7 @@ export default function App() {
       )}
 
       {/* ========================================================= */}
-      {/* PÁGINA ESPECÍFICA: ESTADOS (RAIO-X DAS 27 UFs)            */}
+      {/* PÁGINA ESPECÍFICA: ESTADOS (MAPA DO BRASIL + 27 UFs)      */}
       {/* ========================================================= */}
       {currentPage === 'estados' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12 animate-page-enter">
@@ -1335,13 +1368,13 @@ export default function App() {
 
           <header className="space-y-4">
             <span className="text-xs font-mono text-red-500 uppercase tracking-widest block">
-              Distribuição Geográfica Oficial • Todas as 27 Unidades da Federação
+              Distribuição Geográfica Oficial • Mapa Interativo das 27 Unidades da Federação
             </span>
             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
-              Linhas de Asfalto: Raio-X Estadual e Concentração Regional
+              Linhas de Asfalto: Mapa do Brasil e Raio-X Estadual
             </h1>
             <p className="text-base sm:text-lg text-neutral-200 max-w-4xl font-normal leading-relaxed text-justify">
-              Minas Gerais (50.819 acidentes e 4.166 mortes), Santa Catarina (45.452 acidentes) e Paraná (42.329 acidentes) lideram o volume nacional de sinistros nas rodovias federais. Selecione qualquer estado abaixo para inspecionar sua letalidade, rodovia federal mais crítica e distribuição exata ao longo dos 7 dias da semana.
+              Minas Gerais (50.819 acidentes e 4.166 mortes), Santa Catarina (45.452 acidentes) e Paraná (42.329 acidentes) lideram o volume nacional de sinistros nas rodovias federais. Passe o mouse ou clique diretamente sobre qualquer estado no mapa do Brasil abaixo para inspecionar sua letalidade, rodovia crítica e distribuição semanal.
             </p>
           </header>
 
@@ -1367,15 +1400,15 @@ export default function App() {
             </div>
           </section>
 
-          {/* Filtro e Seletor Interativo das 27 UFs */}
-          <section className="bg-[#09090c] border border-neutral-800 p-6 sm:p-8 rounded-xl space-y-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          {/* Mapa Geográfico Interativo do Brasil + Painel de Inspeção da UF */}
+          <section className="bg-[#09090c] border border-neutral-800 p-6 sm:p-8 rounded-xl space-y-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-neutral-800 pb-4">
               <div>
                 <span className="text-xs font-mono text-red-400 uppercase tracking-widest block">
-                  Explorador Estadual Interativo
+                  Cartografia Interativa • 27 UFs
                 </span>
                 <h3 className="text-xl font-bold text-white mt-1">
-                  Selecione uma Unidade da Federação ({filteredUfs.length} exibidas)
+                  Mapa de Severidade Rodoviária por Estado
                 </h3>
               </div>
 
@@ -1406,106 +1439,190 @@ export default function App() {
               </div>
             </div>
 
-            {/* Grade de Botões das 27 UFs */}
-            <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-2">
-              {filteredUfs.map((item) => {
-                const ativo = selectedUf === item.sigla;
-                return (
-                  <button
-                    key={item.sigla}
-                    onClick={() => setSelectedUf(item.sigla)}
-                    className={`p-2.5 rounded-lg border text-left transition flex flex-col justify-between ${
-                      ativo
-                        ? 'bg-purple-950/90 border-purple-500 text-white shadow-[0_0_15px_rgba(128,0,128,0.35)] scale-[1.03]'
-                        : 'bg-black/60 border-neutral-800 text-neutral-300 hover:border-neutral-600 hover:text-white'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between w-full">
-                      <span className="font-black text-sm">{item.sigla}</span>
-                      <span className="text-[10px] font-mono text-neutral-400">#{item.rank}</span>
-                    </div>
-                    <span className="text-[11px] text-neutral-400 truncate mt-1">
-                      {(item.acidentes / 1000).toFixed(1)}k acid.
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+            {/* Bloco Principal: Mapa do Brasil à esquerda + Card Detalhado à direita */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+              {/* Coluna do Mapa Interativo do Brasil */}
+              <div className="lg:col-span-7 bg-black/50 border border-neutral-800/90 p-4 sm:p-6 rounded-xl flex flex-col items-center">
+                <div className="w-full flex flex-wrap items-center justify-between gap-2 mb-3 text-xs font-mono">
+                  <span className="text-neutral-400">
+                    Passe o mouse ou clique em cada estado no mapa:
+                  </span>
+                  <span className="text-purple-300 bg-purple-950/60 border border-purple-800/60 px-2.5 py-1 rounded">
+                    Em foco: <strong>{ufMapaAtiva.nome} ({ufMapaAtiva.sigla})</strong>
+                  </span>
+                </div>
 
-            {/* Painel de Diagnóstico Completo da UF Selecionada */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-4 border-t border-neutral-800">
-              <div className="bg-black/70 border border-neutral-800 p-6 rounded-xl flex flex-col justify-between space-y-5">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono uppercase px-2.5 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">
-                      {ufAtual.regiao} • #{ufAtual.rank}º no Ranking Nacional
+                <svg
+                  viewBox="0 0 600 600"
+                  className="w-full max-w-[460px] h-auto select-none drop-shadow-[0_12px_25px_rgba(0,0,0,0.85)]"
+                >
+                  {BRAZIL_MAP_PATHS.map((st) => {
+                    const dadosUf = ESTADOS_DIAS_DATA[st.sigla];
+                    const isSelected = selectedUf === st.sigla;
+                    const isHovered = hoveredUf === st.sigla;
+                    const fill = getUfMapColor(dadosUf?.acidentes || 0, isSelected, isHovered);
+                    return (
+                      <g
+                        key={st.sigla}
+                        onClick={() => setSelectedUf(st.sigla)}
+                        onMouseEnter={() => setHoveredUf(st.sigla)}
+                        onMouseLeave={() => setHoveredUf(null)}
+                        className="cursor-pointer transition-all duration-200"
+                      >
+                        <path
+                          d={st.d}
+                          fill={fill}
+                          stroke={isSelected || isHovered ? '#ffffff' : '#2e2638'}
+                          strokeWidth={isSelected || isHovered ? 2.2 : 1}
+                        />
+                        <text
+                          x={st.cx}
+                          y={st.cy}
+                          textAnchor="middle"
+                          dominantBaseline="central"
+                          fill="#ffffff"
+                          fontSize={isSelected || isHovered ? 11 : 9}
+                          fontWeight="bold"
+                          style={{ textShadow: '0 1px 3px rgba(0,0,0,0.95)' }}
+                          className="pointer-events-none"
+                        >
+                          {st.sigla}
+                        </text>
+                      </g>
+                    );
+                  })}
+                </svg>
+
+                {/* Legenda da Escala de Cores do Mapa */}
+                <div className="w-full pt-3 mt-2 border-t border-neutral-800/80 flex flex-wrap items-center justify-center gap-3 text-[11px] text-neutral-400 font-mono">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-3 h-3 rounded-sm inline-block bg-[#dc2626] border border-white/40" />
+                    UF Selecionada
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-3 h-3 rounded-sm inline-block bg-[#6b0f6b]" />
+                    +40k acid.
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-3 h-3 rounded-sm inline-block bg-[#581c87]" />
+                    20k a 40k
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-3 h-3 rounded-sm inline-block bg-[#3b0764]" />
+                    10k a 20k
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-3 h-3 rounded-sm inline-block bg-[#161321] border border-neutral-700" />
+                    Até 10k
+                  </span>
+                </div>
+              </div>
+
+              {/* Coluna Direita: Painel de Diagnóstico Completo da UF em Foco (com badges bem espaçados) */}
+              <div className="lg:col-span-5 bg-black/70 border border-neutral-800 p-6 rounded-xl flex flex-col justify-between space-y-5">
+                <div className="space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-xs font-mono uppercase px-2.5 py-1 rounded bg-purple-950 text-purple-300 border border-purple-800">
+                      {ufMapaAtiva.regiao} • #{ufMapaAtiva.rank}º no Ranking Nacional
                     </span>
-                    <span className="text-xs font-mono text-red-400 font-bold">
-                      {ufAtual.taxa_mortalidade}% letalidade
+                    <span className="text-xs font-mono text-red-300 font-bold px-2.5 py-1 rounded bg-red-950/70 border border-red-800/70">
+                      {ufMapaAtiva.taxa_mortalidade}% de letalidade
                     </span>
                   </div>
-                  <h4 className="text-2xl sm:text-3xl font-black text-white">
-                    {ufAtual.nome} ({ufAtual.sigla})
+
+                  <h4 className="text-2xl sm:text-3xl font-black text-white pt-1">
+                    {ufMapaAtiva.nome} ({ufMapaAtiva.sigla})
                   </h4>
                   <p className="text-sm text-neutral-300 leading-relaxed text-justify">
-                    {ufAtual.perfil_critico}.
+                    {ufMapaAtiva.perfil_critico}.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="bg-neutral-950 p-3.5 rounded-lg border border-neutral-800">
                     <span className="text-[11px] text-neutral-400 block">Total de Acidentes</span>
-                    <span className="text-xl font-black text-white">{ufAtual.acidentes.toLocaleString('pt-BR')}</span>
+                    <span className="text-xl font-black text-white">{ufMapaAtiva.acidentes.toLocaleString('pt-BR')}</span>
                   </div>
                   <div className="bg-neutral-950 p-3.5 rounded-lg border border-neutral-800">
                     <span className="text-[11px] text-amber-400 block">Total de Feridos</span>
-                    <span className="text-xl font-black text-amber-400">{ufAtual.feridos.toLocaleString('pt-BR')}</span>
+                    <span className="text-xl font-black text-amber-400">{ufMapaAtiva.feridos.toLocaleString('pt-BR')}</span>
                   </div>
                   <div className="bg-neutral-950 p-3.5 rounded-lg border border-red-950/80">
                     <span className="text-[11px] text-red-400 block">Vítimas Fatais</span>
-                    <span className="text-xl font-black text-red-500">{ufAtual.mortos.toLocaleString('pt-BR')}</span>
+                    <span className="text-xl font-black text-red-500">{ufMapaAtiva.mortos.toLocaleString('pt-BR')}</span>
                   </div>
                   <div className="bg-neutral-950 p-3.5 rounded-lg border border-purple-950/80">
                     <span className="text-[11px] text-purple-300 block">Dia Mais Crítico</span>
-                    <span className="text-lg font-black text-purple-300">{ufAtual.pico_dia}</span>
-                    <span className="text-[10px] text-neutral-400 block">{ufAtual.pico_qtd.toLocaleString('pt-BR')} ocorrências</span>
+                    <span className="text-lg font-black text-purple-300">{ufMapaAtiva.pico_dia}</span>
+                    <span className="text-[10px] text-neutral-400 block">{ufMapaAtiva.pico_qtd.toLocaleString('pt-BR')} ocorrências</span>
                   </div>
                 </div>
 
-                <div className="bg-neutral-950/90 p-3.5 rounded-lg border border-neutral-800 text-xs text-neutral-300 flex items-center justify-between">
+                <div className="bg-neutral-950/90 p-3.5 rounded-lg border border-neutral-800 text-xs text-neutral-300 flex items-center justify-between gap-2">
                   <span>Eixo Rodoviário de Maior Atenção:</span>
-                  <strong className="text-white font-mono">{ufAtual.rodovia_critica}</strong>
+                  <strong className="text-white font-mono">{ufMapaAtiva.rodovia_critica}</strong>
                 </div>
               </div>
+            </div>
 
-              {/* Gráfico dos 7 Dias da Semana da UF Selecionada */}
-              <div className="lg:col-span-2 bg-black/50 border border-neutral-800 p-6 rounded-xl space-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div>
-                    <span className="text-xs font-mono text-purple-400 uppercase">Dashboard Estadual 01</span>
-                    <h4 className="text-lg font-bold text-white">
-                      Distribuição por Dia da Semana em {ufAtual.nome} ({ufAtual.sigla})
-                    </h4>
-                  </div>
-                  <span className="text-xs font-mono text-amber-400 bg-amber-950/40 border border-amber-800/50 px-2.5 py-1 rounded">
-                    Fim de semana (Sex-Dom): {ufAtual.fds_pct}% dos acidentes
-                  </span>
-                </div>
+            {/* Grade Rápida de Botões das 27 UFs */}
+            <div className="space-y-2 pt-2 border-t border-neutral-800/80">
+              <span className="text-xs font-mono text-neutral-400 block">
+                Atalho rápido por sigla ({filteredUfs.length} UFs exibidas):
+              </span>
+              <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-2">
+                {filteredUfs.map((item) => {
+                  const ativo = selectedUf === item.sigla;
+                  return (
+                    <button
+                      key={item.sigla}
+                      onClick={() => setSelectedUf(item.sigla)}
+                      className={`p-2.5 rounded-lg border text-left transition flex flex-col justify-between ${
+                        ativo
+                          ? 'bg-purple-950/90 border-purple-500 text-white shadow-[0_0_15px_rgba(128,0,128,0.35)] scale-[1.03]'
+                          : 'bg-black/60 border-neutral-800 text-neutral-300 hover:border-neutral-600 hover:text-white'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <span className="font-black text-sm">{item.sigla}</span>
+                        <span className="text-[10px] font-mono text-neutral-400">#{item.rank}</span>
+                      </div>
+                      <span className="text-[11px] text-neutral-400 truncate mt-1">
+                        {(item.acidentes / 1000).toFixed(1)}k acid.
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-                <div className="h-72 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={ufAtual.distribuicao} margin={{ top: 15, right: 20, left: 0, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1c1917" />
-                      <XAxis dataKey="dia" stroke="#a3a3a3" fontSize={12} />
-                      <YAxis stroke="#a3a3a3" fontSize={12} />
-                      <Tooltip content={<CustomChartTooltip />} />
-                      <Legend />
-                      <Bar dataKey="acidentes" name="Total de Acidentes" fill="#800080" radius={[4, 4, 0, 0]} />
-                      <Bar dataKey="feridos" name="Total de Feridos" fill="#f59e0b" radius={[4, 4, 0, 0]} />
-                      <Bar dataKey="mortos" name="Vítimas Fatais" fill="#dc2626" radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
+            {/* Gráfico dos 7 Dias da Semana da UF em Foco */}
+            <div className="bg-black/50 border border-neutral-800 p-6 rounded-xl space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <span className="text-xs font-mono text-purple-400 uppercase">Dashboard Estadual 01</span>
+                  <h4 className="text-lg font-bold text-white">
+                    Distribuição por Dia da Semana em {ufMapaAtiva.nome} ({ufMapaAtiva.sigla})
+                  </h4>
                 </div>
+                <span className="text-xs font-mono text-amber-300 bg-amber-950/50 border border-amber-800/60 px-3 py-1 rounded-lg">
+                  Fim de semana (Sex-Dom): {ufMapaAtiva.fds_pct}% dos acidentes
+                </span>
+              </div>
+
+              <div className="h-72 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={ufMapaAtiva.distribuicao} margin={{ top: 15, right: 20, left: 0, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1c1917" />
+                    <XAxis dataKey="dia" stroke="#a3a3a3" fontSize={12} />
+                    <YAxis stroke="#a3a3a3" fontSize={12} />
+                    <Tooltip content={<CustomChartTooltip />} />
+                    <Legend />
+                    <Bar dataKey="acidentes" name="Total de Acidentes" fill="#800080" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="feridos" name="Total de Feridos" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="mortos" name="Vítimas Fatais" fill="#dc2626" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
             </div>
           </section>
@@ -1706,11 +1823,16 @@ export default function App() {
           {/* DASHBOARD 02: DISTRIBUIÇÃO POR DIA DA SEMANA NO BRASIL     */}
           {/* ========================================================= */}
           <section className="bg-[#09090c] border border-neutral-800 p-6 sm:p-8 rounded-xl space-y-6">
-            <div>
-              <span className="text-xs font-mono text-purple-400 uppercase tracking-widest block">Dashboard 02</span>
-              <h3 className="text-xl font-bold text-white mt-1">
-                A Dinâmica dos 7 Dias da Semana no Brasil
-              </h3>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <span className="text-xs font-mono text-purple-400 uppercase tracking-widest block">Dashboard 02</span>
+                <h3 className="text-xl font-bold text-white mt-1">
+                  A Dinâmica dos 7 Dias da Semana no Brasil
+                </h3>
+              </div>
+              <span className="text-xs font-mono text-purple-300 bg-purple-950/60 border border-purple-800/60 px-3 py-1 rounded-lg">
+                Linha tracejada: Média Diária (55.911 acidentes)
+              </span>
             </div>
 
             <div className="h-80 sm:h-96 w-full">
@@ -1721,12 +1843,7 @@ export default function App() {
                   <YAxis stroke="#a3a3a3" fontSize={12} tickFormatter={(v) => v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v} />
                   <Tooltip content={<CustomChartTooltip />} />
                   <Legend />
-                  <ReferenceLine
-                    y={55911}
-                    stroke="#a855f7"
-                    strokeDasharray="4 4"
-                    label={{ value: 'Média Diária (55.911 acidentes)', position: 'insideTopLeft', fill: '#d8b4fe', fontSize: 11 }}
-                  />
+                  <ReferenceLine y={55911} stroke="#a855f7" strokeDasharray="4 4" />
                   <Bar dataKey="acidentes" name="Total de Acidentes" fill="#800080" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="mortos" name="Vítimas Fatais" fill="#dc2626" radius={[4, 4, 0, 0]} />
                 </BarChart>
