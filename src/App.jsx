@@ -532,7 +532,7 @@ export default function App() {
                     formatter={(val) => val.toLocaleString('pt-BR')}
                   />
                   <Legend />
-                  <Bar dataKey="total_acidentes" name="Total de Acidentes" fill="#fc4f4f" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="total_acidentes" name="Total de Acidentes" fill="#800080" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="total_feridos" name="Total de Feridos" fill="#f59e0b" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="total_mortos" name="Total de Mortos" fill="#dc2626" radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -575,36 +575,45 @@ export default function App() {
               </ResponsiveContainer>
             </div>
 
-            {/* Frase Didática Solicitada: Padrão de Mortes a cada 100 Feridos */}
-            <div className="bg-[#0f0a0a] border border-red-950/80 p-5 rounded-xl space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-red-400">
-                Índice Didático de Severidade Biológica: Mortes registradas a cada 100 pessoas feridas
+            {/* Seção dos 4 Blocos com Efeito de Pop-up */}
+            <div className="bg-[#09090c] border border-neutral-800 p-6 rounded-xl space-y-4">
+              <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-neutral-300">
+                Mortes registradas a cada 100 pessoas feridas
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-                <div className="bg-black/60 p-3 rounded-lg border border-red-900/60">
+                <div className="group relative bg-black/60 p-4 rounded-xl border border-neutral-800 hover:border-purple-500 hover:bg-[#120a16] transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:shadow-purple-950/40 cursor-pointer">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-purple-900/90 text-purple-200 text-[10px] font-mono px-2 py-0.5 rounded-full border border-purple-500/50 pointer-events-none whitespace-nowrap">
+                    Pico letal
+                  </div>
                   <span className="text-xs text-neutral-400 block font-medium">Amanhecer</span>
-                  <span className="text-xl font-black text-red-500 block mt-1">11,55</span>
+                  <span className="text-2xl font-black text-white block mt-1">11,55</span>
                   <span className="text-[11px] text-neutral-400 block mt-0.5">mortes p/ 100 feridos</span>
                 </div>
-                <div className="bg-black/60 p-3 rounded-lg border border-red-900/40">
+                <div className="group relative bg-black/60 p-4 rounded-xl border border-neutral-800 hover:border-purple-500 hover:bg-[#120a16] transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:shadow-purple-950/40 cursor-pointer">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-purple-900/90 text-purple-200 text-[10px] font-mono px-2 py-0.5 rounded-full border border-purple-500/50 pointer-events-none whitespace-nowrap">
+                    Alta severidade
+                  </div>
                   <span className="text-xs text-neutral-400 block font-medium">Plena Noite</span>
-                  <span className="text-xl font-black text-red-400 block mt-1">10,59</span>
+                  <span className="text-2xl font-black text-white block mt-1">10,59</span>
                   <span className="text-[11px] text-neutral-400 block mt-0.5">mortes p/ 100 feridos</span>
                 </div>
-                <div className="bg-black/60 p-3 rounded-lg border border-neutral-800">
+                <div className="group relative bg-black/60 p-4 rounded-xl border border-neutral-800 hover:border-purple-500 hover:bg-[#120a16] transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:shadow-purple-950/40 cursor-pointer">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-purple-900/90 text-purple-200 text-[10px] font-mono px-2 py-0.5 rounded-full border border-purple-500/50 pointer-events-none whitespace-nowrap">
+                    Transição
+                  </div>
                   <span className="text-xs text-neutral-400 block font-medium">Anoitecer</span>
-                  <span className="text-xl font-bold text-neutral-200 block mt-1">6,65</span>
+                  <span className="text-2xl font-bold text-white block mt-1">6,65</span>
                   <span className="text-[11px] text-neutral-400 block mt-0.5">mortes p/ 100 feridos</span>
                 </div>
-                <div className="bg-black/60 p-3 rounded-lg border border-neutral-800">
+                <div className="group relative bg-black/60 p-4 rounded-xl border border-neutral-800 hover:border-purple-500 hover:bg-[#120a16] transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:shadow-purple-950/40 cursor-pointer">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-purple-900/90 text-purple-200 text-[10px] font-mono px-2 py-0.5 rounded-full border border-purple-500/50 pointer-events-none whitespace-nowrap">
+                    Menor letalidade
+                  </div>
                   <span className="text-xs text-neutral-400 block font-medium">Pleno Dia</span>
-                  <span className="text-xl font-bold text-neutral-200 block mt-1">5,12</span>
+                  <span className="text-2xl font-bold text-white block mt-1">5,12</span>
                   <span className="text-[11px] text-neutral-400 block mt-0.5">mortes p/ 100 feridos</span>
                 </div>
               </div>
-              <p className="text-sm sm:text-base text-neutral-300 leading-relaxed pt-2 text-justify">
-                <strong>Leitura didática dos dados:</strong> Para cada 100 pessoas feridas em acidentes nas rodovias federais, morrem <strong>11,55 pessoas ao Amanhecer</strong> e <strong>10,59 na Plena Noite</strong>, mais que o dobro do registrado em <strong>Pleno Dia (5,12 mortes)</strong>.
-              </p>
             </div>
           </section>
 
@@ -634,15 +643,15 @@ export default function App() {
               </ResponsiveContainer>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-neutral-300">
-              <div className="bg-black/50 p-5 rounded-lg border border-neutral-800 text-justify leading-relaxed">
-                <span className="font-bold text-white block mb-1">Amanhecer (0,1155) e Plena Noite (0,1059):</span>
-                Nesses dois períodos, a razão supera 0,10, demonstrando que 1 a cada 9 ou 10 vítimas que sofrem lesões acaba vindo a óbito.
+            {/* Frase Única em Formato Pop-up Comparativo */}
+            <div className="group relative bg-[#0d0714] border border-purple-900/60 hover:border-purple-500 p-6 rounded-xl shadow-[0_0_25px_rgba(128,0,128,0.15)] transition-all duration-300 transform hover:-translate-y-1 hover:shadow-purple-900/30 cursor-pointer">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-950/80 border border-purple-800/60 text-purple-300 text-[11px] font-mono uppercase tracking-wider mb-3">
+                <Info className="w-3.5 h-3.5 text-purple-400" />
+                Comparativo de Proporção Fatal
               </div>
-              <div className="bg-black/50 p-5 rounded-lg border border-neutral-800 text-justify leading-relaxed">
-                <span className="font-bold text-white block mb-1">Pleno Dia (0,0512):</span>
-                A razão é de apenas 0,05, exigindo 20 pessoas feridas para registrar 1 fatalidade, consequência de velocidades mais baixas decorrentes do tráfego denso.
-              </div>
+              <p className="text-base sm:text-lg text-neutral-200 leading-relaxed text-justify font-normal">
+                No <strong className="text-white">Amanhecer</strong>, aproximadamente <strong>1 a cada 11 pessoas que sofriam lesão morria</strong>, enquanto em <strong className="text-white">Pleno Dia</strong> essa proporção diminui para apenas <strong>1 morte a cada 20 pessoas lesionadas</strong>.
+              </p>
             </div>
           </section>
         </div>
@@ -687,7 +696,7 @@ export default function App() {
                     contentStyle={{ backgroundColor: '#0c0a09', borderColor: '#44403c', borderRadius: 8 }}
                   />
                   <Legend />
-                  <Bar dataKey="total" name="Total Ocorrências" fill="#fc4f4f" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="total" name="Total Ocorrências" fill="#800080" radius={[0, 4, 4, 0]} />
                   <Bar dataKey="mortos" name="Vítimas Fatais" fill="#dc2626" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -734,7 +743,7 @@ export default function App() {
                   <Tooltip
                     contentStyle={{ backgroundColor: '#0c0a09', borderColor: '#44403c', borderRadius: 8 }}
                   />
-                  <Bar dataKey="acidentes" name="Acidentes Totais" fill="#fc4f4f" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="acidentes" name="Acidentes Totais" fill="#800080" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="mortos" name="Vítimas Fatais" fill="#dc2626" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -782,7 +791,7 @@ export default function App() {
                     contentStyle={{ backgroundColor: '#0c0a09', borderColor: '#44403c', borderRadius: 8 }}
                   />
                   <Legend />
-                  <Line type="monotone" dataKey="acidentes" name="Ocorrências" stroke="#fc4f4f" strokeWidth={2} />
+                  <Line type="monotone" dataKey="acidentes" name="Ocorrências" stroke="#800080" strokeWidth={2} />
                   <Line type="monotone" dataKey="mortos" name="Vítimas Fatais" stroke="#dc2626" strokeWidth={3} />
                 </LineChart>
               </ResponsiveContainer>
