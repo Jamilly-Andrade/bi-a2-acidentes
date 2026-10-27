@@ -25,8 +25,16 @@ import {
   Activity,
   CheckCircle2,
   TrendingUp,
-  Info
+  Info,
+  Calendar,
+  Clock,
+  MapPin
 } from 'lucide-react';
+import {
+  DIAS_SEMANA_BRASIL,
+  SERIE_TEMPORAL_DATA,
+  ESTADOS_DIAS_DATA
+} from './data/temporalData';
 
 // Fotos conceituais da galeria horizontal
 const HERO_PHOTOS = [
@@ -154,6 +162,7 @@ const HISTORICO_DATA = [
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
+  const [selectedUf, setSelectedUf] = useState('MG');
 
   return (
     <div className="bg-[#050507] text-neutral-100 min-h-screen selection:bg-red-800 selection:text-white font-sans antialiased">
@@ -175,10 +184,10 @@ export default function App() {
             </div>
           </button>
 
-          <div className="flex items-center gap-1 sm:gap-3 text-xs font-medium">
+          <div className="flex items-center gap-1 sm:gap-2 text-xs font-medium overflow-x-auto py-1">
             <button
               onClick={() => setCurrentPage('home')}
-              className={`px-3 py-1.5 rounded-md transition ${
+              className={`px-3 py-1.5 rounded-md transition whitespace-nowrap ${
                 currentPage === 'home'
                   ? 'bg-neutral-900 text-white border border-neutral-700'
                   : 'text-neutral-400 hover:text-white'
@@ -187,8 +196,18 @@ export default function App() {
               Panorama Geral
             </button>
             <button
+              onClick={() => setCurrentPage('temporal')}
+              className={`px-3 py-1.5 rounded-md transition whitespace-nowrap ${
+                currentPage === 'temporal'
+                  ? 'bg-purple-950/80 text-purple-200 border border-purple-800 shadow-[0_0_15px_rgba(128,0,128,0.25)]'
+                  : 'text-neutral-400 hover:text-purple-400'
+              }`}
+            >
+              Análise Temporal
+            </button>
+            <button
               onClick={() => setCurrentPage('fase_dia')}
-              className={`px-3 py-1.5 rounded-md transition ${
+              className={`px-3 py-1.5 rounded-md transition whitespace-nowrap ${
                 currentPage === 'fase_dia'
                   ? 'bg-red-950/80 text-red-200 border border-red-800 shadow-[0_0_15px_rgba(220,38,38,0.2)]'
                   : 'text-neutral-400 hover:text-red-400'
@@ -198,7 +217,7 @@ export default function App() {
             </button>
             <button
               onClick={() => setCurrentPage('causas')}
-              className={`px-3 py-1.5 rounded-md transition ${
+              className={`px-3 py-1.5 rounded-md transition whitespace-nowrap ${
                 currentPage === 'causas'
                   ? 'bg-red-950/80 text-red-200 border border-red-800'
                   : 'text-neutral-400 hover:text-red-400'
@@ -208,7 +227,7 @@ export default function App() {
             </button>
             <button
               onClick={() => setCurrentPage('estados')}
-              className={`px-3 py-1.5 rounded-md transition ${
+              className={`px-3 py-1.5 rounded-md transition whitespace-nowrap ${
                 currentPage === 'estados'
                   ? 'bg-red-950/80 text-red-200 border border-red-800'
                   : 'text-neutral-400 hover:text-red-400'
@@ -424,27 +443,27 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Card Histórico */}
+              {/* Card Análise Temporal */}
               <div
-                onClick={() => setCurrentPage('historico')}
-                className="bg-[#09090c] hover:bg-[#0f0c10] border border-neutral-800 hover:border-red-600/80 p-6 rounded-xl transition duration-300 cursor-pointer group flex flex-col justify-between"
+                onClick={() => setCurrentPage('temporal')}
+                className="bg-[#09090c] hover:bg-[#0f0c10] border border-neutral-800 hover:border-purple-600/80 p-6 rounded-xl transition duration-300 cursor-pointer group flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-mono text-neutral-500 uppercase">Série Temporal</span>
-                    <span className="text-xs px-2 py-0.5 rounded bg-neutral-900 text-neutral-400 border border-neutral-800">
+                    <span className="text-xs font-mono text-purple-400 uppercase">Calendário & Série</span>
+                    <span className="text-xs px-2 py-0.5 rounded bg-purple-950/80 text-purple-300 border border-purple-800/60">
                       2021 a 2026
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold text-white group-hover:text-red-400 transition">
-                    A Marcha dos Anos: Estabilidade e Perdas Constantes
+                  <h3 className="text-xl font-bold text-white group-hover:text-purple-400 transition">
+                    Ciclos de Risco: A Linha do Tempo e os Dias da Semana
                   </h3>
                   <p className="text-sm sm:text-base text-neutral-300 mt-2 leading-relaxed text-justify">
-                    Acompanhamento histórico anual: as rodovias federais sustentam uma perda regular de mais de 5.400 vidas a cada ano.
+                    A evolução anual das ocorrências e a dinâmica dos 7 dias da semana: veja em qual dia da semana cada estado brasileiro registra seu pico de colisões.
                   </p>
                 </div>
-                <div className="mt-6 pt-4 border-t border-neutral-800 flex items-center justify-between text-xs font-medium text-red-400 group-hover:text-red-300">
-                  <span>Ver série histórica completa</span>
+                <div className="mt-6 pt-4 border-t border-neutral-800 flex items-center justify-between text-xs font-medium text-purple-400 group-hover:text-purple-300">
+                  <span>Abrir análise temporal e por estados</span>
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition" />
                 </div>
               </div>
@@ -753,10 +772,11 @@ export default function App() {
       )}
 
       {/* ========================================================= */}
-      {/* PÁGINA ESPECÍFICA: HISTÓRICO                             */}
+      {/* PÁGINA ESPECÍFICA: ANÁLISE TEMPORAL E DIAS DA SEMANA     */}
       {/* ========================================================= */}
-      {currentPage === 'historico' && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+      {(currentPage === 'temporal' || currentPage === 'historico') && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+          {/* Voltar */}
           <button
             onClick={() => setCurrentPage('home')}
             className="inline-flex items-center gap-2 text-xs font-mono text-neutral-400 hover:text-white transition"
@@ -765,36 +785,238 @@ export default function App() {
             Voltar ao Panorama Inicial
           </button>
 
+          {/* Cabeçalho */}
           <header className="space-y-4">
-            <span className="text-xs font-mono text-red-500 uppercase tracking-widest block">
-              Série Temporal
+            <span className="text-xs font-mono text-purple-400 uppercase tracking-widest block">
+              Análise Temporal e Calendário
             </span>
-            <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight">
-              A Marcha dos Anos: Estabilidade e Perdas Constantes
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+              Ciclos de Risco: A Linha do Tempo e os Dias da Semana
             </h1>
             <p className="text-base sm:text-lg text-neutral-200 max-w-4xl font-normal leading-relaxed text-justify">
-              O comportamento das ocorrências ao longo dos últimos 5 anos comprova uma perda persistente acima de 5.400 vidas por ano nas rodovias federais.
+              A distribuição das ocorrências ao longo do calendário revela padrões críticos: enquanto terças e quartas concentram os menores volumes de colisões, os fins de semana concentram picos desproporcionais de sinistros e fatalidades, impulsionados pelo fluxo turístico, deslocamentos intermunicipais e consumo de bebidas alcoólicas.
             </p>
           </header>
 
-          <section className="bg-[#09090c] border border-neutral-800 p-6 rounded-xl">
-            <h3 className="text-xl font-bold text-white mb-6">
-              Tendência Anual (2021 a 2026)
-            </h3>
-            <div className="h-80 w-full">
+          {/* Cards de Métricas do Calendário */}
+          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-[#0b0b0e] border border-neutral-800 p-6 rounded-xl">
+              <span className="text-xs font-semibold uppercase tracking-widest text-neutral-500 block">
+                Total Registrado (2021-2026)
+              </span>
+              <div className="text-3xl font-black text-white mt-2">
+                391.382
+              </div>
+              <span className="text-xs text-neutral-400 mt-2 block">
+                Ocorrências catalogadas pela PRF
+              </span>
+            </div>
+
+            <div className="bg-[#0b0b0e] border border-purple-900/60 p-6 rounded-xl shadow-[0_0_20px_rgba(128,0,128,0.1)]">
+              <span className="text-xs font-semibold uppercase tracking-widest text-purple-400 block">
+                Pico Semanal no Brasil
+              </span>
+              <div className="text-3xl font-black text-purple-400 mt-2">
+                Domingo
+              </div>
+              <span className="text-xs text-neutral-300 mt-2 block">
+                64.093 acidentes (16,4% do total)
+              </span>
+            </div>
+
+            <div className="bg-[#120505] border border-red-950 p-6 rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.1)]">
+              <span className="text-xs font-semibold uppercase tracking-widest text-red-400 block">
+                Fatalidades aos Domingos
+              </span>
+              <div className="text-3xl font-black text-red-500 mt-2">
+                6.582
+              </div>
+              <span className="text-xs text-red-400/90 mt-2 block">
+                Quase o dobro das terças-feiras (3.583)
+              </span>
+            </div>
+
+            <div className="bg-[#0b0b0e] border border-neutral-800 p-6 rounded-xl">
+              <span className="text-xs font-semibold uppercase tracking-widest text-neutral-500 block">
+                Concentração no Fim de Semana
+              </span>
+              <div className="text-3xl font-black text-amber-400 mt-2">
+                48,3%
+              </div>
+              <span className="text-xs text-neutral-400 mt-2 block">
+                De todas as mortes (Sex, Sáb e Dom)
+              </span>
+            </div>
+          </section>
+
+          {/* ========================================================= */}
+          {/* DASHBOARD 01: SÉRIE TEMPORAL ANUAL (2021 A 2026)          */}
+          {/* ========================================================= */}
+          <section className="bg-[#09090c] border border-neutral-800 p-6 sm:p-8 rounded-xl space-y-6">
+            <div>
+              <span className="text-xs font-mono text-purple-400 uppercase tracking-widest block">Dashboard 01</span>
+              <h3 className="text-xl font-bold text-white mt-1">
+                Série Temporal das Ocorrências e Vítimas (2021 a 2026)
+              </h3>
+            </div>
+
+            <div className="h-80 sm:h-96 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={HISTORICO_DATA}>
+                <LineChart data={SERIE_TEMPORAL_DATA} margin={{ top: 20, right: 30, left: 10, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1c1917" />
                   <XAxis dataKey="ano" stroke="#a3a3a3" fontSize={12} />
                   <YAxis stroke="#a3a3a3" fontSize={12} />
                   <Tooltip
                     contentStyle={{ backgroundColor: '#0c0a09', borderColor: '#44403c', borderRadius: 8 }}
+                    formatter={(val) => val.toLocaleString('pt-BR')}
                   />
                   <Legend />
-                  <Line type="monotone" dataKey="acidentes" name="Ocorrências" stroke="#800080" strokeWidth={2} />
-                  <Line type="monotone" dataKey="mortos" name="Vítimas Fatais" stroke="#dc2626" strokeWidth={3} />
+                  <Line type="monotone" dataKey="acidentes" name="Ocorrências" stroke="#800080" strokeWidth={3} dot={{ r: 4 }} />
+                  <Line type="monotone" dataKey="feridos" name="Feridos" stroke="#f59e0b" strokeWidth={2} dot={{ r: 4 }} />
+                  <Line type="monotone" dataKey="mortos" name="Vítimas Fatais" stroke="#dc2626" strokeWidth={3} dot={{ r: 4 }} />
                 </LineChart>
               </ResponsiveContainer>
+            </div>
+
+            <div className="bg-neutral-950/80 p-5 rounded-xl border border-neutral-800 text-sm sm:text-base text-neutral-200 text-justify leading-relaxed">
+              <strong>Tendência Histórica:</strong> As ocorrências apresentaram estabilidade entre 2021 (64.567) e 2022 (64.606), subindo para 67.766 em 2023 e atingindo o pico de 73.202 acidentes em 2024. A perda de vidas permaneceu regular acima de 5.400 fatalidades anuais ao longo de todo o período catalogado.
+            </div>
+          </section>
+
+          {/* ========================================================= */}
+          {/* DASHBOARD 02: DISTRIBUIÇÃO POR DIA DA SEMANA NO BRASIL     */}
+          {/* ========================================================= */}
+          <section className="bg-[#09090c] border border-neutral-800 p-6 sm:p-8 rounded-xl space-y-6">
+            <div>
+              <span className="text-xs font-mono text-purple-400 uppercase tracking-widest block">Dashboard 02</span>
+              <h3 className="text-xl font-bold text-white mt-1">
+                A Dinâmica dos 7 Dias da Semana no Brasil
+              </h3>
+            </div>
+
+            <div className="h-80 sm:h-96 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={DIAS_SEMANA_BRASIL} margin={{ top: 20, right: 30, left: 10, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#1c1917" />
+                  <XAxis dataKey="dia" stroke="#a3a3a3" fontSize={12} />
+                  <YAxis stroke="#a3a3a3" fontSize={12} />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#0c0a09', borderColor: '#44403c', borderRadius: 8 }}
+                    formatter={(val) => val.toLocaleString('pt-BR')}
+                  />
+                  <Legend />
+                  <Bar dataKey="acidentes" name="Total de Acidentes" fill="#800080" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="mortos" name="Vítimas Fatais" fill="#dc2626" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-neutral-300">
+              <div className="bg-black/60 p-5 rounded-xl border border-neutral-800 text-justify leading-relaxed">
+                <span className="font-bold text-white block mb-1">Dias Úteis (Segunda a Quinta):</span>
+                Média de 50.700 acidentes e 3.850 mortes por dia. O tráfego comercial e de rotina mantém taxas menores de fatalidade por colisão.
+              </div>
+              <div className="bg-purple-950/20 p-5 rounded-xl border border-purple-900/60 text-justify leading-relaxed shadow-[0_0_15px_rgba(128,0,128,0.1)]">
+                <span className="font-bold text-purple-300 block mb-1">Fim de Semana (Sexta a Domingo):</span>
+                Média de 62.800 acidentes e 5.780 mortes por dia. O domingo lidera com 6.582 vítimas fatais, comprovando o impacto de excesso de velocidade e álcool no retorno de viagens.
+              </div>
+            </div>
+          </section>
+
+          {/* ========================================================= */}
+          {/* DASHBOARD 03: CONEXÃO COM UF (DIA COM MAIS ACIDENTES)     */}
+          {/* ========================================================= */}
+          <section className="bg-[#09090c] border border-neutral-800 p-6 sm:p-8 rounded-xl space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-800 pb-4">
+              <div>
+                <span className="text-xs font-mono text-purple-400 uppercase tracking-widest block">Dashboard 03 • Conexão Territorial</span>
+                <h3 className="text-xl font-bold text-white mt-1">
+                  Em Qual Dia da Semana Cada Estado Tem Mais Acidentes?
+                </h3>
+              </div>
+
+              {/* Seletor de Estado */}
+              <div className="flex items-center gap-3">
+                <label htmlFor="uf-selector" className="text-xs font-mono text-neutral-400 whitespace-nowrap">
+                  Estado:
+                </label>
+                <select
+                  id="uf-selector"
+                  value={selectedUf}
+                  onChange={(e) => setSelectedUf(e.target.value)}
+                  className="bg-neutral-900 border border-purple-700 text-white text-xs font-bold rounded-lg px-3 py-2 outline-none focus:border-purple-400 cursor-pointer shadow-md"
+                >
+                  {Object.keys(ESTADOS_DIAS_DATA).map((uf) => (
+                    <option key={uf} value={uf}>
+                      {ESTADOS_DIAS_DATA[uf].nome} ({uf}) • {ESTADOS_DIAS_DATA[uf].total.toLocaleString('pt-BR')} acid.
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Card Pop-up Dinâmico do Estado Selecionado */}
+            {ESTADOS_DIAS_DATA[selectedUf] && (
+              <div className="group relative bg-[#0e0716] border border-purple-800/80 p-6 rounded-xl shadow-[0_0_25px_rgba(128,0,128,0.2)] transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950 border border-purple-700/60 text-purple-300 text-xs font-mono uppercase tracking-wider">
+                    <MapPin className="w-3.5 h-3.5 text-purple-400" />
+                    {ESTADOS_DIAS_DATA[selectedUf].nome} ({selectedUf})
+                  </div>
+                  <span className="text-xs text-neutral-400">
+                    Total no Estado: <strong className="text-white">{ESTADOS_DIAS_DATA[selectedUf].total.toLocaleString('pt-BR')}</strong> ocorrências
+                  </span>
+                </div>
+
+                <div className="text-base sm:text-lg text-neutral-200 leading-relaxed text-justify">
+                  O dia com maior quantidade de acidentes em <strong className="text-white">{ESTADOS_DIAS_DATA[selectedUf].nome}</strong> é o <strong className="text-purple-400 text-xl font-black">{ESTADOS_DIAS_DATA[selectedUf].pico_dia}</strong>, com um total de <strong className="text-white">{ESTADOS_DIAS_DATA[selectedUf].pico_qtd.toLocaleString('pt-BR')} colisões</strong> registradas pela PRF, representando <strong className="text-purple-300">{ESTADOS_DIAS_DATA[selectedUf].pico_pct}%</strong> de todos os acidentes do estado no período.
+                </div>
+              </div>
+            )}
+
+            {/* Gráfico Exclusivo do Estado Selecionado */}
+            {ESTADOS_DIAS_DATA[selectedUf] && (
+              <div className="h-80 w-full pt-2">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={ESTADOS_DIAS_DATA[selectedUf].distribuicao} margin={{ top: 20, right: 30, left: 10, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1c1917" />
+                    <XAxis dataKey="dia" stroke="#a3a3a3" fontSize={12} />
+                    <YAxis stroke="#a3a3a3" fontSize={12} />
+                    <Tooltip
+                      contentStyle={{ backgroundColor: '#0c0a09', borderColor: '#44403c', borderRadius: 8 }}
+                      formatter={(val) => [`${val.toLocaleString('pt-BR')} acidentes`, 'Volume']}
+                    />
+                    <Bar dataKey="acidentes" name={`Acidentes em ${selectedUf}`} fill="#800080" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {/* Atalhos Rápidos para os Principais Estados */}
+            <div className="pt-4 border-t border-neutral-800">
+              <span className="text-xs font-mono text-neutral-400 uppercase tracking-wider block mb-3">
+                Acesso Rápido aos Maiores Estados:
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {['MG', 'SC', 'PR', 'RJ', 'RS', 'SP', 'BA', 'GO', 'PE', 'ES'].map((uf) => {
+                  const info = ESTADOS_DIAS_DATA[uf];
+                  if (!info) return null;
+                  const isSelected = selectedUf === uf;
+                  return (
+                    <button
+                      key={uf}
+                      onClick={() => setSelectedUf(uf)}
+                      className={`px-3 py-2 rounded-lg border text-xs font-medium transition text-left ${
+                        isSelected
+                          ? 'bg-purple-950 border-purple-500 text-white shadow-[0_0_12px_rgba(128,0,128,0.4)]'
+                          : 'bg-black/40 border-neutral-800 text-neutral-300 hover:border-neutral-700 hover:text-white'
+                      }`}
+                    >
+                      <span className="font-bold">{uf}</span>: Pico no <span className="text-purple-400 font-semibold">{info.pico_dia}</span> ({info.pico_qtd.toLocaleString('pt-BR')})
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </section>
         </div>
