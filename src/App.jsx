@@ -28,13 +28,18 @@ import {
   Info,
   Calendar,
   Clock,
-  MapPin
+  MapPin,
+  Car
 } from 'lucide-react';
 import {
   DIAS_SEMANA_BRASIL,
   SERIE_TEMPORAL_DATA,
   ESTADOS_DIAS_DATA
 } from './data/temporalData';
+import {
+  CAUSAS_VEICULOS_DATA,
+  FAIXAS_VEICULOS_DATA
+} from './data/causasVeiculosData';
 
 // Fotos conceituais da galeria horizontal
 const HERO_PHOTOS = [
@@ -219,11 +224,11 @@ export default function App() {
               onClick={() => setCurrentPage('causas')}
               className={`px-3 py-1.5 rounded-md transition whitespace-nowrap ${
                 currentPage === 'causas'
-                  ? 'bg-red-950/80 text-red-200 border border-red-800'
-                  : 'text-neutral-400 hover:text-red-400'
+                  ? 'bg-purple-950/80 text-purple-200 border border-purple-800 shadow-[0_0_15px_rgba(128,0,128,0.25)]'
+                  : 'text-neutral-400 hover:text-purple-400'
               }`}
             >
-              Causas
+              Causas & Veículos
             </button>
             <button
               onClick={() => setCurrentPage('estados')}
@@ -393,26 +398,30 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Card Causas */}
+              {/* Card Causas e Veículos */}
               <div
                 onClick={() => setCurrentPage('causas')}
-                className="bg-[#09090c] hover:bg-[#0f0c10] border border-neutral-800 hover:border-red-600/80 p-6 rounded-xl transition duration-300 cursor-pointer group flex flex-col justify-between"
+                className="bg-[#09090c] hover:bg-[#0f0c10] border border-neutral-800 hover:border-purple-600/80 p-6 rounded-xl transition duration-300 cursor-pointer group flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-mono text-neutral-500 uppercase">Fatores de Risco</span>
-                    <span className="text-xs px-2 py-0.5 rounded bg-neutral-900 text-neutral-400 border border-neutral-800">
-                      Fator Humano
+                    <span className="text-xs font-mono text-purple-400 uppercase">Dinâmica de Colisão</span>
+                    <span className="text-xs px-2 py-0.5 rounded bg-purple-950/80 text-purple-300 border border-purple-800/60">
+                      Causa & Veículos
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold text-white group-hover:text-red-400 transition">
-                    A Anatomia da Falha: O Comportamento do Condutor
+                  <h3 className="text-xl font-bold text-white group-hover:text-purple-400 transition">
+                    A Anatomia da Falha: Causas e Veículos Envolvidos
                   </h3>
                   <p className="text-sm sm:text-base text-neutral-300 mt-2 leading-relaxed text-justify">
-                    Reação tardia, distração com dispositivos móveis, álcool e sono: a análise de como a atitude humana supera qualquer falha na pista.
+                    A relação entre a atitude do motorista e o número de veículos atingidos: da saída de pista isolada (sono e álcool) aos engavetamentos múltiplos e invasões fatais de contramão.
                   </p>
                 </div>
-                <div className="mt-6 pt-4 border-t border-neutral-800 flex items-center justify-between text-xs font-medium text-red-400 group-hover:text-red-300">
+                <div className="mt-6 pt-4 border-t border-neutral-800 flex items-center justify-between text-xs font-medium text-purple-400 group-hover:text-purple-300">
+                  <span>Ver causas e veículos envolvidos</span>
+                  <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition" />
+                </div>
+              </div>
                   <span>Ver painel completo de Causas</span>
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition" />
                 </div>
@@ -677,10 +686,10 @@ export default function App() {
       )}
 
       {/* ========================================================= */}
-      {/* PÁGINA ESPECÍFICA: CAUSAS                                */}
+      {/* PÁGINA ESPECÍFICA: CAUSAS E VEÍCULOS ENVOLVIDOS          */}
       {/* ========================================================= */}
       {currentPage === 'causas' && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
           <button
             onClick={() => setCurrentPage('home')}
             className="inline-flex items-center gap-2 text-xs font-mono text-neutral-400 hover:text-white transition"
@@ -690,32 +699,183 @@ export default function App() {
           </button>
 
           <header className="space-y-4">
-            <span className="text-xs font-mono text-red-500 uppercase tracking-widest block">
-              Fatores de Risco
+            <span className="text-xs font-mono text-purple-400 uppercase tracking-widest block">
+              Dinâmica de Colisão e Fatores de Risco
             </span>
-            <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight">
-              A Anatomia da Falha: O Fator Humano como Causa Suprema
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+              Causa do Acidente e Quantidade de Veículos Envolvidos
             </h1>
             <p className="text-base sm:text-lg text-neutral-200 max-w-4xl font-normal leading-relaxed text-justify">
-              Mais de 70% das fatalidades decorrem de decisões e comportamentos do condutor: reação tardia, excesso de velocidade, sonolência e álcool.
+              O cruzamento entre a causa do acidente e o número de veículos envolvidos revela a dinâmica física do perigo nas rodovias federais: enquanto o sono e a ingestão de álcool levam a colisões e saídas de pista com menor média de veículos (1,7 a 1,8), a falta de distância de segurança e a invasão de contramão geram engavetamentos e colisões múltiplas violentas, atingindo até 2,57 veículos por sinistro e multiplicando a letalidade.
             </p>
           </header>
 
-          <section className="bg-[#09090c] border border-neutral-800 p-6 rounded-xl">
-            <h3 className="text-xl font-bold text-white mb-6">
-              Ranking das 6 Principais Causas
-            </h3>
-            <div className="h-96 w-full">
+          {/* Cards de Métricas de Destaque */}
+          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-[#0b0b0e] border border-neutral-800 p-6 rounded-xl">
+              <span className="text-xs font-semibold uppercase tracking-widest text-neutral-500 block">
+                Total de Veículos Envolvidos
+              </span>
+              <div className="text-3xl font-black text-white mt-2">
+                746.587
+              </div>
+              <span className="text-xs text-neutral-400 mt-2 block">
+                Catalogados em 391.382 acidentes
+              </span>
+            </div>
+
+            <div className="bg-[#0b0b0e] border border-purple-900/60 p-6 rounded-xl shadow-[0_0_20px_rgba(128,0,128,0.1)]">
+              <span className="text-xs font-semibold uppercase tracking-widest text-purple-400 block">
+                Maior Média de Veículos
+              </span>
+              <div className="text-3xl font-black text-purple-400 mt-2">
+                2,57
+              </div>
+              <span className="text-xs text-neutral-300 mt-2 block">
+                Transitar na contramão (32.980 veíc.)
+              </span>
+            </div>
+
+            <div className="bg-[#0b0b0e] border border-neutral-800 p-6 rounded-xl">
+              <span className="text-xs font-semibold uppercase tracking-widest text-amber-400 block">
+                Líder em Engavetamentos
+              </span>
+              <div className="text-3xl font-black text-amber-400 mt-2">
+                63.159
+              </div>
+              <span className="text-xs text-neutral-400 mt-2 block">
+                Veículos por falta de distância segura
+              </span>
+            </div>
+
+            <div className="bg-[#120505] border border-red-950 p-6 rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.1)]">
+              <span className="text-xs font-semibold uppercase tracking-widest text-red-400 block">
+                Letalidade em 4+ Veículos
+              </span>
+              <div className="text-3xl font-black text-red-500 mt-2">
+                19,34%
+              </div>
+              <span className="text-xs text-red-400/90 mt-2 block">
+                5x maior que acidentes de 1 veículo
+              </span>
+            </div>
+          </section>
+
+          {/* ========================================================= */}
+          {/* DASHBOARD 01: MÉDIA DE VEÍCULOS POR CAUSA DO ACIDENTE     */}
+          {/* ========================================================= */}
+          <section className="bg-[#09090c] border border-neutral-800 p-6 sm:p-8 rounded-xl space-y-6">
+            <div>
+              <span className="text-xs font-mono text-purple-400 uppercase tracking-widest block">Dashboard 01</span>
+              <h3 className="text-xl font-bold text-white mt-1">
+                Média de Veículos Envolvidos por Causa do Acidente
+              </h3>
+            </div>
+
+            <div className="h-[420px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={CAUSAS_DATA} layout="vertical">
+                <BarChart data={CAUSAS_VEICULOS_DATA} layout="vertical" margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1c1917" />
-                  <XAxis type="number" stroke="#a3a3a3" fontSize={11} />
-                  <YAxis dataKey="causa" type="category" stroke="#a3a3a3" fontSize={11} width={220} />
+                  <XAxis type="number" domain={[1.2, 2.8]} stroke="#a3a3a3" fontSize={11} unit=" veíc" />
+                  <YAxis dataKey="causa" type="category" stroke="#a3a3a3" fontSize={11} width={260} />
                   <Tooltip
                     contentStyle={{ backgroundColor: '#0c0a09', borderColor: '#44403c', borderRadius: 8 }}
+                    formatter={(val, name, item) => [
+                      `${val} veículos por acidente (${item.payload.veiculos.toLocaleString('pt-BR')} veículos no total)`,
+                      'Média'
+                    ]}
+                  />
+                  <Bar dataKey="media_veiculos" name="Média de Veículos por Acidente" fill="#800080" radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="bg-neutral-950/80 p-5 rounded-xl border border-neutral-800 text-sm sm:text-base text-neutral-200 text-justify leading-relaxed">
+              <strong>Contraste Causal:</strong> O comportamento de <strong>Transitar na contramão (2,57)</strong> e a <strong>Falta de distância de segurança (2,47)</strong> geram os maiores impactos coletivos, envolvendo rotineiramente 2 a 3 veículos por ocorrência. Em contraste, causas associadas à perda de consciência ou reflexos lentos, como <strong>Demais falhas mecânicas (1,60)</strong>, <strong>Condutor dormindo (1,76)</strong> e <strong>Ingestão de álcool (1,79)</strong>, apresentam menor média de veículos, pois grande parte dessas colisões se restringe a saídas de pista, capotamentos solitários e choques contra árvores ou muretas.
+            </div>
+          </section>
+
+          {/* ========================================================= */}
+          {/* DASHBOARD 02: LETALIDADE POR FAIXA DE VEÍCULOS ENVOLVIDOS */}
+          {/* ========================================================= */}
+          <section className="bg-[#09090c] border border-neutral-800 p-6 sm:p-8 rounded-xl space-y-6">
+            <div>
+              <span className="text-xs font-mono text-purple-400 uppercase tracking-widest block">Dashboard 02</span>
+              <h3 className="text-xl font-bold text-white mt-1">
+                Escalada da Severidade: Acidentes e Mortes por Faixa de Veículos
+              </h3>
+            </div>
+
+            <div className="h-80 sm:h-96 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={FAIXAS_VEICULOS_DATA} margin={{ top: 20, right: 30, left: 10, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#1c1917" />
+                  <XAxis dataKey="faixa" stroke="#a3a3a3" fontSize={12} />
+                  <YAxis stroke="#a3a3a3" fontSize={12} />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#0c0a09', borderColor: '#44403c', borderRadius: 8 }}
+                    formatter={(val) => val.toLocaleString('pt-BR')}
                   />
                   <Legend />
-                  <Bar dataKey="total" name="Total Ocorrências" fill="#800080" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="acidentes" name="Total de Acidentes" fill="#800080" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="mortos" name="Vítimas Fatais" fill="#dc2626" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Grid dos 4 Cards de Faixas no Formato Pop-up */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {FAIXAS_VEICULOS_DATA.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="group relative bg-black/60 p-5 rounded-xl border border-neutral-800 hover:border-purple-500 hover:bg-[#120a16] transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-950/40 cursor-pointer flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-mono text-purple-400 uppercase font-bold">{item.faixa}</span>
+                      <span className="text-xs px-2 py-0.5 rounded bg-red-950/80 text-red-300 border border-red-800/60 font-semibold">
+                        {item.taxa_mortalidade}% letal
+                      </span>
+                    </div>
+                    <div className="text-2xl font-black text-white mt-1">
+                      {item.acidentes.toLocaleString('pt-BR')}
+                    </div>
+                    <span className="text-xs text-neutral-400 block mt-0.5">
+                      {item.mortos.toLocaleString('pt-BR')} mortes registradas
+                    </span>
+                    <p className="text-xs text-neutral-300 mt-3 leading-relaxed text-justify">
+                      {item.perfil}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ========================================================= */}
+          {/* DASHBOARD 03: COMPARATIVO VEÍCULOS x ACIDENTES x MORTES   */}
+          {/* ========================================================= */}
+          <section className="bg-[#09090c] border border-neutral-800 p-6 sm:p-8 rounded-xl space-y-6">
+            <div>
+              <span className="text-xs font-mono text-purple-400 uppercase tracking-widest block">Dashboard 03</span>
+              <h3 className="text-xl font-bold text-white mt-1">
+                Volume Total: Veículos Atingidos vs. Acidentes vs. Fatalidades
+              </h3>
+            </div>
+
+            <div className="h-[420px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={CAUSAS_VEICULOS_DATA} layout="vertical" margin={{ top: 10, right: 30, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#1c1917" />
+                  <XAxis type="number" stroke="#a3a3a3" fontSize={11} />
+                  <YAxis dataKey="causa" type="category" stroke="#a3a3a3" fontSize={11} width={260} />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#0c0a09', borderColor: '#44403c', borderRadius: 8 }}
+                    formatter={(val) => val.toLocaleString('pt-BR')}
+                  />
+                  <Legend />
+                  <Bar dataKey="veiculos" name="Total de Veículos" fill="#800080" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="acidentes" name="Total de Acidentes" fill="#525252" radius={[0, 4, 4, 0]} />
                   <Bar dataKey="mortos" name="Vítimas Fatais" fill="#dc2626" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -919,103 +1079,6 @@ export default function App() {
               <div className="bg-purple-950/20 p-5 rounded-xl border border-purple-900/60 text-justify leading-relaxed shadow-[0_0_15px_rgba(128,0,128,0.1)]">
                 <span className="font-bold text-purple-300 block mb-1">Fim de Semana (Sexta a Domingo):</span>
                 Média de 62.800 acidentes e 5.780 mortes por dia. O domingo lidera com 6.582 vítimas fatais, comprovando o impacto de excesso de velocidade e álcool no retorno de viagens.
-              </div>
-            </div>
-          </section>
-
-          {/* ========================================================= */}
-          {/* DASHBOARD 03: CONEXÃO COM UF (DIA COM MAIS ACIDENTES)     */}
-          {/* ========================================================= */}
-          <section className="bg-[#09090c] border border-neutral-800 p-6 sm:p-8 rounded-xl space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-800 pb-4">
-              <div>
-                <span className="text-xs font-mono text-purple-400 uppercase tracking-widest block">Dashboard 03 • Conexão Territorial</span>
-                <h3 className="text-xl font-bold text-white mt-1">
-                  Em Qual Dia da Semana Cada Estado Tem Mais Acidentes?
-                </h3>
-              </div>
-
-              {/* Seletor de Estado */}
-              <div className="flex items-center gap-3">
-                <label htmlFor="uf-selector" className="text-xs font-mono text-neutral-400 whitespace-nowrap">
-                  Estado:
-                </label>
-                <select
-                  id="uf-selector"
-                  value={selectedUf}
-                  onChange={(e) => setSelectedUf(e.target.value)}
-                  className="bg-neutral-900 border border-purple-700 text-white text-xs font-bold rounded-lg px-3 py-2 outline-none focus:border-purple-400 cursor-pointer shadow-md"
-                >
-                  {Object.keys(ESTADOS_DIAS_DATA).map((uf) => (
-                    <option key={uf} value={uf}>
-                      {ESTADOS_DIAS_DATA[uf].nome} ({uf}) • {ESTADOS_DIAS_DATA[uf].total.toLocaleString('pt-BR')} acid.
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Card Pop-up Dinâmico do Estado Selecionado */}
-            {ESTADOS_DIAS_DATA[selectedUf] && (
-              <div className="group relative bg-[#0e0716] border border-purple-800/80 p-6 rounded-xl shadow-[0_0_25px_rgba(128,0,128,0.2)] transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950 border border-purple-700/60 text-purple-300 text-xs font-mono uppercase tracking-wider">
-                    <MapPin className="w-3.5 h-3.5 text-purple-400" />
-                    {ESTADOS_DIAS_DATA[selectedUf].nome} ({selectedUf})
-                  </div>
-                  <span className="text-xs text-neutral-400">
-                    Total no Estado: <strong className="text-white">{ESTADOS_DIAS_DATA[selectedUf].total.toLocaleString('pt-BR')}</strong> ocorrências
-                  </span>
-                </div>
-
-                <div className="text-base sm:text-lg text-neutral-200 leading-relaxed text-justify">
-                  O dia com maior quantidade de acidentes em <strong className="text-white">{ESTADOS_DIAS_DATA[selectedUf].nome}</strong> é o <strong className="text-purple-400 text-xl font-black">{ESTADOS_DIAS_DATA[selectedUf].pico_dia}</strong>, com um total de <strong className="text-white">{ESTADOS_DIAS_DATA[selectedUf].pico_qtd.toLocaleString('pt-BR')} colisões</strong> registradas pela PRF, representando <strong className="text-purple-300">{ESTADOS_DIAS_DATA[selectedUf].pico_pct}%</strong> de todos os acidentes do estado no período.
-                </div>
-              </div>
-            )}
-
-            {/* Gráfico Exclusivo do Estado Selecionado */}
-            {ESTADOS_DIAS_DATA[selectedUf] && (
-              <div className="h-80 w-full pt-2">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={ESTADOS_DIAS_DATA[selectedUf].distribuicao} margin={{ top: 20, right: 30, left: 10, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1c1917" />
-                    <XAxis dataKey="dia" stroke="#a3a3a3" fontSize={12} />
-                    <YAxis stroke="#a3a3a3" fontSize={12} />
-                    <Tooltip
-                      contentStyle={{ backgroundColor: '#0c0a09', borderColor: '#44403c', borderRadius: 8 }}
-                      formatter={(val) => [`${val.toLocaleString('pt-BR')} acidentes`, 'Volume']}
-                    />
-                    <Bar dataKey="acidentes" name={`Acidentes em ${selectedUf}`} fill="#800080" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            )}
-
-            {/* Atalhos Rápidos para os Principais Estados */}
-            <div className="pt-4 border-t border-neutral-800">
-              <span className="text-xs font-mono text-neutral-400 uppercase tracking-wider block mb-3">
-                Acesso Rápido aos Maiores Estados:
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {['MG', 'SC', 'PR', 'RJ', 'RS', 'SP', 'BA', 'GO', 'PE', 'ES'].map((uf) => {
-                  const info = ESTADOS_DIAS_DATA[uf];
-                  if (!info) return null;
-                  const isSelected = selectedUf === uf;
-                  return (
-                    <button
-                      key={uf}
-                      onClick={() => setSelectedUf(uf)}
-                      className={`px-3 py-2 rounded-lg border text-xs font-medium transition text-left ${
-                        isSelected
-                          ? 'bg-purple-950 border-purple-500 text-white shadow-[0_0_12px_rgba(128,0,128,0.4)]'
-                          : 'bg-black/40 border-neutral-800 text-neutral-300 hover:border-neutral-700 hover:text-white'
-                      }`}
-                    >
-                      <span className="font-bold">{uf}</span>: Pico no <span className="text-purple-400 font-semibold">{info.pico_dia}</span> ({info.pico_qtd.toLocaleString('pt-BR')})
-                    </button>
-                  );
-                })}
               </div>
             </div>
           </section>
