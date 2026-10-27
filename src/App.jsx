@@ -237,7 +237,7 @@ export default function App() {
               O quanto você sabe sobre os acidentes em rodovias brasileiras?
             </h1>
 
-            <p className="mt-6 text-base sm:text-lg text-neutral-400 max-w-3xl mx-auto font-normal leading-relaxed">
+            <p className="mt-6 text-lg sm:text-xl text-neutral-300 max-w-3xl mx-auto font-normal leading-relaxed text-justify">
               390.879 ocorrências registradas pela Polícia Rodoviária Federal. Mais de 32 mil mortes e 447 mil feridos. 
               Uma investigação sobre o perigo invisível que se esconde na transição da luz e nos momentos de aparente calma.
             </p>
@@ -364,7 +364,7 @@ export default function App() {
                   <h3 className="text-xl font-bold text-white group-hover:text-red-400 transition">
                     A Ilusão da Luz: Onde a Escuridão Multiplica as Mortes
                   </h3>
-                  <p className="text-xs sm:text-sm text-neutral-400 mt-2 leading-relaxed">
+                  <p className="text-sm sm:text-base text-neutral-300 mt-2 leading-relaxed text-justify">
                     Mais de 214 mil colisões acontecem sob sol aberto, gerando o maior número de feridos. Contudo, ao amanhecer e na plena noite, a probabilidade de falecer dobra.
                   </p>
                 </div>
@@ -389,7 +389,7 @@ export default function App() {
                   <h3 className="text-xl font-bold text-white group-hover:text-red-400 transition">
                     A Anatomia da Falha: O Comportamento do Condutor
                   </h3>
-                  <p className="text-xs sm:text-sm text-neutral-400 mt-2 leading-relaxed">
+                  <p className="text-sm sm:text-base text-neutral-300 mt-2 leading-relaxed text-justify">
                     Reação tardia, distração com dispositivos móveis, álcool e sono: a análise de como a atitude humana supera qualquer falha na pista.
                   </p>
                 </div>
@@ -414,7 +414,7 @@ export default function App() {
                   <h3 className="text-xl font-bold text-white group-hover:text-red-400 transition">
                     Linhas de Asfalto: Os Trechos Mais Perigosos do País
                   </h3>
-                  <p className="text-xs sm:text-sm text-neutral-400 mt-2 leading-relaxed">
+                  <p className="text-sm sm:text-base text-neutral-300 mt-2 leading-relaxed text-justify">
                     Minas Gerais, Paraná e Santa Catarina lideram os registros. Uma análise sobre o relevo, malha e densidade de carretas pesadas.
                   </p>
                 </div>
@@ -439,7 +439,7 @@ export default function App() {
                   <h3 className="text-xl font-bold text-white group-hover:text-red-400 transition">
                     A Marcha dos Anos: Estabilidade e Perdas Constantes
                   </h3>
-                  <p className="text-xs sm:text-sm text-neutral-400 mt-2 leading-relaxed">
+                  <p className="text-sm sm:text-base text-neutral-300 mt-2 leading-relaxed text-justify">
                     Acompanhamento histórico anual: as rodovias federais sustentam uma perda regular de mais de 5.400 vidas a cada ano.
                   </p>
                 </div>
@@ -475,35 +475,35 @@ export default function App() {
             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
               A Ilusão da Luz: O Contraste entre Volume e Letalidade
             </h1>
-            <p className="text-base text-neutral-300 max-w-4xl font-normal leading-relaxed">
-              O cruzamento dos dados revela dois fatos opostos: o <span className="text-amber-400 font-bold">Pleno dia</span> lidera o volume absoluto e a quantidade de feridos, impulsionado pelo fluxo massivo de veículos. 
+            <p className="text-base sm:text-lg text-neutral-200 max-w-4xl font-normal leading-relaxed text-justify">
+              O cruzamento dos dados revela dois fatos opostos: o <span className="text-amber-400 font-bold">Pleno dia</span> lidera o volume absoluto de ocorrências e a quantidade de feridos, impulsionado pelo fluxo massivo de veículos. 
               Em contrapartida, o <span className="text-red-500 font-bold">Amanhecer</span> registra o menor número de acidentes, mas detém a mais devastadora taxa de mortalidade e a maior proporção de mortes por ferido das rodovias brasileiras.
             </p>
           </header>
 
-          {/* Os Dois Cards Principais dos Insights a e b */}
+          {/* Os Dois Cards Principais dos Insights a e b com animação hover */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-[#0b0b0e] border-l-4 border-l-amber-500 border border-neutral-800 p-6 rounded-xl">
+            <div className="bg-[#0b0b0e] border-l-4 border-l-amber-500 border border-neutral-800 p-6 sm:p-7 rounded-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl hover:shadow-amber-950/30 cursor-pointer">
               <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider mb-2">
-                <Sun className="w-4 h-4" /> Insight A: O Volume Diurno
+                <Sun className="w-4 h-4" /> O Volume Diurno
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
                 Pleno Dia: 214.387 acidentes e 252.853 feridos
               </h3>
-              <p className="text-sm text-neutral-300 leading-relaxed">
+              <p className="text-base sm:text-lg text-neutral-200 leading-relaxed text-justify">
                 A taxa de feridos atinge <strong className="text-amber-400">117,94%</strong>, indicando que em média um único acidente causa mais de uma vítima ferida (aproximadamente <span className="text-white font-semibold">118 feridos a cada 100 acidentes</span>). 
                 Porém, a letalidade é a menor de todas: 6,04%.
               </p>
             </div>
 
-            <div className="bg-[#120505] border-l-4 border-l-red-600 border border-red-950 p-6 rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.1)]">
+            <div className="bg-[#120505] border-l-4 border-l-red-600 border border-red-950 p-6 sm:p-7 rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.1)] transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl hover:shadow-red-950/40 cursor-pointer">
               <div className="flex items-center gap-2 text-red-500 text-xs font-bold uppercase tracking-wider mb-2">
-                <Sunrise className="w-4 h-4" /> Insight B: A Gravidade do Amanhecer
+                <Sunrise className="w-4 h-4" /> A Gravidade do Amanhecer
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
                 Amanhecer: 19.001 acidentes e pico de 12,84% de mortalidade
               </h3>
-              <p className="text-sm text-neutral-300 leading-relaxed">
+              <p className="text-base sm:text-lg text-neutral-200 leading-relaxed text-justify">
                 Mesmo sendo o período com menor número de colisões, o amanhecer apresenta a maior proporção de mortes: <strong className="text-red-400">11,55 mortes a cada 100 feridos</strong>. 
                 A ausência de reação decorrente do microsono torna os impactos desproporcionalmente fatais.
               </p>
@@ -519,9 +519,6 @@ export default function App() {
               <h3 className="text-xl font-bold text-white mt-1">
                 Comparativo de Valores Absolutos por Fase do Dia
               </h3>
-              <p className="text-xs text-neutral-400 mt-1">
-                Visualização lado a lado: Total de Acidentes (Cinza), Total de Feridos (Âmbar) e Total de Mortos (Vermelho).
-              </p>
             </div>
 
             <div className="h-80 sm:h-96 w-full">
@@ -535,17 +532,17 @@ export default function App() {
                     formatter={(val) => val.toLocaleString('pt-BR')}
                   />
                   <Legend />
-                  <Bar dataKey="total_acidentes" name="Total de Acidentes" fill="#737373" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="total_acidentes" name="Total de Acidentes" fill="#fc4f4f" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="total_feridos" name="Total de Feridos" fill="#f59e0b" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="total_mortos" name="Total de Mortos" fill="#dc2626" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
-            <div className="bg-neutral-950/60 p-4 rounded-lg border border-neutral-800 text-xs text-neutral-300 flex items-start gap-2">
-              <Info className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
+            <div className="bg-neutral-950/80 p-5 rounded-xl border border-neutral-800 text-sm sm:text-base text-neutral-200 flex items-start gap-3 text-justify leading-relaxed">
+              <Info className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
               <span>
-                <strong>Destaque no Pleno Dia:</strong> Repare que a barra amarela de feridos (252.853) supera a barra cinza de acidentes (214.387), confirmando a taxa de 117,94% de feridos por acidente provocada por colisões múltiplas e engavetamentos em horários de pico.
+                <strong>Destaque no Pleno Dia:</strong> Repare que a barra amarela de feridos (252.853) supera a barra de acidentes (214.387), confirmando a taxa de 117,94% de feridos por acidente provocada por colisões múltiplas e engavetamentos em horários de pico.
               </span>
             </div>
           </section>
@@ -559,9 +556,6 @@ export default function App() {
               <h3 className="text-xl font-bold text-white mt-1">
                 Taxas Proporcionais: Mortalidade vs. Feridos (%)
               </h3>
-              <p className="text-xs text-neutral-400 mt-1">
-                Comparação percentual da severidade relativa em cada um dos 4 períodos.
-              </p>
             </div>
 
             <div className="h-80 sm:h-96 w-full">
@@ -608,7 +602,7 @@ export default function App() {
                   <span className="text-[11px] text-neutral-400 block mt-0.5">mortes p/ 100 feridos</span>
                 </div>
               </div>
-              <p className="text-xs text-neutral-400 leading-relaxed pt-2">
+              <p className="text-sm sm:text-base text-neutral-300 leading-relaxed pt-2 text-justify">
                 <strong>Leitura didática dos dados:</strong> Para cada 100 pessoas feridas em acidentes nas rodovias federais, morrem <strong>11,55 pessoas ao Amanhecer</strong> e <strong>10,59 na Plena Noite</strong>, mais que o dobro do registrado em <strong>Pleno Dia (5,12 mortes)</strong>.
               </p>
             </div>
@@ -623,9 +617,6 @@ export default function App() {
               <h3 className="text-xl font-bold text-white mt-1">
                 Razão Direta: Mortos por Ferido (razao_mortos_por_ferido)
               </h3>
-              <p className="text-xs text-neutral-400 mt-1">
-                Métrica pura de proporção fatal calculada pela consulta SQL (total_mortos / total_feridos).
-              </p>
             </div>
 
             <div className="h-80 w-full">
@@ -643,12 +634,12 @@ export default function App() {
               </ResponsiveContainer>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-neutral-300">
-              <div className="bg-black/50 p-4 rounded-lg border border-neutral-800">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-neutral-300">
+              <div className="bg-black/50 p-5 rounded-lg border border-neutral-800 text-justify leading-relaxed">
                 <span className="font-bold text-white block mb-1">Amanhecer (0,1155) e Plena Noite (0,1059):</span>
                 Nesses dois períodos, a razão supera 0,10, demonstrando que 1 a cada 9 ou 10 vítimas que sofrem lesões acaba vindo a óbito.
               </div>
-              <div className="bg-black/50 p-4 rounded-lg border border-neutral-800">
+              <div className="bg-black/50 p-5 rounded-lg border border-neutral-800 text-justify leading-relaxed">
                 <span className="font-bold text-white block mb-1">Pleno Dia (0,0512):</span>
                 A razão é de apenas 0,05, exigindo 20 pessoas feridas para registrar 1 fatalidade, consequência de velocidades mais baixas decorrentes do tráfego denso.
               </div>
@@ -677,7 +668,7 @@ export default function App() {
             <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight">
               A Anatomia da Falha: O Fator Humano como Causa Suprema
             </h1>
-            <p className="text-base text-neutral-300 max-w-4xl font-normal leading-relaxed">
+            <p className="text-base sm:text-lg text-neutral-200 max-w-4xl font-normal leading-relaxed text-justify">
               Mais de 70% das fatalidades decorrem de decisões e comportamentos do condutor: reação tardia, excesso de velocidade, sonolência e álcool.
             </p>
           </header>
@@ -696,7 +687,7 @@ export default function App() {
                     contentStyle={{ backgroundColor: '#0c0a09', borderColor: '#44403c', borderRadius: 8 }}
                   />
                   <Legend />
-                  <Bar dataKey="total" name="Total Ocorrências" fill="#525252" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="total" name="Total Ocorrências" fill="#fc4f4f" radius={[0, 4, 4, 0]} />
                   <Bar dataKey="mortos" name="Vítimas Fatais" fill="#dc2626" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -725,7 +716,7 @@ export default function App() {
             <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight">
               Linhas de Asfalto: Concentração Regional dos Sinistros
             </h1>
-            <p className="text-base text-neutral-300 max-w-4xl font-normal leading-relaxed">
+            <p className="text-base sm:text-lg text-neutral-200 max-w-4xl font-normal leading-relaxed text-justify">
               Minas Gerais lidera isoladamente as estatísticas de acidentes e mortes, impulsionada pela maior malha rodoviária federal do país e relevo sinuoso com pistas simples em eixos como a BR-381 e BR-040.
             </p>
           </header>
@@ -743,7 +734,7 @@ export default function App() {
                   <Tooltip
                     contentStyle={{ backgroundColor: '#0c0a09', borderColor: '#44403c', borderRadius: 8 }}
                   />
-                  <Bar dataKey="acidentes" name="Acidentes Totais" fill="#525252" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="acidentes" name="Acidentes Totais" fill="#fc4f4f" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="mortos" name="Vítimas Fatais" fill="#dc2626" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -772,7 +763,7 @@ export default function App() {
             <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight">
               A Marcha dos Anos: Estabilidade e Perdas Constantes
             </h1>
-            <p className="text-base text-neutral-300 max-w-4xl font-normal leading-relaxed">
+            <p className="text-base sm:text-lg text-neutral-200 max-w-4xl font-normal leading-relaxed text-justify">
               O comportamento das ocorrências ao longo dos últimos 5 anos comprova uma perda persistente acima de 5.400 vidas por ano nas rodovias federais.
             </p>
           </header>
@@ -791,7 +782,7 @@ export default function App() {
                     contentStyle={{ backgroundColor: '#0c0a09', borderColor: '#44403c', borderRadius: 8 }}
                   />
                   <Legend />
-                  <Line type="monotone" dataKey="acidentes" name="Ocorrências" stroke="#737373" strokeWidth={2} />
+                  <Line type="monotone" dataKey="acidentes" name="Ocorrências" stroke="#fc4f4f" strokeWidth={2} />
                   <Line type="monotone" dataKey="mortos" name="Vítimas Fatais" stroke="#dc2626" strokeWidth={3} />
                 </LineChart>
               </ResponsiveContainer>
