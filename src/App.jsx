@@ -1432,18 +1432,18 @@ export default function App() {
                   </h4>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <label htmlFor="select-clima-ficha" className="text-xs text-stone-400 font-semibold uppercase tracking-wider whitespace-nowrap">
+                  <label htmlFor="select-clima-ficha" className="text-xs text-stone-300 font-semibold uppercase tracking-wider whitespace-nowrap">
                     Alternar condição:
                   </label>
                   <select
                     id="select-clima-ficha"
                     value={selectedClima}
                     onChange={(e) => setSelectedClima(e.target.value)}
-                    className="px-3.5 py-1.5 rounded-lg border border-stone-700 bg-stone-900 text-xs sm:text-sm font-bold text-white focus:outline-none focus:border-red-500 cursor-pointer"
+                    className="px-3.5 py-1.5 rounded-lg border-2 border-stone-300 bg-[#faf8f5] hover:bg-white text-xs sm:text-sm font-bold text-stone-950 shadow-sm focus:outline-none focus:border-red-500 cursor-pointer transition"
                   >
                     {CLIMA_VITIMAS_DATA.map((item) => (
-                      <option key={item.condicao} value={item.condicao}>
-                        {item.condicao} — {item.acidentes.toLocaleString('pt-BR')} ocorrências
+                      <option key={item.condicao} value={item.condicao} className="bg-white text-stone-950">
+                        {item.condicao} ({item.acidentes.toLocaleString('pt-BR')} ocorrências)
                       </option>
                     ))}
                   </select>
@@ -1491,18 +1491,11 @@ export default function App() {
                 onClick={() => setShowFullClimaGrid((prev) => !prev)}
                 className="w-full flex items-center justify-between gap-4 bg-[#ebe6dc] hover:bg-[#e2dbcd] border border-stone-400 rounded-xl px-5 py-4 text-left transition shadow-sm"
               >
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800 block">
-                    PAINEL COMPARATIVO COMPLETO • 10 CONDIÇÕES METEOROLÓGICAS
-                  </span>
-                  <span className="text-base sm:text-lg font-bold text-stone-950 block mt-0.5">
-                    {showFullClimaGrid
-                      ? 'Ocultar o painel comparativo completo dos gráficos de pizza para cada condição climática'
-                      : 'Veja o painel comparativo completo dos gráficos de pizza para cada condição climática'}
-                  </span>
-                </div>
+                <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-red-800">
+                  PAINEL COMPARATIVO COMPLETO • 10 CONDIÇÕES METEOROLÓGICAS
+                </span>
                 <ChevronDown
-                  className={`w-5 h-5 text-stone-900 transition-transform duration-200 shrink-0 ${
+                  className={`w-5 h-5 text-red-800 transition-transform duration-200 shrink-0 ${
                     showFullClimaGrid ? 'rotate-180' : ''
                   }`}
                 />
@@ -1638,7 +1631,7 @@ export default function App() {
                 </p>
               </div>
 
-              {/* Direita: Letalidade (#dc2626 Vermelho) e Média de Veículos por Tipo (#0d9488 Verde-petróleo) */}
+              {/* Direita: Letalidade (#dc2626 Vermelho) e Média de Veículos por Tipo (#0284c7 Azul-ciano) */}
               <div className="lg:col-span-6 lg:pl-8 mt-8 lg:mt-0 flex flex-col justify-between">
                 <div className="mb-3">
                   <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
@@ -1671,7 +1664,7 @@ export default function App() {
                         type="number"
                         orientation="top"
                         domain={[0, 5]}
-                        tick={{ fill: '#0d9488', fontSize: 11, fontWeight: 600 }}
+                        tick={{ fill: '#0284c7', fontSize: 11, fontWeight: 600 }}
                       />
                       <YAxis
                         dataKey="tipo_acidente"
@@ -1699,7 +1692,7 @@ export default function App() {
                         xAxisId="media"
                         dataKey="media_veiculos"
                         name="Média de Veículos por Acidente (escala superior)"
-                        fill="#0d9488"
+                        fill="#0284c7"
                         barSize={15}
                         radius={[0, 4, 4, 0]}
                       />
@@ -2043,31 +2036,31 @@ export default function App() {
       </main>
 
       {/* =====================================================================
-          BARRA SUTIL DE CONTATOS DE EMERGÊNCIA NAS RODOVIAS (RODAPÉ EDITORIAL)
+          BARRA SUTIL DE CONTATOS DE EMERGÊNCIA NAS RODOVIAS (RODAPÉ EDITORIAL EM PRETO)
          ===================================================================== */}
-      <footer className="border-t border-stone-300 bg-[#ebe6dc] py-5 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-700">
-          <span className="uppercase tracking-wider text-stone-600 font-semibold">
+      <footer className="border-t border-stone-800 bg-[#09090b] py-6 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-300">
+          <span className="uppercase tracking-wider text-stone-400 font-semibold">
             Emergência nas Rodovias:
           </span>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            <a href="tel:191" className="hover:text-stone-950 transition">
-              <strong className="text-red-800 font-bold mr-1.5">191</strong>
+            <a href="tel:191" className="hover:text-white transition">
+              <strong className="text-red-500 font-bold mr-1.5">191</strong>
               <span>Polícia Rodoviária Federal (PRF)</span>
             </a>
-            <span className="text-stone-400 hidden sm:inline">|</span>
-            <a href="tel:192" className="hover:text-stone-950 transition">
-              <strong className="text-red-800 font-bold mr-1.5">192</strong>
+            <span className="text-stone-700 hidden sm:inline">|</span>
+            <a href="tel:192" className="hover:text-white transition">
+              <strong className="text-red-500 font-bold mr-1.5">192</strong>
               <span>SAMU</span>
             </a>
-            <span className="text-stone-400 hidden sm:inline">|</span>
-            <a href="tel:193" className="hover:text-stone-950 transition">
-              <strong className="text-red-800 font-bold mr-1.5">193</strong>
+            <span className="text-stone-700 hidden sm:inline">|</span>
+            <a href="tel:193" className="hover:text-white transition">
+              <strong className="text-red-500 font-bold mr-1.5">193</strong>
               <span>Corpo de Bombeiros</span>
             </a>
-            <span className="text-stone-400 hidden sm:inline">|</span>
-            <a href="tel:166" className="hover:text-stone-950 transition">
-              <strong className="text-stone-900 font-bold mr-1.5">166</strong>
+            <span className="text-stone-700 hidden sm:inline">|</span>
+            <a href="tel:166" className="hover:text-white transition">
+              <strong className="text-white font-bold mr-1.5">166</strong>
               <span>ANTT</span>
             </a>
           </div>
