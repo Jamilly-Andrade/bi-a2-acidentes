@@ -582,6 +582,7 @@ export default function App() {
 
   // Clima selecionado para inspeção detalhada + grade completa de pizzas
   const [selectedClima, setSelectedClima] = useState('Céu Claro');
+  const [showFullClimaGrid, setShowFullClimaGrid] = useState(false);
 
   // Quiz interativo na capa escura
   const [showQuiz, setShowQuiz] = useState(false);
@@ -952,7 +953,7 @@ export default function App() {
             <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-stretch">
               {/* Esquerda: Mapa de Calor do Brasil */}
               <div className="lg:col-span-6 lg:pr-8 flex flex-col justify-between">
-                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <div className="mb-3">
                   <div>
                     <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
                       CARTOGRAFIA INTERATIVA • 27 UNIDADES DA FEDERAÇÃO
@@ -961,10 +962,24 @@ export default function App() {
                       Mapa de calor da malha rodoviária federal
                     </h3>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-stone-600 font-medium">
-                    <span className="inline-block w-2.5 h-2.5 bg-[#e9d5ff] border border-stone-400"></span> Menor
-                    <span className="inline-block w-2.5 h-2.5 bg-[#9333ea]"></span> Médio
-                    <span className="inline-block w-2.5 h-2.5 bg-[#4a044e]"></span> Maior
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-stone-700 font-medium mt-2.5 bg-[#ebe6dc]/80 px-3 py-2 rounded-lg border border-stone-300">
+                    <span className="font-bold text-stone-900">Volume de acidentes na UF:</span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="inline-block w-3 h-3 rounded-sm bg-[#e9d5ff] border border-stone-400"></span>
+                      Menor (&lt; 8 mil)
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="inline-block w-3 h-3 rounded-sm bg-[#9333ea]"></span>
+                      Médio (8 mil a 25 mil)
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="inline-block w-3 h-3 rounded-sm bg-[#4a044e]"></span>
+                      Maior (&gt; 25 mil)
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="inline-block w-3 h-3 rounded-sm bg-[#dc2626]"></span>
+                      UF selecionada
+                    </span>
                   </div>
                 </div>
 
@@ -1141,7 +1156,7 @@ export default function App() {
                       Liderança por Volume, Mortes ou Letalidade (%)
                     </h3>
                   </div>
-                  <div className="flex items-center gap-1 bg-[#ebe6dc] p-1 rounded-lg border border-stone-300">
+                  <div className="flex items-center gap-1 bg-[#ebe6dc] p-1 rounded-lg border border-stone-300 shrink-0">
                     {[
                       { key: 'acidentes', label: 'Acidentes' },
                       { key: 'mortos', label: 'Mortos' },
@@ -1150,7 +1165,7 @@ export default function App() {
                       <button
                         key={opt.key}
                         onClick={() => setUfSortBy(opt.key)}
-                        className={`px-2.5 py-1 rounded text-xs font-semibold transition ${
+                        className={`px-3 py-1 rounded text-xs font-semibold whitespace-nowrap transition ${
                           ufSortBy === opt.key
                             ? 'bg-stone-900 text-white'
                             : 'text-stone-700 hover:text-stone-950'
@@ -1188,7 +1203,7 @@ export default function App() {
                             ? 'Vítimas Fatais'
                             : 'Letalidade (%)'
                         }
-                        fill={ufSortBy === 'mortos' ? '#dc2626' : ufSortBy === 'letalidade' ? '#d97706' : '#6b21a8'}
+                        fill={ufSortBy === 'mortos' || ufSortBy === 'letalidade' ? '#dc2626' : '#6b21a8'}
                         barSize={28}
                         radius={[4, 4, 0, 0]}
                         onClick={(data) => {
@@ -1278,18 +1293,18 @@ export default function App() {
         )}
 
         {/* =====================================================================
-            CADERNO 01: 1. CLIMA E VÍTIMAS
+            ANÁLISE METEOROLÓGICA: CLIMA E VÍTIMAS
             - Linha 1 (2 Colunas 50%/50% alinhadas com o topo): Pizza da Condição | Severidade Climática (% Mortos e Feridos Graves)
-            - Linha 2 (Largura total abaixo deles): Ficha da Condição Meteorológica (em preto)
-            - Linha 3: Grade Completa das 10 Condições Meteorológicas
+            - Linha 2 (Largura total abaixo deles): Ficha da Condição Meteorológica (em preto com seletor limpo)
+            - Linha 3: Painel Comparativo Completo (escondido em botão expansível com linhas sutis e legendas separadas)
            ===================================================================== */}
         {selectedAnalysis === 'clima' && (
           <div className="space-y-10">
             {/* LINHA 1 (2 Colunas 50%/50% simétricas à divisão do topo) */}
             <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-stretch">
-              {/* Esquerda: Pizza da Condição Selecionada */}
+              {/* Esquerda: Pizza da Condição Selecionada com Seletor Dropdown Limpo */}
               <div className="lg:col-span-6 lg:pr-8 flex flex-col justify-between">
-                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
                   <div>
                     <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
                       DIVISÃO DE VÍTIMAS • {activeClimaObj.condicao.toUpperCase()}
@@ -1298,6 +1313,17 @@ export default function App() {
                       Proporção de Ilesos, Feridos e Mortos na Condição
                     </h3>
                   </div>
+                  <select
+                    value={selectedClima}
+                    onChange={(e) => setSelectedClima(e.target.value)}
+                    className="px-3 py-1.5 rounded-lg border border-stone-400 bg-[#faf8f5] text-xs font-bold text-stone-900 focus:outline-none focus:border-red-700"
+                  >
+                    {CLIMA_VITIMAS_DATA.map((item) => (
+                      <option key={item.condicao} value={item.condicao}>
+                        {item.condicao} ({item.acidentes.toLocaleString('pt-BR')} acid.)
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="h-80 w-full my-auto">
@@ -1330,11 +1356,11 @@ export default function App() {
                 </div>
 
                 <p className="text-sm sm:text-base text-stone-700 leading-relaxed mt-3">
-                  Selecione outra condição climática na ficha abaixo para alternar o detalhamento acima.
+                  Use o seletor acima ou na ficha meteorológica abaixo para inspecionar qualquer uma das 10 condições climáticas.
                 </p>
               </div>
 
-              {/* Direita: Gráfico de Severidade Climática (% de Mortos e % de Feridos Graves citados na notícia) */}
+              {/* Direita: Gráfico de Severidade Climática (% de Mortos em vermelho e % de Feridos Graves em azul forte) */}
               <div className="lg:col-span-6 lg:pl-8 mt-8 lg:mt-0 flex flex-col justify-between">
                 <div className="mb-3">
                   <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
@@ -1354,15 +1380,35 @@ export default function App() {
                       barGap={4}
                     >
                       <CartesianGrid strokeDasharray="3 3" stroke="#d6d3d1" />
-                      <XAxis dataKey="condicao" tick={{ fill: '#1c1917', fontSize: 11, fontWeight: 700 }} />
+                      <XAxis dataKey="condicao" interval={0} tick={{ fill: '#1c1917', fontSize: 10.5, fontWeight: 700 }} />
                       <YAxis tick={{ fill: '#57534e', fontSize: 11 }} unit="%" />
                       <Tooltip
                         contentStyle={{ backgroundColor: '#ffffff', borderColor: '#d6d3d1', fontSize: '12px' }}
                         formatter={(val, name) => [`${val}%`, name]}
                       />
                       <Legend wrapperStyle={{ fontSize: '12px' }} />
-                      <Bar dataKey="pct_feridos_graves" name="% Feridos Graves" fill="#ea580c" barSize={20} radius={[4, 4, 0, 0]} />
-                      <Bar dataKey="pct_mortos" name="% Vítimas Fatais" fill="#dc2626" barSize={20} radius={[4, 4, 0, 0]} />
+                      <Bar
+                        dataKey="pct_feridos_graves"
+                        name="% Feridos Graves"
+                        fill="#2563eb"
+                        barSize={20}
+                        radius={[4, 4, 0, 0]}
+                        onClick={(data) => {
+                          if (data && data.condicao) setSelectedClima(data.condicao);
+                        }}
+                        className="cursor-pointer"
+                      />
+                      <Bar
+                        dataKey="pct_mortos"
+                        name="% Vítimas Fatais"
+                        fill="#dc2626"
+                        barSize={20}
+                        radius={[4, 4, 0, 0]}
+                        onClick={(data) => {
+                          if (data && data.condicao) setSelectedClima(data.condicao);
+                        }}
+                        className="cursor-pointer"
+                      />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -1373,9 +1419,9 @@ export default function App() {
               </div>
             </div>
 
-            {/* LINHA 2: Ficha Meteorológica em preto seguindo o padrão do Insight da Notícia */}
+            {/* LINHA 2: Ficha Meteorológica em preto com seletor integrado e limpo (no mesmo padrão da Ficha Estadual) */}
             <div className="bg-[#111113] text-stone-100 py-6 px-6 rounded-xl border border-stone-800 border-l-4 border-l-red-600 shadow-sm">
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-4 border-b border-stone-800">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 border-b border-stone-800">
                 <div className="flex flex-wrap items-center gap-2.5">
                   <span className="text-xs font-semibold uppercase tracking-wider text-red-400">
                     FICHA METEOROLÓGICA
@@ -1385,20 +1431,22 @@ export default function App() {
                     {activeClimaObj.condicao} ({activeClimaObj.acidentes.toLocaleString('pt-BR')} acidentes)
                   </h4>
                 </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {CLIMA_VITIMAS_DATA.map((item) => (
-                    <button
-                      key={item.condicao}
-                      onClick={() => setSelectedClima(item.condicao)}
-                      className={`px-2.5 py-1 rounded text-xs font-semibold transition ${
-                        selectedClima === item.condicao
-                          ? 'bg-red-600 text-white'
-                          : 'bg-stone-900 text-stone-300 border border-stone-700 hover:border-stone-500 hover:text-white'
-                      }`}
-                    >
-                      {item.condicao}
-                    </button>
-                  ))}
+                <div className="flex items-center gap-2.5">
+                  <label htmlFor="select-clima-ficha" className="text-xs text-stone-400 font-semibold uppercase tracking-wider whitespace-nowrap">
+                    Alternar condição:
+                  </label>
+                  <select
+                    id="select-clima-ficha"
+                    value={selectedClima}
+                    onChange={(e) => setSelectedClima(e.target.value)}
+                    className="px-3.5 py-1.5 rounded-lg border border-stone-700 bg-stone-900 text-xs sm:text-sm font-bold text-white focus:outline-none focus:border-red-500 cursor-pointer"
+                  >
+                    {CLIMA_VITIMAS_DATA.map((item) => (
+                      <option key={item.condicao} value={item.condicao}>
+                        {item.condicao} — {item.acidentes.toLocaleString('pt-BR')} ocorrências
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
@@ -1416,13 +1464,13 @@ export default function App() {
                   </p>
                 </div>
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-400 block">Feridos Leves ({activeClimaObj.pct_feridos_leves}%)</span>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-amber-400 block">Feridos Leves ({activeClimaObj.pct_feridos_leves}%)</span>
                   <p className="text-2xl font-extrabold text-white mt-1">
                     {activeClimaObj.feridos_leves.toLocaleString('pt-BR')}
                   </p>
                 </div>
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-400 block">Feridos Graves ({activeClimaObj.pct_feridos_graves}%)</span>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-blue-400 block">Feridos Graves ({activeClimaObj.pct_feridos_graves}%)</span>
                   <p className="text-2xl font-extrabold text-white mt-1">
                     {activeClimaObj.feridos_graves.toLocaleString('pt-BR')}
                   </p>
@@ -1436,83 +1484,108 @@ export default function App() {
               </div>
             </div>
 
-            {/* LINHA 3: Grade Completa das 10 Condições Meteorológicas */}
-            <div className="border-t border-stone-300 pt-8">
-              <div className="mb-6">
-                <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
-                  PAINEL COMPARATIVO COMPLETO • 10 CONDIÇÕES METEOROLÓGICAS
-                </span>
-                <h3 className="text-xl sm:text-2xl font-bold text-stone-950 mt-0.5">
-                  Gráficos de pizza de vítimas para cada condição climática da base
-                </h3>
-              </div>
+            {/* LINHA 3: Botão Expansível para o Painel Comparativo Completo das 10 Condições Meteorológicas */}
+            <div className="border-t border-stone-300 pt-6">
+              <button
+                type="button"
+                onClick={() => setShowFullClimaGrid((prev) => !prev)}
+                className="w-full flex items-center justify-between gap-4 bg-[#ebe6dc] hover:bg-[#e2dbcd] border border-stone-400 rounded-xl px-5 py-4 text-left transition shadow-sm"
+              >
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800 block">
+                    PAINEL COMPARATIVO COMPLETO • 10 CONDIÇÕES METEOROLÓGICAS
+                  </span>
+                  <span className="text-base sm:text-lg font-bold text-stone-950 block mt-0.5">
+                    {showFullClimaGrid
+                      ? 'Ocultar o painel comparativo completo dos gráficos de pizza para cada condição climática'
+                      : 'Veja o painel comparativo completo dos gráficos de pizza para cada condição climática'}
+                  </span>
+                </div>
+                <ChevronDown
+                  className={`w-5 h-5 text-stone-900 transition-transform duration-200 shrink-0 ${
+                    showFullClimaGrid ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
-                {CLIMA_VITIMAS_DATA.map((item) => (
-                  <div
-                    key={item.condicao}
-                    onClick={() => setSelectedClima(item.condicao)}
-                    className="pb-5 border-b border-stone-300 transition cursor-pointer hover:opacity-100"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div>
-                        <h4 className="text-base font-bold text-stone-950">{item.condicao}</h4>
-                        <span className="text-xs text-stone-500">
-                          {item.acidentes.toLocaleString('pt-BR')} acidentes
+              {showFullClimaGrid && (
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {CLIMA_VITIMAS_DATA.map((item) => (
+                    <div
+                      key={item.condicao}
+                      onClick={() => setSelectedClima(item.condicao)}
+                      className={`p-5 rounded-xl border transition cursor-pointer ${
+                        selectedClima === item.condicao
+                          ? 'border-red-600 bg-[#faf8f5] shadow-sm'
+                          : 'border-stone-300 bg-[#faf8f5]/70 hover:border-stone-400'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between pb-3 mb-2 border-b border-stone-200">
+                        <div>
+                          <h4 className="text-base font-bold text-stone-950">{item.condicao}</h4>
+                          <span className="text-xs text-stone-600">
+                            {item.acidentes.toLocaleString('pt-BR')} acidentes
+                          </span>
+                        </div>
+                        <span className="text-xs font-semibold text-red-800 bg-red-50 px-2 py-1 rounded border border-red-200">
+                          Mortos: {item.mortos.toLocaleString('pt-BR')} ({item.pct_mortos}%)
                         </span>
                       </div>
-                      <span className="text-xs font-semibold text-red-800">
-                        Mortos: {item.mortos.toLocaleString('pt-BR')} ({item.pct_mortos}%)
-                      </span>
-                    </div>
 
-                    <div className="h-44 w-full">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={item.fatias}
-                            dataKey="value"
-                            nameKey="name"
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={34}
-                            outerRadius={64}
-                            paddingAngle={1.5}
+                      <div className="h-44 w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={item.fatias}
+                              dataKey="value"
+                              nameKey="name"
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={34}
+                              outerRadius={64}
+                              paddingAngle={1.5}
+                            >
+                              {item.fatias.map((entry, idx) => (
+                                <Cell key={idx} fill={entry.color} />
+                              ))}
+                            </Pie>
+                            <Tooltip
+                              formatter={(val, name) => [
+                                `${val.toLocaleString('pt-BR')} pessoas`,
+                                name
+                              ]}
+                            />
+                          </PieChart>
+                        </ResponsiveContainer>
+                      </div>
+
+                      {/* Legendas separadas em caixas individuais para que o número fique colado à sua própria variável */}
+                      <div className="grid grid-cols-2 gap-2.5 mt-3 pt-3 border-t border-stone-200 text-xs">
+                        {item.fatias.map((f) => (
+                          <div
+                            key={f.name}
+                            className="bg-[#ebe6dc]/70 border border-stone-300/80 rounded-md px-2.5 py-1.5 flex items-center justify-between gap-1.5"
                           >
-                            {item.fatias.map((entry, idx) => (
-                              <Cell key={idx} fill={entry.color} />
-                            ))}
-                          </Pie>
-                          <Tooltip
-                            formatter={(val, name) => [
-                              `${val.toLocaleString('pt-BR')} pessoas`,
-                              name
-                            ]}
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
+                            <span className="inline-flex items-center gap-1.5 text-stone-700 font-medium truncate">
+                              <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: f.color }}></span>
+                              <span className="truncate">{f.name}:</span>
+                            </span>
+                            <strong className="text-stone-950 font-bold shrink-0">
+                              {f.value.toLocaleString('pt-BR')}
+                            </strong>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-1.5 mt-2 text-xs">
-                      {item.fatias.map((f) => (
-                        <div key={f.name} className="flex items-center justify-between text-stone-700">
-                          <span className="flex items-center gap-1.5 truncate">
-                            <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: f.color }}></span>
-                            {f.name}:
-                          </span>
-                          <strong className="text-stone-950">{f.value.toLocaleString('pt-BR')}</strong>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}
 
         {/* =====================================================================
-            CADERNO 02: 2. CAUSAS, VEÍCULOS E PESSOAS
+            DINÂMICA DOS SINISTROS: CAUSAS, VEÍCULOS E PESSOAS
             - Linha 1 (2 Colunas 50%/50% alinhadas com o topo): Tipo x Veículos | Letalidade e Média de Veículos por Tipo
             - Linha 2 (Largura total abaixo deles): Ficha Técnica em preto seguindo o padrão do Insight
             - Linha 3 (2 Colunas 50%/50% alinhadas): Scatter Plot de Pessoas | Matriz Pictográfica de Pessoas
@@ -1521,11 +1594,11 @@ export default function App() {
           <div className="space-y-10">
             {/* LINHA 1 (2 Colunas 50%/50% simétricas à divisão do topo) */}
             <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-stretch">
-              {/* Esquerda: Tipo de Acidente x Total de Veículos com barras maiores */}
+              {/* Esquerda: Tipo de Acidente x Total de Veículos (Teal #0d9488 para Veículos e Roxo #6b21a8 para Acidentes) */}
               <div className="lg:col-span-6 lg:pr-8 flex flex-col justify-between">
                 <div className="mb-3">
                   <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
-                    1. TIPOLOGIA DO SINISTRO X FROTA ATINGIDA
+                    TIPOLOGIA DO SINISTRO X FROTA ATINGIDA
                   </span>
                   <h3 className="text-xl font-bold text-stone-950 mt-0.5">
                     Tipo de Acidente por Total de Veículos e Ocorrências
@@ -1554,8 +1627,8 @@ export default function App() {
                         formatter={(val, name) => [val.toLocaleString('pt-BR'), name]}
                       />
                       <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '8px' }} />
-                      <Bar dataKey="veiculos" name="Total de Veículos" fill="#6b21a8" barSize={15} radius={[0, 4, 4, 0]} />
-                      <Bar dataKey="acidentes" name="Total de Acidentes" fill="#78716c" barSize={15} radius={[0, 4, 4, 0]} />
+                      <Bar dataKey="veiculos" name="Total de Veículos" fill="#0d9488" barSize={15} radius={[0, 4, 4, 0]} />
+                      <Bar dataKey="acidentes" name="Total de Acidentes" fill="#6b21a8" barSize={15} radius={[0, 4, 4, 0]} />
                     </ComposedChart>
                   </ResponsiveContainer>
                 </div>
@@ -1565,7 +1638,7 @@ export default function App() {
                 </p>
               </div>
 
-              {/* Direita: Letalidade (Mortos a cada 100 acidentes) e Média de Veículos por Tipo com barras maiores e eixos duplos */}
+              {/* Direita: Letalidade (#dc2626 Vermelho) e Média de Veículos por Tipo (#0d9488 Verde-petróleo) */}
               <div className="lg:col-span-6 lg:pl-8 mt-8 lg:mt-0 flex flex-col justify-between">
                 <div className="mb-3">
                   <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
@@ -1598,7 +1671,7 @@ export default function App() {
                         type="number"
                         orientation="top"
                         domain={[0, 5]}
-                        tick={{ fill: '#d97706', fontSize: 11, fontWeight: 600 }}
+                        tick={{ fill: '#0d9488', fontSize: 11, fontWeight: 600 }}
                       />
                       <YAxis
                         dataKey="tipo_acidente"
@@ -1626,7 +1699,7 @@ export default function App() {
                         xAxisId="media"
                         dataKey="media_veiculos"
                         name="Média de Veículos por Acidente (escala superior)"
-                        fill="#d97706"
+                        fill="#0d9488"
                         barSize={15}
                         radius={[0, 4, 4, 0]}
                       />
@@ -1689,7 +1762,7 @@ export default function App() {
                 <div className="flex items-center justify-between mb-3">
                   <div>
                     <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
-                      2. DISPERSÃO DE CAUSAS X PESSOAS ENVOLVIDAS
+                      DISPERSÃO DE CAUSAS X PESSOAS ENVOLVIDAS
                     </span>
                     <h3 className="text-xl font-bold text-stone-950 mt-0.5">
                       Ocorrências (X) vs. Total de Pessoas (Y)
@@ -1796,8 +1869,8 @@ export default function App() {
         )}
 
         {/* =====================================================================
-            CADERNO 03: 3. OCORRÊNCIAS, FERIDOS E MORTES
-            (Mantido no layout que a usuária elogiou, com subtítulos de gráficos em fonte maior)
+            SÉRIE HISTÓRICA E TURNOS: OCORRÊNCIAS, FERIDOS E MORTES
+            (Cores 100% coerentes: #6b21a8 para Ocorrências, #eab308 para Feridos, #dc2626 para Mortos, #2563eb para Mortos/100 feridos)
            ===================================================================== */}
         {selectedAnalysis === 'ocorrencias_mortes' && (
           <div className="space-y-12">
@@ -1826,7 +1899,7 @@ export default function App() {
                       />
                       <Legend wrapperStyle={{ fontSize: '12px' }} />
                       <Bar yAxisId="left" dataKey="acidentes" name="Ocorrências" fill="#6b21a8" radius={[3, 3, 0, 0]} />
-                      <Bar yAxisId="left" dataKey="feridos" name="Pessoas Feridas" fill="#d97706" radius={[3, 3, 0, 0]} />
+                      <Bar yAxisId="left" dataKey="feridos" name="Pessoas Feridas" fill="#eab308" radius={[3, 3, 0, 0]} />
                       <Line yAxisId="right" type="monotone" dataKey="mortos" name="Vítimas Fatais" stroke="#dc2626" strokeWidth={3} dot={{ r: 4 }} />
                     </ComposedChart>
                   </ResponsiveContainer>
@@ -1855,7 +1928,7 @@ export default function App() {
                         formatter={(val, name) => [val.toLocaleString('pt-BR'), name]}
                       />
                       <Legend wrapperStyle={{ fontSize: '12px' }} />
-                      <Bar yAxisId="left" dataKey="acidentes" name="Ocorrências" fill="#9333ea" radius={[3, 3, 0, 0]} />
+                      <Bar yAxisId="left" dataKey="acidentes" name="Ocorrências" fill="#6b21a8" radius={[3, 3, 0, 0]} />
                       <Line yAxisId="right" type="monotone" dataKey="mortos" name="Mortes" stroke="#dc2626" strokeWidth={3} dot={{ r: 4 }} />
                     </ComposedChart>
                   </ResponsiveContainer>
@@ -1906,7 +1979,7 @@ export default function App() {
                       </div>
                       <div className="pt-2 border-t border-stone-800 flex justify-between">
                         <span className="text-stone-400">Mortos / 100 feridos:</span>
-                        <strong className="text-amber-400">{item.mortos_por_100_feridos}</strong>
+                        <strong className="text-blue-400">{item.mortos_por_100_feridos}</strong>
                       </div>
                     </div>
                   </div>
@@ -1933,7 +2006,7 @@ export default function App() {
                         />
                         <Legend wrapperStyle={{ fontSize: '12px' }} />
                         <Bar dataKey="acidentes" name="Ocorrências" fill="#6b21a8" radius={[3, 3, 0, 0]} />
-                        <Bar dataKey="feridos" name="Feridos" fill="#d97706" radius={[3, 3, 0, 0]} />
+                        <Bar dataKey="feridos" name="Feridos" fill="#eab308" radius={[3, 3, 0, 0]} />
                         <Bar dataKey="mortos" name="Mortos" fill="#dc2626" radius={[3, 3, 0, 0]} />
                       </BarChart>
                     </ResponsiveContainer>
@@ -1958,7 +2031,7 @@ export default function App() {
                         />
                         <Legend wrapperStyle={{ fontSize: '12px' }} />
                         <Bar dataKey="taxa_mortalidade" name="Mortos a cada 100 acidentes (%)" fill="#dc2626" radius={[3, 3, 0, 0]} />
-                        <Bar dataKey="mortos_por_100_feridos" name="Mortos a cada 100 feridos" fill="#6b21a8" radius={[3, 3, 0, 0]} />
+                        <Bar dataKey="mortos_por_100_feridos" name="Mortos a cada 100 feridos" fill="#2563eb" radius={[3, 3, 0, 0]} />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>

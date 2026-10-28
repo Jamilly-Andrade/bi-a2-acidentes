@@ -252,17 +252,17 @@ export const CLIMA_VITIMAS_DATA = [
       {
         "name": "Ilesos",
         "value": 258060,
-        "color": "#800080"
+        "color": "#475569"
       },
       {
         "name": "Feridos Leves",
         "value": 206807,
-        "color": "#f59e0b"
+        "color": "#eab308"
       },
       {
         "name": "Feridos Graves",
         "value": 69968,
-        "color": "#ea580c"
+        "color": "#2563eb"
       },
       {
         "name": "Mortos",
@@ -287,17 +287,17 @@ export const CLIMA_VITIMAS_DATA = [
       {
         "name": "Ilesos",
         "value": 62837,
-        "color": "#800080"
+        "color": "#475569"
       },
       {
         "name": "Feridos Leves",
         "value": 53374,
-        "color": "#f59e0b"
+        "color": "#eab308"
       },
       {
         "name": "Feridos Graves",
         "value": 16578,
-        "color": "#ea580c"
+        "color": "#2563eb"
       },
       {
         "name": "Mortos",
@@ -322,17 +322,17 @@ export const CLIMA_VITIMAS_DATA = [
       {
         "name": "Ilesos",
         "value": 39242,
-        "color": "#800080"
+        "color": "#475569"
       },
       {
         "name": "Feridos Leves",
         "value": 38366,
-        "color": "#f59e0b"
+        "color": "#eab308"
       },
       {
         "name": "Feridos Graves",
         "value": 10021,
-        "color": "#ea580c"
+        "color": "#2563eb"
       },
       {
         "name": "Mortos",
@@ -357,17 +357,17 @@ export const CLIMA_VITIMAS_DATA = [
       {
         "name": "Ilesos",
         "value": 24377,
-        "color": "#800080"
+        "color": "#475569"
       },
       {
         "name": "Feridos Leves",
         "value": 20642,
-        "color": "#f59e0b"
+        "color": "#eab308"
       },
       {
         "name": "Feridos Graves",
         "value": 6130,
-        "color": "#ea580c"
+        "color": "#2563eb"
       },
       {
         "name": "Mortos",
@@ -392,17 +392,17 @@ export const CLIMA_VITIMAS_DATA = [
       {
         "name": "Ilesos",
         "value": 15046,
-        "color": "#800080"
+        "color": "#475569"
       },
       {
         "name": "Feridos Leves",
         "value": 12517,
-        "color": "#f59e0b"
+        "color": "#eab308"
       },
       {
         "name": "Feridos Graves",
         "value": 3067,
-        "color": "#ea580c"
+        "color": "#2563eb"
       },
       {
         "name": "Mortos",
@@ -427,17 +427,17 @@ export const CLIMA_VITIMAS_DATA = [
       {
         "name": "Ilesos",
         "value": 3818,
-        "color": "#800080"
+        "color": "#475569"
       },
       {
         "name": "Feridos Leves",
         "value": 3647,
-        "color": "#f59e0b"
+        "color": "#eab308"
       },
       {
         "name": "Feridos Graves",
         "value": 1618,
-        "color": "#ea580c"
+        "color": "#2563eb"
       },
       {
         "name": "Mortos",
@@ -462,17 +462,17 @@ export const CLIMA_VITIMAS_DATA = [
       {
         "name": "Ilesos",
         "value": 3645,
-        "color": "#800080"
+        "color": "#475569"
       },
       {
         "name": "Feridos Leves",
         "value": 3082,
-        "color": "#f59e0b"
+        "color": "#eab308"
       },
       {
         "name": "Feridos Graves",
         "value": 1004,
-        "color": "#ea580c"
+        "color": "#2563eb"
       },
       {
         "name": "Mortos",
@@ -497,17 +497,17 @@ export const CLIMA_VITIMAS_DATA = [
       {
         "name": "Ilesos",
         "value": 683,
-        "color": "#800080"
+        "color": "#475569"
       },
       {
         "name": "Feridos Leves",
         "value": 512,
-        "color": "#f59e0b"
+        "color": "#eab308"
       },
       {
         "name": "Feridos Graves",
         "value": 210,
-        "color": "#ea580c"
+        "color": "#2563eb"
       },
       {
         "name": "Mortos",
@@ -532,17 +532,17 @@ export const CLIMA_VITIMAS_DATA = [
       {
         "name": "Ilesos",
         "value": 23,
-        "color": "#800080"
+        "color": "#475569"
       },
       {
         "name": "Feridos Leves",
         "value": 13,
-        "color": "#f59e0b"
+        "color": "#eab308"
       },
       {
         "name": "Feridos Graves",
         "value": 2,
-        "color": "#ea580c"
+        "color": "#2563eb"
       },
       {
         "name": "Mortos",
@@ -567,17 +567,17 @@ export const CLIMA_VITIMAS_DATA = [
       {
         "name": "Ilesos",
         "value": 6,
-        "color": "#800080"
+        "color": "#475569"
       },
       {
         "name": "Feridos Leves",
         "value": 6,
-        "color": "#f59e0b"
+        "color": "#eab308"
       },
       {
         "name": "Feridos Graves",
         "value": 1,
-        "color": "#ea580c"
+        "color": "#2563eb"
       },
       {
         "name": "Mortos",

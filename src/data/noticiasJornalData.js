@@ -4,7 +4,7 @@
 export const CADERNOS_JORNAL = [
   {
     id: 'estados',
-    numero: 'CADERNO INICIAL',
+    numero: 'PANORAMA ESTADUAL',
     editoria: 'GEOGRAFIA DO TRÁFEGO • 27 UNIDADES DA FEDERAÇÃO',
     tituloFiltro: 'Estados e Rodovias (27 UFs)',
     resumoFiltro: 'Mapa do Brasil, ranking estadual, malha crítica (BR-101, BR-116, BR-381) e sazonalidade por UF.',
@@ -52,9 +52,9 @@ export const CADERNOS_JORNAL = [
   },
   {
     id: 'clima',
-    numero: 'CADERNO 01',
+    numero: 'ANÁLISE METEOROLÓGICA',
     editoria: 'METEOROLOGIA E SEVERIDADE • CONDIÇÕES DE PISTA',
-    tituloFiltro: '1. Clima e Vítimas',
+    tituloFiltro: 'Clima e Vítimas',
     resumoFiltro: 'Gráficos de pizza com ilesos, feridos leves, feridos graves e mortos em cada condição meteorológica.',
     googleNewsQuery: 'acidentes rodovias federais chuva neblina pista seca PRF',
     manchete: 'Tempo bom concentra 68% dos acidentes nas BRs; neblina faz proporção de mortos subir 56%',
@@ -100,9 +100,9 @@ export const CADERNOS_JORNAL = [
   },
   {
     id: 'causas',
-    numero: 'CADERNO 02',
+    numero: 'DINÂMICA DOS SINISTROS',
     editoria: 'MECÂNICA DO SINISTRO • CAUSAS, VEÍCULOS E PESSOAS',
-    tituloFiltro: '2. Causas, Veículos e Pessoas',
+    tituloFiltro: 'Causas, Veículos e Pessoas',
     resumoFiltro: 'Relação entre tipo de acidente e total de veículos e dispersão de causas com símbolos de pessoas.',
     googleNewsQuery: 'causas acidentes rodovias federais colisao frontal celular contramao PRF',
     manchete: 'Colisão traseira lidera em veículos atingidos, mas batida frontal mata 8 vezes mais por ocorrência',
@@ -148,9 +148,9 @@ export const CADERNOS_JORNAL = [
   },
   {
     id: 'ocorrencias_mortes',
-    numero: 'CADERNO 03',
+    numero: 'SÉRIE HISTÓRICA E TURNOS',
     editoria: 'SÉRIE HISTÓRICA E CRONOLOGIA • OCORRÊNCIAS, FERIDOS E MORTES',
-    tituloFiltro: '3. Ocorrências, Feridos e Mortes',
+    tituloFiltro: 'Ocorrências, Feridos e Mortes',
     resumoFiltro: 'Evolução de ocorrências, feridos e mortes (2021 a 2026), dias da semana e letalidade por turno.',
     googleNewsQuery: 'balanco PRF mortes feridos rodovias federais 2024 2025 2026',
     manchete: 'Mortes nas BRs batem recorde pós-pandemia; amanhecer e fins de semana concentram o pico de letalidade',
