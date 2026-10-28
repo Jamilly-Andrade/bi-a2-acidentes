@@ -946,24 +946,26 @@ export default function App() {
                       Mapa de calor da malha rodoviária federal
                     </h3>
                   </div>
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-stone-700 font-medium mt-2.5 bg-[#ebe6dc]/80 px-3 py-2 rounded-lg border border-stone-300">
-                    <span className="font-bold text-stone-900">Volume de acidentes na UF:</span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <span className="inline-block w-3 h-3 rounded-sm bg-[#e9d5ff] border border-stone-400"></span>
-                      Menor (&lt; 8 mil)
+                  <div className="flex flex-col gap-2 text-xs text-stone-700 font-medium mt-3 bg-[#faf8f5] p-3 rounded-lg border border-stone-300 shadow-sm max-w-[260px]">
+                    <span className="font-bold text-stone-900 border-b border-stone-200 pb-1">
+                      Volume de acidentes na UF:
                     </span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <span className="inline-block w-3 h-3 rounded-sm bg-[#9333ea]"></span>
-                      Médio (8 mil a 25 mil)
-                    </span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <span className="inline-block w-3 h-3 rounded-sm bg-[#4a044e]"></span>
-                      Maior (&gt; 25 mil)
-                    </span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <span className="inline-block w-3 h-3 rounded-sm bg-[#dc2626]"></span>
-                      UF selecionada
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="inline-block w-3.5 h-3.5 rounded-sm bg-[#e9d5ff] border border-stone-400 shrink-0"></span>
+                      <span>Menor (&lt; 8 mil)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="inline-block w-3.5 h-3.5 rounded-sm bg-[#9333ea] shrink-0"></span>
+                      <span>Médio (8 mil a 25 mil)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="inline-block w-3.5 h-3.5 rounded-sm bg-[#4a044e] shrink-0"></span>
+                      <span>Maior (&gt; 25 mil)</span>
+                    </div>
+                    <div className="flex items-center gap-2 pt-1 border-t border-stone-200">
+                      <span className="inline-block w-3.5 h-3.5 rounded-sm bg-[#dc2626] shrink-0"></span>
+                      <span className="font-semibold text-stone-900">UF selecionada</span>
+                    </div>
                   </div>
                 </div>
 
@@ -990,6 +992,8 @@ export default function App() {
                       if (isSelected) fillColor = '#dc2626';
                       else if (isHovered) fillColor = '#f59e0b';
 
+                      const isSmallUF = ['PB', 'AL', 'SE', 'RN', 'DF', 'ES', 'RJ', 'AP', 'AC'].includes(uf);
+
                       return (
                         <g
                           key={uf}
@@ -1009,7 +1013,7 @@ export default function App() {
                             y={stateGeo.cy}
                             textAnchor="middle"
                             dominantBaseline="central"
-                            className="text-[11px] font-bold pointer-events-none"
+                            className={`${isSmallUF ? 'text-[8.5px]' : 'text-[10.5px]'} font-extrabold pointer-events-none select-none`}
                             fill={acidentes > 15000 || isSelected ? '#ffffff' : '#1c1917'}
                           >
                             {uf}
