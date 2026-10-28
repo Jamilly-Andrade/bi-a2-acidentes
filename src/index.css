@@ -1,43 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,600;0,6..72,700;0,6..72,800;1,6..72,600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: #f5f3ef;
+@layer base {
+  body {
+    background-color: #f4f1ea;
+    color: #1c1917;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, .font-serif {
+    font-family: 'Newsreader', Georgia, 'Times New Roman', serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Marca-texto realista sobre fundo claro (papel jornal) */
+.mark-yellow {
+  background: linear-gradient(104deg, rgba(253, 224, 71, 0) 0.9%, rgba(253, 224, 71, 0.85) 2.4%, rgba(253, 224, 71, 0.58) 5.8%, rgba(253, 224, 71, 0.82) 93%, rgba(253, 224, 71, 0.6) 96%, rgba(253, 224, 71, 0) 98%),
+              linear-gradient(183deg, rgba(253, 224, 71, 0) 0%, rgba(253, 224, 71, 0.35) 7.9%, rgba(253, 224, 71, 0) 15%);
+  padding: 0.05em 0.28em;
+  margin: 0 -0.08em;
+  border-radius: 2px;
   color: #1c1917;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  overflow-x: hidden;
+  font-weight: 700;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
-@keyframes pageEnter {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.mark-red {
+  background: linear-gradient(104deg, rgba(254, 202, 202, 0) 0.9%, rgba(254, 202, 202, 0.92) 2.4%, rgba(252, 165, 165, 0.7) 93%, rgba(254, 202, 202, 0) 98%);
+  padding: 0.05em 0.28em;
+  margin: 0 -0.08em;
+  border-radius: 2px;
+  color: #7f1d1d;
+  font-weight: 700;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
-.animate-page-enter {
-  animation: pageEnter 0.28s ease-out forwards;
+.mark-amber {
+  background: linear-gradient(104deg, rgba(253, 230, 138, 0) 0.9%, rgba(253, 230, 138, 0.92) 2.4%, rgba(252, 211, 77, 0.7) 93%, rgba(253, 230, 138, 0) 98%);
+  padding: 0.05em 0.28em;
+  margin: 0 -0.08em;
+  border-radius: 2px;
+  color: #78350f;
+  font-weight: 700;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
+.mark-purple {
+  background: linear-gradient(104deg, rgba(233, 213, 255, 0) 0.9%, rgba(233, 213, 255, 0.9) 2.4%, rgba(216, 180, 254, 0.65) 93%, rgba(233, 213, 255, 0) 98%);
+  padding: 0.05em 0.28em;
+  margin: 0 -0.08em;
+  border-radius: 2px;
+  color: #4a044e;
+  font-weight: 700;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Marca-texto para blocos escuros (Hero e seções escuras de contraste) */
+.mark-dark-red {
+  background: linear-gradient(104deg, rgba(153, 27, 27, 0) 0.9%, rgba(185, 28, 28, 0.55) 2.4%, rgba(153, 27, 27, 0.45) 93%, rgba(153, 27, 27, 0) 98%);
+  border-bottom: 1px solid rgba(239, 68, 68, 0.6);
+  padding: 0.05em 0.28em;
+  color: #fecaca;
+  font-weight: 600;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.mark-dark-amber {
+  background: linear-gradient(104deg, rgba(180, 83, 9, 0) 0.9%, rgba(217, 119, 6, 0.45) 2.4%, rgba(180, 83, 9, 0.4) 93%, rgba(180, 83, 9, 0) 98%);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.55);
+  padding: 0.05em 0.28em;
+  color: #fde68a;
+  font-weight: 600;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.mark-dark-purple {
+  background: linear-gradient(104deg, rgba(128, 0, 128, 0) 0.9%, rgba(147, 51, 234, 0.45) 2.4%, rgba(128, 0, 128, 0.4) 93%, rgba(128, 0, 128, 0) 98%);
+  border-bottom: 1px solid rgba(192, 132, 252, 0.55);
+  padding: 0.05em 0.28em;
+  color: #f3e8ff;
+  font-weight: 600;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Capitular de jornal (Drop Cap) para o primeiro parágrafo de cada caderno */
+.editorial-dropcap::first-letter {
+  float: left;
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 3.6rem;
+  line-height: 0.82;
+  padding-top: 4px;
+  padding-right: 10px;
+  padding-bottom: 2px;
+  font-weight: 800;
+  color: #1c1917;
+}
+
+/* Fio duplo de cabeçalho de jornal */
+.newspaper-double-rule {
+  border-top: 3px double #1c1917;
+  border-bottom: 1px solid #1c1917;
+}
+
+/* Scrollbar limpa */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #ebe7e0;
+  background: #ebe6dc;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c7c0b5;
-  border-radius: 9999px;
+  background: #a8a29e;
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a093;
+  background: #78716c;
 }
