@@ -675,27 +675,27 @@ export default function App() {
             </div>
           </div>
 
-          {/* 4 Contadores com todos os números em branco e apenas a borda do card de Vítimas Fatais em vermelho */}
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-5 rounded-xl border border-neutral-800 bg-[#111113]">
-              <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Total de Acidentes</p>
-              <p className="text-3xl sm:text-4xl font-black text-white mt-1.5">391.382</p>
-              <p className="text-xs text-neutral-400 mt-1">Ocorrências atendidas pela PRF</p>
+          {/* 4 Contadores com redução proporcional de 10% no padding, tipografia e largura máxima */}
+          <div className="mt-7 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            <div className="py-4 px-4 rounded-xl border border-neutral-800 bg-[#111113]">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400">Total de Acidentes</p>
+              <p className="text-2xl sm:text-3xl font-black text-white mt-1">391.382</p>
+              <p className="text-[11px] text-neutral-400 mt-1">Ocorrências atendidas pela PRF</p>
             </div>
-            <div className="p-5 rounded-xl border border-neutral-800 bg-[#111113]">
-              <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Veículos Envolvidos</p>
-              <p className="text-3xl sm:text-4xl font-black text-white mt-1.5">746.587</p>
-              <p className="text-xs text-neutral-400 mt-1">Média de 1,91 veículo por sinistro</p>
+            <div className="py-4 px-4 rounded-xl border border-neutral-800 bg-[#111113]">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400">Veículos Envolvidos</p>
+              <p className="text-2xl sm:text-3xl font-black text-white mt-1">746.587</p>
+              <p className="text-[11px] text-neutral-400 mt-1">Média de 1,91 veículo por sinistro</p>
             </div>
-            <div className="p-5 rounded-xl border border-neutral-800 bg-[#111113]">
-              <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Total de Feridos</p>
-              <p className="text-3xl sm:text-4xl font-black text-white mt-1.5">447.565</p>
-              <p className="text-xs text-neutral-400 mt-1">114,3 feridos a cada 100 acidentes</p>
+            <div className="py-4 px-4 rounded-xl border border-neutral-800 bg-[#111113]">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400">Total de Feridos</p>
+              <p className="text-2xl sm:text-3xl font-black text-white mt-1">447.565</p>
+              <p className="text-[11px] text-neutral-400 mt-1">114,3 feridos a cada 100 acidentes</p>
             </div>
-            <div className="p-5 rounded-xl border-2 border-red-600 bg-[#111113]">
-              <p className="text-xs font-semibold uppercase tracking-wider text-red-400">Vítimas Fatais</p>
-              <p className="text-3xl sm:text-4xl font-black text-white mt-1.5">32.792</p>
-              <p className="text-xs text-neutral-400 mt-1">Letalidade média de 8,38%</p>
+            <div className="py-4 px-4 rounded-xl border-2 border-red-600 bg-[#111113]">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-red-400">Vítimas Fatais</p>
+              <p className="text-2xl sm:text-3xl font-black text-white mt-1">32.792</p>
+              <p className="text-[11px] text-neutral-400 mt-1">Letalidade média de 8,38%</p>
             </div>
           </div>
 
