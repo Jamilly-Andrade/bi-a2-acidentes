@@ -638,22 +638,6 @@ export default function App() {
                 Acidentes em Rodovias Federais
               </span>
             </div>
-
-            <div className="flex items-center gap-2.5">
-              <button
-                onClick={() => setShowQuiz((prev) => !prev)}
-                className="px-3 py-1.5 rounded-lg border border-neutral-700 bg-neutral-900 hover:bg-neutral-800 text-neutral-200 text-xs font-medium transition"
-              >
-                {showQuiz ? 'Ocultar Quiz' : 'Testar percepção (Quiz)'}
-              </button>
-              <button
-                onClick={() => setSiteVersion('v1')}
-                className="px-3 py-1.5 rounded-lg border border-neutral-700 bg-neutral-900 hover:border-neutral-500 text-neutral-300 hover:text-white text-xs font-medium transition"
-                title="Alternar para a Versão 1 salva anteriormente"
-              >
-                Alternar para Versão 1 (Salva)
-              </button>
-            </div>
           </div>
         </header>
 
