@@ -11,7 +11,7 @@ import {
   Clock, Cloud, MapPin, Layers, Sliders, CheckSquare, Sparkles, Scale, Filter,
   Users, PieChart as PieChartIcon, Newspaper, ExternalLink, BookOpen
 } from 'lucide-react';
-import { BRAZIL_STATES_PATHS } from './data/brazilMapPaths';
+import { BRAZIL_MAP_PATHS } from './data/brazilMapPaths';
 import {
   TIPO_ACIDENTE_VEICULOS_DATA,
   CAUSA_PESSOAS_DATA,
@@ -597,7 +597,7 @@ export default function App() {
   const [ufSortBy, setUfSortBy] = useState('acidentes');
 
   // Clima selecionado para inspeção detalhada + grade completa de pizzas
-  const [selectedClima, setSelectedClima] = useState('Ceu Claro');
+  const [selectedClima, setSelectedClima] = useState('Céu Claro');
 
   // Notícias em tempo real via Google News RSS (complementando o Arquivo de Imprensa 2021-2026)
   const [liveGoogleNews, setLiveGoogleNews] = useState([]);
@@ -1200,11 +1200,12 @@ export default function App() {
 
                 <div className="relative w-full flex items-center justify-center py-2">
                   <svg
-                    viewBox="0 0 1000 912"
+                    viewBox="0 0 600 600"
                     className="w-full max-h-[450px] select-none"
                     aria-label="Mapa do Brasil por Estados"
                   >
-                    {Object.entries(BRAZIL_STATES_PATHS).map(([uf, stateGeo]) => {
+                    {BRAZIL_MAP_PATHS.map((stateGeo) => {
+                      const uf = stateGeo.sigla;
                       const stData = ESTADOS_COMPLETE_DATA[uf];
                       const acidentes = stData ? stData.acidentes : 1000;
                       const isSelected = selectedUF === uf;
@@ -1232,14 +1233,14 @@ export default function App() {
                             d={stateGeo.d}
                             fill={fillColor}
                             stroke="#1c1917"
-                            strokeWidth={isSelected ? 2.5 : 1}
+                            strokeWidth={isSelected ? 2 : 0.8}
                           />
                           <text
                             x={stateGeo.cx}
                             y={stateGeo.cy}
                             textAnchor="middle"
                             dominantBaseline="central"
-                            className="text-[17px] font-mono font-bold pointer-events-none"
+                            className="text-[11px] font-mono font-bold pointer-events-none"
                             fill={acidentes > 15000 || isSelected ? '#ffffff' : '#1c1917'}
                           >
                             {uf}
@@ -1460,7 +1461,7 @@ export default function App() {
                           : 'bg-stone-900 text-stone-300 border-stone-700 hover:border-stone-500'
                       }`}
                     >
-                      {item.label}
+                      {item.condicao}
                     </button>
                   ))}
                 </div>
@@ -1472,8 +1473,8 @@ export default function App() {
                     <PieChart>
                       <Pie
                         data={activeClimaObj.fatias}
-                        dataKey="valor"
-                        nameKey="nome"
+                        dataKey="value"
+                        nameKey="name"
                         cx="50%"
                         cy="50%"
                         innerRadius={55}
@@ -1481,13 +1482,13 @@ export default function App() {
                         paddingAngle={2}
                       >
                         {activeClimaObj.fatias.map((entry, i) => (
-                          <Cell key={i} fill={entry.cor} />
+                          <Cell key={i} fill={entry.color} />
                         ))}
                       </Pie>
                       <Tooltip
                         contentStyle={{ backgroundColor: '#18181b', borderColor: '#3f3f46', color: '#f5f5f4', fontSize: '12px' }}
-                        formatter={(val, name, props) => [
-                          `${val.toLocaleString('pt-BR')} pessoas (${props.payload.percentual}%)`,
+                        formatter={(val, name) => [
+                          `${val.toLocaleString('pt-BR')} pessoas`,
                           name
                         ]}
                       />
@@ -1500,33 +1501,37 @@ export default function App() {
                   <div className="flex flex-wrap items-baseline justify-between border-b border-stone-800 pb-3">
                     <div>
                       <span className="text-xs font-mono uppercase text-stone-400">Condição em análise</span>
-                      <h4 className="font-serif text-2xl font-bold text-white">{activeClimaObj.label}</h4>
+                      <h4 className="font-serif text-2xl font-bold text-white">{activeClimaObj.condicao}</h4>
                     </div>
                     <div className="text-right">
                       <span className="text-xs font-mono text-stone-400 block">
                         Acidentes registrados: <strong className="text-white">{activeClimaObj.acidentes.toLocaleString('pt-BR')}</strong>
                       </span>
                       <span className="text-xs font-mono text-stone-400 block">
-                        Total de vítimas classificadas: <strong className="text-amber-300">{activeClimaObj.total_vitimas_classificadas.toLocaleString('pt-BR')}</strong>
+                        Total de pessoas envolvidas: <strong className="text-amber-300">{activeClimaObj.total_pessoas.toLocaleString('pt-BR')}</strong>
                       </span>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    {activeClimaObj.fatias.map((fatia) => (
-                      <div key={fatia.nome} className="p-3.5 border border-stone-800 bg-[#18181b]">
-                        <div className="flex items-center gap-2">
-                          <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: fatia.cor }}></span>
-                          <span className="text-xs font-mono text-stone-300">{fatia.nome}</span>
+                    {activeClimaObj.fatias.map((fatia) => {
+                      const somaClassificadas = activeClimaObj.ilesos + activeClimaObj.feridos_leves + activeClimaObj.feridos_graves + activeClimaObj.mortos;
+                      const pct = somaClassificadas > 0 ? ((fatia.value / somaClassificadas) * 100).toFixed(1) : '0.0';
+                      return (
+                        <div key={fatia.name} className="p-3.5 border border-stone-800 bg-[#18181b]">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: fatia.color }}></span>
+                            <span className="text-xs font-mono text-stone-300">{fatia.name}</span>
+                          </div>
+                          <p className="font-serif text-xl font-bold text-white mt-1.5">
+                            {fatia.value.toLocaleString('pt-BR')}
+                          </p>
+                          <p className="text-[11px] font-mono text-stone-400 mt-0.5">
+                            {pct}% do total na condição
+                          </p>
                         </div>
-                        <p className="font-serif text-xl font-bold text-white mt-1.5">
-                          {fatia.valor.toLocaleString('pt-BR')}
-                        </p>
-                        <p className="text-[11px] font-mono text-stone-400 mt-0.5">
-                          {fatia.percentual}% do total na condição
-                        </p>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -1559,7 +1564,7 @@ export default function App() {
                   >
                     <div className="flex items-center justify-between border-b border-stone-200 pb-2.5 mb-3">
                       <div>
-                        <h4 className="font-serif text-base font-bold text-stone-950">{item.label}</h4>
+                        <h4 className="font-serif text-base font-bold text-stone-950">{item.condicao}</h4>
                         <span className="text-[11px] font-mono text-stone-500">
                           {item.acidentes.toLocaleString('pt-BR')} acidentes
                         </span>
@@ -1574,8 +1579,8 @@ export default function App() {
                         <PieChart>
                           <Pie
                             data={item.fatias}
-                            dataKey="valor"
-                            nameKey="nome"
+                            dataKey="value"
+                            nameKey="name"
                             cx="50%"
                             cy="50%"
                             innerRadius={34}
@@ -1583,12 +1588,12 @@ export default function App() {
                             paddingAngle={1.5}
                           >
                             {item.fatias.map((entry, idx) => (
-                              <Cell key={idx} fill={entry.cor} />
+                              <Cell key={idx} fill={entry.color} />
                             ))}
                           </Pie>
                           <Tooltip
-                            formatter={(val, name, props) => [
-                              `${val.toLocaleString('pt-BR')} (${props.payload.percentual}%)`,
+                            formatter={(val, name) => [
+                              `${val.toLocaleString('pt-BR')} pessoas`,
                               name
                             ]}
                           />
@@ -1598,12 +1603,12 @@ export default function App() {
 
                     <div className="grid grid-cols-2 gap-1.5 mt-2 pt-2 border-t border-stone-200 text-[11px] font-mono">
                       {item.fatias.map((f) => (
-                        <div key={f.nome} className="flex items-center justify-between text-stone-700">
+                        <div key={f.name} className="flex items-center justify-between text-stone-700">
                           <span className="flex items-center gap-1.5 truncate">
-                            <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: f.cor }}></span>
-                            {f.nome}:
+                            <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: f.color }}></span>
+                            {f.name}:
                           </span>
-                          <strong className="text-stone-950">{f.valor.toLocaleString('pt-BR')}</strong>
+                          <strong className="text-stone-950">{f.value.toLocaleString('pt-BR')}</strong>
                         </div>
                       ))}
                     </div>
@@ -1646,7 +1651,7 @@ export default function App() {
                       <CartesianGrid strokeDasharray="3 3" stroke="#e7e5e4" />
                       <XAxis type="number" tick={{ fill: '#57534e', fontSize: 11 }} />
                       <YAxis
-                        dataKey="tipo"
+                        dataKey="tipo_acidente"
                         type="category"
                         width={175}
                         tick={{ fill: '#1c1917', fontSize: 11, fontWeight: 600 }}
@@ -1670,9 +1675,9 @@ export default function App() {
                   </h4>
                   <div className="space-y-2.5 max-h-[365px] overflow-y-auto pr-1">
                     {TIPO_ACIDENTE_VEICULOS_DATA.slice(0, 8).map((item) => (
-                      <div key={item.tipo} className="p-3 bg-[#18181b] border border-stone-800">
+                      <div key={item.tipo_acidente} className="p-3 bg-[#18181b] border border-stone-800">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-white">{item.tipo}</span>
+                          <span className="text-xs font-bold text-white">{item.tipo_acidente}</span>
                           <span className="text-[11px] font-mono px-2 py-0.5 bg-purple-950/80 text-purple-300 border border-purple-800/60">
                             {item.media_veiculos.toFixed(2)} veíc./acid.
                           </span>
@@ -1746,7 +1751,7 @@ export default function App() {
                                 <p className="font-bold text-white mb-1">{d.causa}</p>
                                 <p className="text-stone-300">Pessoas envolvidas: <strong className="text-purple-300">{d.pessoas.toLocaleString('pt-BR')}</strong></p>
                                 <p className="text-stone-300">Acidentes: <strong>{d.acidentes.toLocaleString('pt-BR')}</strong></p>
-                                <p className="text-stone-300">Média por acidente: <strong>{d.media_pessoas_por_acidente} pessoas</strong></p>
+                                <p className="text-stone-300">Média por acidente: <strong>{d.media_pessoas} pessoas</strong></p>
                                 <p className="text-red-400">Vítimas fatais: <strong>{d.mortos.toLocaleString('pt-BR')}</strong></p>
                               </div>
                             );
