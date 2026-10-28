@@ -3,13 +3,8 @@
 @tailwind utilities;
 
 body {
-  background-color: #050507;
-  background-image:
-    radial-gradient(circle at 15% 10%, rgba(128, 0, 128, 0.08) 0%, transparent 35%),
-    radial-gradient(circle at 85% 25%, rgba(220, 38, 38, 0.06) 0%, transparent 40%),
-    radial-gradient(circle at 50% 85%, rgba(245, 158, 11, 0.05) 0%, transparent 45%);
-  background-attachment: fixed;
-  color: #f4f4f6;
+  background-color: #f5f3ef;
+  color: #1c1917;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   overflow-x: hidden;
 }
@@ -17,7 +12,7 @@ body {
 @keyframes pageEnter {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -26,14 +21,7 @@ body {
 }
 
 .animate-page-enter {
-  animation: pageEnter 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.glass-card {
-  background: rgba(18, 18, 22, 0.78);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+  animation: pageEnter 0.28s ease-out forwards;
 }
 
 ::-webkit-scrollbar {
@@ -42,14 +30,14 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #050507;
+  background: #ebe7e0;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #c7c0b5;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #a8a093;
 }
