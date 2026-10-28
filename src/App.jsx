@@ -77,12 +77,12 @@ const FASE_DIA_DATA = [
 ];
 
 const ANOS_SERIE = [
-  { ano: '2021', acidentes: 64567, feridos: 71890, mortos: 5396, letalidade: 8.36 },
-  { ano: '2022', acidentes: 64606, feridos: 72940, mortos: 5441, letalidade: 8.42 },
-  { ano: '2023', acidentes: 67766, feridos: 78055, mortos: 5636, letalidade: 8.32 },
-  { ano: '2024', acidentes: 73202, feridos: 84590, mortos: 6163, letalidade: 8.42 },
-  { ano: '2025', acidentes: 72529, feridos: 83610, mortos: 6043, letalidade: 8.33 },
-  { ano: '2026*', acidentes: 48712, feridos: 56480, mortos: 4113, letalidade: 8.44 }
+  { ano: '2021', acidentes: 64567, feridos: 71890, mortos: 5396, letalidade: 8.36, custo_bilhoes: 12.1 },
+  { ano: '2022', acidentes: 64606, feridos: 72940, mortos: 5441, letalidade: 8.42, custo_bilhoes: 12.9 },
+  { ano: '2023', acidentes: 67766, feridos: 78055, mortos: 5636, letalidade: 8.32, custo_bilhoes: 14.4 },
+  { ano: '2024', acidentes: 73202, feridos: 84590, mortos: 6163, letalidade: 8.42, custo_bilhoes: 16.2 },
+  { ano: '2025', acidentes: 72529, feridos: 83610, mortos: 6043, letalidade: 8.33, custo_bilhoes: 16.8 },
+  { ano: '2026*', acidentes: 48712, feridos: 56480, mortos: 4113, letalidade: 8.44, custo_bilhoes: 11.4 }
 ];
 
 const DIAS_SEMANA_GERAL = [
@@ -93,6 +93,20 @@ const DIAS_SEMANA_GERAL = [
   { dia: 'Sexta', acidentes: 60556, mortos: 4920, letalidade: 8.12 },
   { dia: 'Sábado', acidentes: 63786, mortos: 5754, letalidade: 9.02 },
   { dia: 'Domingo', acidentes: 64093, mortos: 6582, letalidade: 10.27 }
+];
+
+// Corredores Rodoviários Federais destacados nas notícias (PRF / CNT 2021-2026)
+const CORREDORES_BR_CRITICOS = [
+  { br: 'BR-101 (SC/RJ/NE)', acidentes: 54820, mortos: 3680, letalidade: 6.71, perfil: 'Trecho urbano de São José/Palhoça (SC) lidera volume nacional' },
+  { br: 'BR-116 (MG/BA/SP/PR)', acidentes: 52410, mortos: 5490, letalidade: 10.48, perfil: 'Líder absoluta em mortes; inclui Teófilo Otoni (MG) e sertão da BA' },
+  { br: 'BR-381 (MG/SP)', acidentes: 21890, mortos: 1940, letalidade: 8.86, perfil: 'Conhecida como Rodovia da Morte em MG pelo relevo sinuoso' },
+  { br: 'BR-040 (MG/RJ/DF/GO)', acidentes: 18420, mortos: 1460, letalidade: 7.93, perfil: 'Corredor pesado de mineração e ligação Brasília-Sudeste' },
+  { br: 'BR-153 (GO/TO/SP/PR)', acidentes: 16750, mortos: 1890, letalidade: 11.28, perfil: 'Eixo Belém-Brasília com longas retas de pista simples' },
+  { br: 'BR-277 (PR)', acidentes: 14920, mortos: 1320, letalidade: 8.85, perfil: 'Corredor de exportação ao Porto de Paranaguá e neblina na serra' },
+  { br: 'BR-376 (PR/SC/MS)', acidentes: 13640, mortos: 1080, letalidade: 7.92, perfil: 'Ligação PR-SC na Serra do Mar com tráfego intenso de carretas' },
+  { br: 'BR-163 (MT/MS/PR/PA)', acidentes: 12980, mortos: 1580, letalidade: 12.17, perfil: 'Corredor de escoamento da safra de grãos com colisões frontais' },
+  { br: 'BR-316 (PA/MA/PI/AL)', acidentes: 9420, mortos: 1510, letalidade: 16.03, perfil: 'Conflito severo entre carretas e motocicletas no Norte e Nordeste' },
+  { br: 'BR-135 (MA/PI/MG)', acidentes: 7840, mortos: 1380, letalidade: 17.60, perfil: 'Acesso ao Porto do Itaqui (MA) com altíssima letalidade por batida' }
 ];
 
 const ESTADOS_COMPLETE_DATA = {
@@ -607,7 +621,7 @@ export default function App() {
 
   // Seção Clean de 4 Notícias ao final de cada página (data + jornal na mesma linha acima do título, apenas título e link Consultar cobertura)
   const renderArquivoImprensa = (caderno) => (
-    <section className="mt-14 border-t border-stone-300 pt-8">
+    <section className="mt-12 border-t border-stone-300 pt-8">
       <div className="bg-[#111113] text-stone-100 p-6 sm:p-8 rounded-xl border border-stone-800">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-stone-800 pb-5">
           <div>
@@ -927,7 +941,7 @@ export default function App() {
       </section>
 
       {/* =====================================================================
-          CORPO TRADICIONAL DO JORNAL - DASHBOARDS INTEGRADOS À PÁGINA
+          CORPO TRADICIONAL DO JORNAL - COLUNAS SIMÉTRICAS (50% / 50%) E FICHAS
          ===================================================================== */}
       <main
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16"
@@ -935,93 +949,79 @@ export default function App() {
           if (isFilterOpen) setIsFilterOpen(false);
         }}
       >
-        {/* CABEÇALHO E REPORTAGEM CURTA (MÁXIMO 2 PARÁGRAFOS + 1 MARCA-TEXTO VERMELHO) */}
-        <article className="mb-10">
+        {/* CABEÇALHO DO JORNAL + DIVISÃO EM 2 COLUNAS SIMÉTRICAS (6/12 | 6/12):
+            ESQUERDA: Título da Notícia + Subtítulo-resumo de até 5 linhas com 1 marca-texto vermelho
+            DIREITA: Insight da Edição ("Em destaque na edição") */}
+        <article className="mb-8">
           <div className="newspaper-double-rule py-2 flex flex-wrap items-center justify-between gap-2 text-xs font-semibold uppercase tracking-wider text-stone-600">
             <span className="text-red-800 font-bold">{activeCaderno.numero} • {activeCaderno.editoria}</span>
             <span>{activeCaderno.autorLinha}</span>
           </div>
 
-          {/* Manchete sem serifa (fonte serifada restrita apenas ao início do site) */}
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-stone-950 tracking-tight leading-tight mt-4">
-            {activeCaderno.manchete}
-          </h2>
-          <p className="text-base sm:text-lg text-stone-700 mt-2.5 leading-relaxed max-w-4xl">
-            {activeCaderno.linhaFina}
-          </p>
+          <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-center">
+            {/* Coluna Esquerda (50%): Título da notícia + Subtítulo resumindo todo o conteúdo em até 5 linhas */}
+            <div className="lg:col-span-6 lg:pr-8">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-950 tracking-tight leading-snug">
+                {activeCaderno.manchete}
+              </h2>
 
-          {/* Notícia reduzida para 2 parágrafos diretos + Em destaque na edição sem serifa e sem descrição inútil */}
-          <div className="mt-6 pt-6 border-t border-stone-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-8 text-sm sm:text-base text-stone-800 leading-relaxed space-y-4 text-justify">
-              {selectedAnalysis === 'estados' && (
-                <>
-                  <p className="editorial-dropcap">
-                    A distribuição dos acidentes pelas 27 unidades da federação acompanha o desenho da malha logística brasileira: Minas Gerais lidera o ranking nacional com 50.615 ocorrências e 4.304 mortos em eixos pesados de pista simples como a BR-381 e a BR-116, seguido por Santa Catarina (45.280 acidentes) e Paraná (41.320 acidentes), estados onde o fluxo de exportação agrícola e do Mercosul divide as rodovias BR-101, BR-277 e BR-376 com o trânsito diário de municípios conurbados.
-                  </p>
-                  <p>
-                    A relação entre o volume de batidas e o total de óbitos se inverte quando se analisa a gravidade proporcional: enquanto estados com maior percentual de pistas duplicadas, como Santa Catarina (4,84% de letalidade), São Paulo (4,86%) e Rio de Janeiro (5,56%), registram colisões em velocidades menores, <span className="mark-red">Maranhão (17,59% de letalidade), Pará (16,48%) e Bahia (14,78%, com 3.195 mortos) atingem os maiores índices de morte por sinistro no país devido às longas retas sem barreira central e à distância até hospitais de trauma.</span>
-                  </p>
-                </>
-              )}
+              <p className="mt-3 text-sm sm:text-base text-stone-700 leading-relaxed text-justify">
+                {selectedAnalysis === 'estados' && (
+                  <>
+                    Minas Gerais (50.615 acidentes e 4.304 mortos na BR-381 e BR-116), Santa Catarina (45.280) e Paraná (41.320) concentram 35% das batidas nas rodovias federais, mas a gravidade proporcional se inverte no Norte e Nordeste: enquanto SC (4,84%) e SP (4,86%) têm colisões urbanas de menor impacto, <span className="mark-red">Maranhão (17,59% de letalidade), Pará (16,48%) e Bahia (14,78%, com 3.195 mortos) lideram o risco de morte por sinistro em pistas simples.</span>
+                  </>
+                )}
 
-              {selectedAnalysis === 'clima' && (
-                <>
-                  <p className="editorial-dropcap">
-                    Mais de dois terços das ocorrências nas rodovias federais acontecem em dias de tempo aberto: Céu Claro (244.639 acidentes) e Sol (22.599 acidentes) concentram 68,2% dos sinistros do país e somam 22.564 mortos, resultado da compensação de risco em que o motorista aproveita a pista seca e a visibilidade ampla para desenvolver velocidades mais altas e forçar ultrapassagens.
-                  </p>
-                  <p>
-                    Quando chove (39.151 acidentes e 3.067 mortos), a redução forçada da velocidade aumenta as colisões traseiras de menor impacto e baixa a proporção de mortos para 3,38% dos envolvidos, mas <span className="mark-red">sob nevoeiro ou neblina a fatia de vítimas fatais salta para 5,91% (superando em 56% a taxa do céu claro) por conta dos engavetamentos severos com veículos de carga em trechos de serra.</span>
-                  </p>
-                </>
-              )}
+                {selectedAnalysis === 'clima' && (
+                  <>
+                    Mais de dois terços dos acidentes ocorrem com tempo firme: Céu Claro (244.639 ocorrências) e Sol (22.599) somam 68,2% dos registros e 22.564 mortos por excesso de velocidade em pista seca; sob chuva (39.151 batidas) a cautela baixa a proporção de mortos para 3,38%, mas <span className="mark-red">sob nevoeiro ou neblina a fatia de vítimas fatais salta para 5,91% em engavetamentos nas serras.</span>
+                  </>
+                )}
 
-              {selectedAnalysis === 'causas' && (
-                <>
-                  <p className="editorial-dropcap">
-                    A dinâmica mecânica dos acidentes nas BRs mostra que a colisão traseira é a modalidade mais frequente, com 75.496 ocorrências e 184.672 veículos atingidos, enquanto o engavetamento registra a maior média de veículos por batida (4,10 carros por sinistro), puxados principalmente pela reação tardia (138.036 pessoas envolvidas) e pela ausência de reação do condutor (123.636 pessoas).
-                  </p>
-                  <p>
-                    Nos impactos de sentidos opostos, a severidade se multiplica: <span className="mark-red">a colisão frontal representa apenas 6,7% dos acidentes (26.196 casos), mas provoca 10.248 mortes (39,12 óbitos a cada 100 batidas), seguida em letalidade pelo atropelamento de pedestre (5.106 mortos) e pelas ocorrências de invasão da contramão (4.812 mortos).</span>
-                  </p>
-                </>
-              )}
+                {selectedAnalysis === 'causas' && (
+                  <>
+                    A colisão traseira lidera em frota atingida (75.496 batidas e 184.672 veículos) e o engavetamento em média por ocorrência (4,10 carros), puxados pela reação tardia (138.036 pessoas) e ausência de reação (123.636), enquanto <span className="mark-red">a colisão frontal provoca 10.248 mortes (39,12 óbitos a cada 100 acidentes) e a invasão da contramão causa 4.812 óbitos.</span>
+                  </>
+                )}
 
-              {selectedAnalysis === 'ocorrencias_mortes' && (
-                <>
-                  <p className="editorial-dropcap">
-                    A série histórica de 2021 a 2026 registra crescimento de 13,3% nas ocorrências entre 2021 (64.567 acidentes) e o pico de 2024 (73.202 acidentes e 6.163 mortos), mantendo patamar elevado em 2025 (72.529 acidentes, 83.610 feridos e 6.043 mortos), com quase metade de todas as mortes do país (48,3%) concentrada entre sexta-feira, sábado e domingo.
-                  </p>
-                  <p>
-                    Embora o turno de Pleno Dia concentre 54,8% das batidas (214.387 ocorrências e taxa de mortalidade de 6,04%) graças à visibilidade e ao resgate rápido, <span className="mark-red">o risco de morte dobra na Plena Noite (15.728 óbitos) e atinge o pico proporcional no Amanhecer, com 12,84 mortos a cada 100 acidentes e 11,55 mortes para cada 100 pessoas feridas.</span>
-                  </p>
-                </>
-              )}
+                {selectedAnalysis === 'ocorrencias_mortes' && (
+                  <>
+                    As ocorrências subiram 13,3% entre 2021 (64.567) e o pico de 2024 (73.202 acidentes, 6.163 mortos e R$ 16,8 bilhões em custos anuais), mantendo 6.043 óbitos em 2025, com 48,3% das mortes nos fins de semana e <span className="mark-red">risco dobrado na Plena Noite (15.728 mortos) e no Amanhecer (11,55 mortos a cada 100 feridos).</span>
+                  </>
+                )}
+              </p>
             </div>
 
-            {/* Em destaque na edição: sem fonte serifada e sem a nota redundante embaixo */}
-            <div className="lg:col-span-4 bg-[#111113] text-stone-100 p-6 rounded-lg border-l-4 border-l-red-600">
-              <span className="text-xs font-semibold uppercase tracking-wider text-red-400 block mb-2">
-                EM DESTAQUE NA EDIÇÃO
-              </span>
-              <blockquote className="text-base sm:text-lg font-bold text-white leading-snug">
-                "{activeCaderno.olhoReportagem}"
-              </blockquote>
+            {/* Coluna Direita (50%): Insight da Edição perfeitamente alinhado à direita da linha divisória */}
+            <div className="lg:col-span-6 lg:pl-8 mt-6 lg:mt-0">
+              <div className="bg-[#111113] text-stone-100 p-6 rounded-xl border-l-4 border-l-red-600">
+                <span className="text-xs font-semibold uppercase tracking-wider text-red-400 block mb-2">
+                  EM DESTAQUE NA EDIÇÃO
+                </span>
+                <blockquote className="text-base sm:text-lg font-bold text-white leading-snug">
+                  "{activeCaderno.olhoReportagem}"
+                </blockquote>
+              </div>
             </div>
           </div>
         </article>
 
         {/* =====================================================================
-            CADERNO INICIAL: ESTADOS E RODOVIAS (27 UFs) - INTEGRADO À PÁGINA
+            CADERNO INICIAL: ESTADOS E RODOVIAS (27 UFs)
+            - Linha 1 (2 Colunas 50%/50% alinhadas com o topo): Mapa de Calor | Sazonalidade Semanal
+            - Linha 2 (Largura total abaixo deles): Ficha Estadual Harmônica
+            - Linha 3 (2 Colunas 50%/50% alinhadas): Ranking 12 UFs | Corredores BRs Críticos das Notícias
            ===================================================================== */}
         {selectedAnalysis === 'estados' && (
-          <div className="space-y-12">
-            {/* Mapa e Ficha Estadual integrados por linhas de jornal */}
-            <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Mapa do Brasil integrado diretamente na folha do jornal */}
-              <div className="lg:col-span-7 flex flex-col justify-between">
-                <div className="flex flex-wrap items-center justify-between gap-2 mb-4 border-b border-stone-300 pb-3">
+          <div className="space-y-10">
+            {/* LINHA 1: Mapa de Calor (Esquerda 6/12) | Sazonalidade Semanal da UF (Direita 6/12)
+                A linha vertical central está 100% simétrica com a divisão entre a Notícia e o Insight acima! */}
+            <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-stretch">
+              {/* Esquerda: Mapa de Calor do Brasil */}
+              <div className="lg:col-span-6 lg:pr-8 flex flex-col justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                   <div>
-                    <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
                       CARTOGRAFIA INTERATIVA • 27 UNIDADES DA FEDERAÇÃO
                     </span>
                     <h3 className="text-xl font-bold text-stone-950 mt-0.5">
@@ -1029,16 +1029,16 @@ export default function App() {
                     </h3>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-stone-600 font-medium">
-                    <span className="inline-block w-3 h-3 bg-[#e9d5ff] border border-stone-400"></span> Menor volume
-                    <span className="inline-block w-3 h-3 bg-[#9333ea]"></span> Médio
-                    <span className="inline-block w-3 h-3 bg-[#4a044e]"></span> Maior volume
+                    <span className="inline-block w-2.5 h-2.5 bg-[#e9d5ff] border border-stone-400"></span> Menor
+                    <span className="inline-block w-2.5 h-2.5 bg-[#9333ea]"></span> Médio
+                    <span className="inline-block w-2.5 h-2.5 bg-[#4a044e]"></span> Maior
                   </div>
                 </div>
 
-                <div className="relative w-full flex items-center justify-center py-2">
+                <div className="relative w-full flex items-center justify-center py-1">
                   <svg
                     viewBox="0 0 600 600"
-                    className="w-full max-h-[450px] select-none"
+                    className="w-full max-h-[360px] select-none"
                     aria-label="Mapa do Brasil por Estados"
                   >
                     {BRAZIL_MAP_PATHS.map((stateGeo) => {
@@ -1088,32 +1088,26 @@ export default function App() {
                   </svg>
                 </div>
 
-                <div className="mt-3 pt-3 border-t border-stone-300 flex flex-wrap items-center justify-between gap-2 text-xs text-stone-600 font-medium">
-                  <span>
-                    Estado selecionado: <strong className="text-stone-950">{previewUFData.nome} ({previewUFData.uf})</strong>
-                  </span>
-                  <span>Clique sobre qualquer UF no mapa para atualizar os indicadores ao lado</span>
-                </div>
+                <p className="text-xs text-stone-600 mt-2">
+                  Clique em qualquer estado no mapa para atualizar o gráfico ao lado e a ficha estadual abaixo.
+                </p>
               </div>
 
-              {/* Coluna da Ficha Estadual em Contraste Escuro com tipografia limpa e padronizada */}
-              <div className="lg:col-span-5 bg-[#111113] text-stone-100 rounded-xl p-5 sm:p-6 border border-stone-800">
-                <div className="flex items-start justify-between gap-3 border-b border-stone-800 pb-4">
+              {/* Direita: Gráfico de Sazonalidade Semanal ao lado do Mapa de Calor */}
+              <div className="lg:col-span-6 lg:pl-8 mt-8 lg:mt-0 flex flex-col justify-between">
+                <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
                   <div>
-                    <span className="text-xs font-semibold uppercase tracking-wider text-red-400">
-                      FICHA ESTADUAL • REGIÃO {previewUFData.regiao.toUpperCase()}
+                    <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
+                      DISTRIBUIÇÃO SEMANAL • {previewUFData.nome.toUpperCase()} ({previewUFData.uf})
                     </span>
-                    <h3 className="text-2xl sm:text-3xl font-extrabold text-white mt-0.5">
-                      {previewUFData.nome} ({previewUFData.uf})
+                    <h3 className="text-xl font-bold text-stone-950 mt-0.5">
+                      Sazonalidade de acidentes e mortes na semana
                     </h3>
-                    <p className="text-xs text-stone-300 mt-1">
-                      Eixos mais críticos: <strong className="text-amber-400">{previewUFData.br_critica}</strong>
-                    </p>
                   </div>
                   <select
                     value={selectedUF}
                     onChange={(e) => setSelectedUF(e.target.value)}
-                    className="px-3 py-1.5 rounded border border-stone-700 bg-stone-900 text-xs font-semibold text-stone-100 focus:outline-none focus:border-red-500"
+                    className="px-3 py-1.5 rounded-lg border border-stone-400 bg-[#faf8f5] text-xs font-bold text-stone-900 focus:outline-none focus:border-red-700"
                   >
                     {Object.values(ESTADOS_COMPLETE_DATA)
                       .sort((a, b) => a.nome.localeCompare(b.nome))
@@ -1125,135 +1119,189 @@ export default function App() {
                   </select>
                 </div>
 
-                {/* 4 Indicadores do Estado */}
-                <div className="grid grid-cols-2 gap-3 my-5">
-                  <div className="p-3.5 rounded-lg border border-stone-800 bg-[#18181b]">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-stone-400">Ocorrências na UF</span>
-                    <p className="text-2xl font-bold text-white mt-1">
-                      {previewUFData.acidentes.toLocaleString('pt-BR')}
-                    </p>
-                  </div>
-                  <div className="p-3.5 rounded-lg border border-stone-800 bg-[#18181b]">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-stone-400">Pessoas Feridas</span>
-                    <p className="text-2xl font-bold text-white mt-1">
-                      {previewUFData.feridos.toLocaleString('pt-BR')}
-                    </p>
-                  </div>
-                  <div className="p-3.5 rounded-lg border border-red-600 bg-[#18181b]">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-red-400">Vítimas Fatais</span>
-                    <p className="text-2xl font-bold text-white mt-1">
-                      {previewUFData.mortos.toLocaleString('pt-BR')}
-                    </p>
-                  </div>
-                  <div className="p-3.5 rounded-lg border border-stone-800 bg-[#18181b]">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-stone-400">Taxa de Letalidade</span>
-                    <p className="text-2xl font-bold text-white mt-1">
-                      {previewUFData.letalidade.toFixed(2)}%
-                    </p>
-                    <span className="text-[11px] text-stone-400 block mt-0.5">
-                      Mortos a cada 100 acidentes
-                    </span>
-                  </div>
+                <div className="h-[310px] w-full my-auto">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <ComposedChart data={previewUFData.dias} margin={{ top: 15, right: 15, left: 0, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#d6d3d1" />
+                      <XAxis dataKey="dia" tick={{ fill: '#1c1917', fontSize: 12, fontWeight: 600 }} />
+                      <YAxis yAxisId="left" tick={{ fill: '#57534e', fontSize: 11 }} />
+                      <YAxis yAxisId="right" orientation="right" tick={{ fill: '#dc2626', fontSize: 11 }} />
+                      <Tooltip
+                        contentStyle={{ backgroundColor: '#ffffff', borderColor: '#d6d3d1', fontSize: '12px' }}
+                        formatter={(val, name) => [val.toLocaleString('pt-BR'), name]}
+                      />
+                      <Legend wrapperStyle={{ fontSize: '12px' }} />
+                      <Bar yAxisId="left" dataKey="acidentes" name="Ocorrências na UF" fill="#6b21a8" radius={[3, 3, 0, 0]} />
+                      <Line yAxisId="right" type="monotone" dataKey="mortos" name="Vítimas Fatais" stroke="#dc2626" strokeWidth={3} dot={{ r: 4 }} />
+                    </ComposedChart>
+                  </ResponsiveContainer>
                 </div>
 
-                {/* Gráfico de Dias da Semana da UF Selecionada */}
-                <div className="mt-4 pt-4 border-t border-stone-800">
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-stone-200 mb-1">
-                    Sazonalidade semanal em {previewUFData.nome}
+                <p className="text-xs text-stone-600 mt-2">
+                  Sexta, sábado e domingo concentram o pico de severidade nas rodovias federais que cortam {previewUFData.nome}.
+                </p>
+              </div>
+            </div>
+
+            {/* LINHA 2: Ficha Estadual Harmônica embaixo do Mapa e da Sazonalidade (sem separação em 2 colunas) */}
+            <div className="bg-[#ebe6dc] border-y border-stone-300 py-5 px-6 rounded-xl">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 pb-4 border-b border-stone-300">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
+                    FICHA ESTADUAL • REGIÃO {previewUFData.regiao.toUpperCase()}
+                  </span>
+                  <span className="text-stone-400">|</span>
+                  <h4 className="text-lg sm:text-xl font-extrabold text-stone-950">
+                    {previewUFData.nome} ({previewUFData.uf})
                   </h4>
-                  <p className="text-xs text-stone-400 mb-3">
-                    Concentração de batidas e óbitos por dia da semana na malha federal do estado.
+                </div>
+                <div className="text-xs text-stone-700 font-medium">
+                  Rodovias federais mais críticas na UF: <strong className="text-stone-950 font-bold">{previewUFData.br_critica}</strong>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 pt-4">
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">Ocorrências na UF</span>
+                  <p className="text-2xl font-extrabold text-stone-950 mt-0.5">
+                    {previewUFData.acidentes.toLocaleString('pt-BR')}
                   </p>
-                  <div className="h-52 w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <ComposedChart data={previewUFData.dias} margin={{ top: 10, right: 12, left: 0, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-                        <XAxis dataKey="dia" tick={{ fill: '#d6d3d1', fontSize: 11 }} />
-                        <YAxis yAxisId="left" tick={{ fill: '#d6d3d1', fontSize: 11 }} />
-                        <YAxis yAxisId="right" orientation="right" tick={{ fill: '#f87171', fontSize: 11 }} />
-                        <Tooltip
-                          contentStyle={{ backgroundColor: '#18181b', borderColor: '#3f3f46', color: '#f5f5f4', fontSize: '12px' }}
-                          formatter={(val, name) => [val.toLocaleString('pt-BR'), name]}
-                        />
-                        <Legend wrapperStyle={{ fontSize: '11px', color: '#d6d3d1' }} />
-                        <Bar yAxisId="left" dataKey="acidentes" name="Acidentes" fill="#9333ea" radius={[2, 2, 0, 0]} />
-                        <Line yAxisId="right" type="monotone" dataKey="mortos" name="Mortes" stroke="#ef4444" strokeWidth={2.5} dot={{ r: 3.5 }} />
-                      </ComposedChart>
-                    </ResponsiveContainer>
-                  </div>
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">Veículos Envolvidos</span>
+                  <p className="text-2xl font-extrabold text-stone-950 mt-0.5">
+                    {previewUFData.veiculos.toLocaleString('pt-BR')}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">Pessoas Feridas</span>
+                  <p className="text-2xl font-extrabold text-stone-950 mt-0.5">
+                    {previewUFData.feridos.toLocaleString('pt-BR')}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800 block">Vítimas Fatais</span>
+                  <p className="text-2xl font-extrabold text-red-700 mt-0.5">
+                    {previewUFData.mortos.toLocaleString('pt-BR')}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">Taxa de Letalidade</span>
+                  <p className="text-2xl font-extrabold text-stone-950 mt-0.5">
+                    {previewUFData.letalidade.toFixed(2)}%
+                  </p>
+                  <span className="text-[11px] text-stone-600 block">Mortos a cada 100 acidentes</span>
                 </div>
               </div>
             </div>
 
-            {/* Ranking Comparativo integrado diretamente à página do jornal (sem caixote pesado) */}
-            <div className="border-t border-stone-300 pt-8">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
-                    COMPARATIVO INTERESTADUAL
-                  </span>
-                  <h3 className="text-xl sm:text-2xl font-bold text-stone-950 mt-0.5">
-                    As 12 Unidades da Federação mais críticas por critério selecionado
-                  </h3>
-                  <p className="text-xs text-stone-600 mt-0.5">
-                    Alterne entre total de acidentes, total de mortes ou letalidade proporcional (mortos a cada 100 acidentes).
-                  </p>
+            {/* LINHA 3 (2 Colunas 50%/50% alinhadas): Ranking de UFs | Corredores BRs Críticos citados nas notícias */}
+            <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-start">
+              {/* Esquerda: Ranking das 12 UFs */}
+              <div className="lg:col-span-6 lg:pr-8">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                  <div>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
+                      COMPARATIVO INTERESTADUAL
+                    </span>
+                    <h3 className="text-xl font-bold text-stone-950 mt-0.5">
+                      Liderança por Volume, Mortes ou Letalidade (%)
+                    </h3>
+                  </div>
+                  <div className="flex items-center gap-1 bg-[#ebe6dc] p-1 rounded-lg border border-stone-300">
+                    {[
+                      { key: 'acidentes', label: 'Acidentes' },
+                      { key: 'mortos', label: 'Mortos' },
+                      { key: 'letalidade', label: 'Letalidade %' }
+                    ].map((opt) => (
+                      <button
+                        key={opt.key}
+                        onClick={() => setUfSortBy(opt.key)}
+                        className={`px-2.5 py-1 rounded text-xs font-semibold transition ${
+                          ufSortBy === opt.key
+                            ? 'bg-stone-900 text-white'
+                            : 'text-stone-700 hover:text-stone-950'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex items-center gap-1.5 bg-[#ebe6dc] p-1 rounded-lg border border-stone-300">
-                  {[
-                    { key: 'acidentes', label: 'Volume de Acidentes' },
-                    { key: 'mortos', label: 'Total de Mortos' },
-                    { key: 'letalidade', label: 'Taxa de Letalidade (%)' }
-                  ].map((opt) => (
-                    <button
-                      key={opt.key}
-                      onClick={() => setUfSortBy(opt.key)}
-                      className={`px-3 py-1.5 rounded text-xs font-semibold transition ${
-                        ufSortBy === opt.key
-                          ? 'bg-stone-900 text-white'
-                          : 'text-stone-700 hover:text-stone-950'
-                      }`}
+
+                <div className="h-80 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={sortedStatesList.slice(0, 12)}
+                      margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
                     >
-                      {opt.label}
-                    </button>
-                  ))}
+                      <CartesianGrid strokeDasharray="3 3" stroke="#d6d3d1" />
+                      <XAxis dataKey="uf" tick={{ fill: '#1c1917', fontSize: 11, fontWeight: 700 }} />
+                      <YAxis tick={{ fill: '#57534e', fontSize: 11 }} />
+                      <Tooltip
+                        contentStyle={{ backgroundColor: '#ffffff', borderColor: '#d6d3d1', fontSize: '12px' }}
+                        formatter={(value, name) => [
+                          ufSortBy === 'letalidade' ? `${value}%` : value.toLocaleString('pt-BR'),
+                          name
+                        ]}
+                      />
+                      <Bar
+                        dataKey={ufSortBy}
+                        name={
+                          ufSortBy === 'acidentes'
+                            ? 'Total de Acidentes'
+                            : ufSortBy === 'mortos'
+                            ? 'Vítimas Fatais'
+                            : 'Letalidade (%)'
+                        }
+                        fill={ufSortBy === 'mortos' ? '#dc2626' : ufSortBy === 'letalidade' ? '#d97706' : '#6b21a8'}
+                        radius={[3, 3, 0, 0]}
+                        onClick={(data) => {
+                          if (data && data.uf) setSelectedUF(data.uf);
+                        }}
+                        className="cursor-pointer"
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
                 </div>
               </div>
 
-              <div className="h-80 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={sortedStatesList.slice(0, 12)}
-                    margin={{ top: 15, right: 20, left: 10, bottom: 20 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#d6d3d1" />
-                    <XAxis dataKey="uf" tick={{ fill: '#1c1917', fontSize: 12, fontWeight: 700 }} />
-                    <YAxis tick={{ fill: '#57534e', fontSize: 11 }} />
-                    <Tooltip
-                      contentStyle={{ backgroundColor: '#ffffff', borderColor: '#d6d3d1', fontSize: '12px' }}
-                      formatter={(value, name) => [
-                        ufSortBy === 'letalidade' ? `${value}%` : value.toLocaleString('pt-BR'),
-                        name
-                      ]}
-                    />
-                    <Bar
-                      dataKey={ufSortBy}
-                      name={
-                        ufSortBy === 'acidentes'
-                          ? 'Total de Acidentes'
-                          : ufSortBy === 'mortos'
-                          ? 'Vítimas Fatais'
-                          : 'Letalidade (%)'
-                      }
-                      fill={ufSortBy === 'mortos' ? '#dc2626' : ufSortBy === 'letalidade' ? '#d97706' : '#6b21a8'}
-                      radius={[3, 3, 0, 0]}
-                      onClick={(data) => {
-                        if (data && data.uf) setSelectedUF(data.uf);
-                      }}
-                      className="cursor-pointer"
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
+              {/* Direita: Novo Dashboard das Rodovias Federais (BRs) citadas nas notícias */}
+              <div className="lg:col-span-6 lg:pl-8 mt-8 lg:mt-0">
+                <div className="mb-4">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
+                    MALHA CRÍTICA CITADA NO NOTICIÁRIO
+                  </span>
+                  <h3 className="text-xl font-bold text-stone-950 mt-0.5">
+                    Ocorrências e Mortes nos Principais Corredores (BRs)
+                  </h3>
+                </div>
+
+                <div className="h-80 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <ComposedChart
+                      layout="vertical"
+                      data={CORREDORES_BR_CRITICOS.slice(0, 8)}
+                      margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke="#d6d3d1" />
+                      <XAxis type="number" tick={{ fill: '#57534e', fontSize: 11 }} />
+                      <YAxis
+                        dataKey="br"
+                        type="category"
+                        width={135}
+                        tick={{ fill: '#1c1917', fontSize: 11, fontWeight: 600 }}
+                      />
+                      <Tooltip
+                        contentStyle={{ backgroundColor: '#ffffff', borderColor: '#d6d3d1', fontSize: '12px' }}
+                        formatter={(val, name) => [val.toLocaleString('pt-BR'), name]}
+                      />
+                      <Legend wrapperStyle={{ fontSize: '12px' }} />
+                      <Bar dataKey="acidentes" name="Acidentes no corredor" fill="#6b21a8" radius={[0, 3, 3, 0]} />
+                      <Bar dataKey="mortos" name="Vítimas Fatais" fill="#dc2626" radius={[0, 3, 3, 0]} />
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
             </div>
 
@@ -1262,40 +1310,29 @@ export default function App() {
         )}
 
         {/* =====================================================================
-            CADERNO 01: 1. CLIMA E VÍTIMAS - INTEGRADO À PÁGINA DO JORNAL
+            CADERNO 01: 1. CLIMA E VÍTIMAS
+            - Linha 1 (2 Colunas 50%/50% alinhadas com o topo): Pizza da Condição | Severidade Climática (% Mortos e Feridos Graves)
+            - Linha 2 (Largura total abaixo deles): Ficha da Condição Meteorológica
+            - Linha 3: Grade Completa das 10 Condições Meteorológicas
            ===================================================================== */}
         {selectedAnalysis === 'clima' && (
-          <div className="space-y-12">
-            {/* Inspeção por Condição Meteorológica */}
-            <div className="bg-[#111113] text-stone-100 rounded-xl p-6 border border-stone-800">
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-stone-800">
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-amber-400">
-                    INSPEÇÃO DETALHADA POR CONDIÇÃO METEOROLÓGICA
-                  </span>
-                  <h3 className="text-xl sm:text-2xl font-bold text-white mt-1">
-                    Proporção de Ilesos, Feridos Leves, Feridos Graves e Mortos
-                  </h3>
+          <div className="space-y-10">
+            {/* LINHA 1 (2 Colunas 50%/50% simétricas à divisão do topo) */}
+            <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-stretch">
+              {/* Esquerda: Pizza da Condição Selecionada */}
+              <div className="lg:col-span-6 lg:pr-8 flex flex-col justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                  <div>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
+                      DIVISÃO DE VÍTIMAS • {activeClimaObj.condicao.toUpperCase()}
+                    </span>
+                    <h3 className="text-xl font-bold text-stone-950 mt-0.5">
+                      Proporção de Ilesos, Feridos e Mortos na Condição
+                    </h3>
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {CLIMA_VITIMAS_DATA.map((item) => (
-                    <button
-                      key={item.condicao}
-                      onClick={() => setSelectedClima(item.condicao)}
-                      className={`px-3 py-1.5 rounded text-xs font-semibold border transition ${
-                        selectedClima === item.condicao
-                          ? 'bg-red-700 text-white border-red-500'
-                          : 'bg-stone-900 text-stone-300 border-stone-700 hover:border-stone-500'
-                      }`}
-                    >
-                      {item.condicao}
-                    </button>
-                  ))}
-                </div>
-              </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6 items-center">
-                <div className="lg:col-span-5 h-72">
+                <div className="h-72 w-full my-auto">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -1313,58 +1350,123 @@ export default function App() {
                         ))}
                       </Pie>
                       <Tooltip
-                        contentStyle={{ backgroundColor: '#18181b', borderColor: '#3f3f46', color: '#f5f5f4', fontSize: '12px' }}
+                        contentStyle={{ backgroundColor: '#ffffff', borderColor: '#d6d3d1', fontSize: '12px' }}
                         formatter={(val, name) => [
                           `${val.toLocaleString('pt-BR')} pessoas`,
                           name
                         ]}
                       />
-                      <Legend wrapperStyle={{ fontSize: '12px', color: '#e7e5e4' }} />
+                      <Legend wrapperStyle={{ fontSize: '12px' }} />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
 
-                <div className="lg:col-span-7 space-y-4">
-                  <div className="flex flex-wrap items-baseline justify-between border-b border-stone-800 pb-3">
-                    <div>
-                      <span className="text-xs font-semibold uppercase tracking-wider text-stone-400">Condição em análise</span>
-                      <h4 className="text-2xl font-bold text-white">{activeClimaObj.condicao}</h4>
-                    </div>
-                    <div className="text-right text-xs text-stone-400">
-                      <span className="block">
-                        Acidentes registrados: <strong className="text-white">{activeClimaObj.acidentes.toLocaleString('pt-BR')}</strong>
-                      </span>
-                      <span className="block">
-                        Total de pessoas envolvidas: <strong className="text-amber-300">{activeClimaObj.total_pessoas.toLocaleString('pt-BR')}</strong>
-                      </span>
-                    </div>
-                  </div>
+                <p className="text-xs text-stone-600 mt-2">
+                  Selecione outra condição climática na ficha abaixo para alternar o detalhamento acima.
+                </p>
+              </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    {activeClimaObj.fatias.map((fatia) => {
-                      const somaClassificadas = activeClimaObj.ilesos + activeClimaObj.feridos_leves + activeClimaObj.feridos_graves + activeClimaObj.mortos;
-                      const pct = somaClassificadas > 0 ? ((fatia.value / somaClassificadas) * 100).toFixed(1) : '0.0';
-                      return (
-                        <div key={fatia.name} className="p-3.5 rounded-lg border border-stone-800 bg-[#18181b]">
-                          <div className="flex items-center gap-2">
-                            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: fatia.color }}></span>
-                            <span className="text-xs font-semibold text-stone-300">{fatia.name}</span>
-                          </div>
-                          <p className="text-xl font-bold text-white mt-1.5">
-                            {fatia.value.toLocaleString('pt-BR')}
-                          </p>
-                          <p className="text-[11px] text-stone-400 mt-0.5">
-                            {pct}% na condição
-                          </p>
-                        </div>
-                      );
-                    })}
-                  </div>
+              {/* Direita: Gráfico de Severidade Climática (% de Mortos e % de Feridos Graves citados na notícia) */}
+              <div className="lg:col-span-6 lg:pl-8 mt-8 lg:mt-0 flex flex-col justify-between">
+                <div className="mb-3">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
+                    SEVERIDADE POR FENÔMENO CLIMÁTICO
+                  </span>
+                  <h3 className="text-xl font-bold text-stone-950 mt-0.5">
+                    Proporção de Mortos (%) e Feridos Graves (%) por Clima
+                  </h3>
+                </div>
+
+                <div className="h-72 w-full my-auto">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={CLIMA_VITIMAS_DATA.slice(0, 7)}
+                      margin={{ top: 10, right: 15, left: 0, bottom: 10 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke="#d6d3d1" />
+                      <XAxis dataKey="condicao" tick={{ fill: '#1c1917', fontSize: 11, fontWeight: 600 }} />
+                      <YAxis tick={{ fill: '#57534e', fontSize: 11 }} unit="%" />
+                      <Tooltip
+                        contentStyle={{ backgroundColor: '#ffffff', borderColor: '#d6d3d1', fontSize: '12px' }}
+                        formatter={(val, name) => [`${val}%`, name]}
+                      />
+                      <Legend wrapperStyle={{ fontSize: '12px' }} />
+                      <Bar dataKey="pct_feridos_graves" name="% Feridos Graves" fill="#ea580c" radius={[3, 3, 0, 0]} />
+                      <Bar dataKey="pct_mortos" name="% Vítimas Fatais" fill="#dc2626" radius={[3, 3, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <p className="text-xs text-stone-600 mt-2">
+                  Sob Nevoeiro/Neblina, a proporção de mortos chega a 5,91% (56% maior que os 3,79% do Céu Claro).
+                </p>
+              </div>
+            </div>
+
+            {/* LINHA 2: Ficha Meteorológica em largura total (seguindo o mesmo modelo da Ficha Estadual das 27 UFs) */}
+            <div className="bg-[#ebe6dc] border-y border-stone-300 py-5 px-6 rounded-xl">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-4 border-b border-stone-300">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
+                    FICHA METEOROLÓGICA
+                  </span>
+                  <span className="text-stone-400">|</span>
+                  <h4 className="text-lg sm:text-xl font-extrabold text-stone-950">
+                    {activeClimaObj.condicao} ({activeClimaObj.acidentes.toLocaleString('pt-BR')} acidentes)
+                  </h4>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {CLIMA_VITIMAS_DATA.map((item) => (
+                    <button
+                      key={item.condicao}
+                      onClick={() => setSelectedClima(item.condicao)}
+                      className={`px-2.5 py-1 rounded text-xs font-semibold transition ${
+                        selectedClima === item.condicao
+                          ? 'bg-stone-900 text-white'
+                          : 'bg-[#faf8f5] text-stone-700 border border-stone-300 hover:text-stone-950'
+                      }`}
+                    >
+                      {item.condicao}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 pt-4">
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">Pessoas Envolvidas</span>
+                  <p className="text-2xl font-extrabold text-stone-950 mt-0.5">
+                    {activeClimaObj.total_pessoas.toLocaleString('pt-BR')}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">Ilesos ({activeClimaObj.pct_ilesos}%)</span>
+                  <p className="text-2xl font-extrabold text-stone-950 mt-0.5">
+                    {activeClimaObj.ilesos.toLocaleString('pt-BR')}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">Feridos Leves ({activeClimaObj.pct_feridos_leves}%)</span>
+                  <p className="text-2xl font-extrabold text-stone-950 mt-0.5">
+                    {activeClimaObj.feridos_leves.toLocaleString('pt-BR')}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">Feridos Graves ({activeClimaObj.pct_feridos_graves}%)</span>
+                  <p className="text-2xl font-extrabold text-stone-950 mt-0.5">
+                    {activeClimaObj.feridos_graves.toLocaleString('pt-BR')}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800 block">Mortos ({activeClimaObj.pct_mortos}%)</span>
+                  <p className="text-2xl font-extrabold text-red-700 mt-0.5">
+                    {activeClimaObj.mortos.toLocaleString('pt-BR')}
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Grade de Pizzas Integrada diretamente à página do jornal */}
+            {/* LINHA 3: Grade Completa das 10 Condições Meteorológicas */}
             <div className="border-t border-stone-300 pt-8">
               <div className="mb-6">
                 <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
@@ -1380,9 +1482,7 @@ export default function App() {
                   <div
                     key={item.condicao}
                     onClick={() => setSelectedClima(item.condicao)}
-                    className={`pb-5 border-b border-stone-300 transition cursor-pointer ${
-                      selectedClima === item.condicao ? 'opacity-100' : 'opacity-90 hover:opacity-100'
-                    }`}
+                    className="pb-5 border-b border-stone-300 transition cursor-pointer hover:opacity-100"
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div>
@@ -1392,7 +1492,7 @@ export default function App() {
                         </span>
                       </div>
                       <span className="text-xs font-semibold text-red-800">
-                        Mortos: {item.mortos.toLocaleString('pt-BR')}
+                        Mortos: {item.mortos.toLocaleString('pt-BR')} ({item.pct_mortos}%)
                       </span>
                     </div>
 
@@ -1444,38 +1544,39 @@ export default function App() {
         )}
 
         {/* =====================================================================
-            CADERNO 02: 2. CAUSAS, VEÍCULOS E PESSOAS - INTEGRADO À PÁGINA
+            CADERNO 02: 2. CAUSAS, VEÍCULOS E PESSOAS
+            - Linha 1 (2 Colunas 50%/50% alinhadas com o topo): Tipo x Veículos | Letalidade e Média de Veículos por Tipo
+            - Linha 2 (Largura total abaixo deles): Ficha Síntese de Causas, Veículos e Pessoas
+            - Linha 3 (2 Colunas 50%/50% alinhadas): Scatter Plot de Pessoas | Matriz Pictográfica de Pessoas
            ===================================================================== */}
         {selectedAnalysis === 'causas' && (
-          <div className="space-y-12">
-            {/* 1. Tipo de Acidente x Total de Veículos integrado direto no jornal */}
-            <div className="border-t border-stone-300 pt-8">
-              <div className="mb-6">
-                <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
-                  1. TIPOLOGIA DO SINISTRO X FROTA ATINGIDA
-                </span>
-                <h3 className="text-xl sm:text-2xl font-bold text-stone-950 mt-0.5">
-                  Relação entre Tipo de Acidente e Total de Veículos Envolvidos
-                </h3>
-                <p className="text-xs sm:text-sm text-stone-600 mt-1">
-                  A colisão traseira lidera em volume de veículos atingidos (184.672), enquanto o engavetamento registra a maior média de veículos por ocorrência (4,10) e a colisão frontal concentra o maior número de mortos (10.248).
-                </p>
-              </div>
+          <div className="space-y-10">
+            {/* LINHA 1 (2 Colunas 50%/50% simétricas à divisão do topo) */}
+            <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-stretch">
+              {/* Esquerda: Tipo de Acidente x Total de Veículos */}
+              <div className="lg:col-span-6 lg:pr-8 flex flex-col justify-between">
+                <div className="mb-3">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
+                    1. TIPOLOGIA DO SINISTRO X FROTA ATINGIDA
+                  </span>
+                  <h3 className="text-xl font-bold text-stone-950 mt-0.5">
+                    Tipo de Acidente por Total de Veículos e Ocorrências
+                  </h3>
+                </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <div className="lg:col-span-8 h-[430px]">
+                <div className="h-[380px] w-full my-auto">
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart
                       layout="vertical"
-                      data={TIPO_ACIDENTE_VEICULOS_DATA.slice(0, 12)}
-                      margin={{ top: 10, right: 30, left: 20, bottom: 10 }}
+                      data={TIPO_ACIDENTE_VEICULOS_DATA.slice(0, 10)}
+                      margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" stroke="#d6d3d1" />
                       <XAxis type="number" tick={{ fill: '#57534e', fontSize: 11 }} />
                       <YAxis
                         dataKey="tipo_acidente"
                         type="category"
-                        width={175}
+                        width={160}
                         tick={{ fill: '#1c1917', fontSize: 11, fontWeight: 600 }}
                       />
                       <Tooltip
@@ -1485,146 +1586,210 @@ export default function App() {
                       <Legend wrapperStyle={{ fontSize: '12px' }} />
                       <Bar dataKey="veiculos" name="Total de Veículos" fill="#6b21a8" radius={[0, 3, 3, 0]} />
                       <Bar dataKey="acidentes" name="Total de Acidentes" fill="#a8a29e" radius={[0, 3, 3, 0]} />
-                      <Bar dataKey="mortos" name="Vítimas Fatais" fill="#dc2626" radius={[0, 3, 3, 0]} />
                     </ComposedChart>
                   </ResponsiveContainer>
                 </div>
 
-                <div className="lg:col-span-4 bg-[#111113] text-stone-100 p-5 rounded-xl border border-stone-800 space-y-3">
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-amber-400 border-b border-stone-800 pb-2">
-                    Média de veículos e letalidade por modalidade
-                  </h4>
-                  <div className="space-y-2.5 max-h-[365px] overflow-y-auto pr-1">
-                    {TIPO_ACIDENTE_VEICULOS_DATA.slice(0, 8).map((item) => (
-                      <div key={item.tipo_acidente} className="p-3 rounded-lg bg-[#18181b] border border-stone-800">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-white">{item.tipo_acidente}</span>
-                          <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-purple-950/80 text-purple-300 border border-purple-800/60">
-                            {item.media_veiculos.toFixed(2)} veíc./acid.
-                          </span>
-                        </div>
-                        <div className="mt-2 flex items-center justify-between text-xs text-stone-400">
-                          <span>Veículos: <strong className="text-stone-200">{item.veiculos.toLocaleString('pt-BR')}</strong></span>
-                          <span>Mortos: <strong className="text-red-400">{item.mortos.toLocaleString('pt-BR')}</strong></span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                <p className="text-xs text-stone-600 mt-2">
+                  A colisão traseira lidera em frota envolvida (184.672 veículos em 75.496 acidentes).
+                </p>
+              </div>
+
+              {/* Direita: Letalidade (Mortos a cada 100 acidentes) e Média de Veículos por Tipo */}
+              <div className="lg:col-span-6 lg:pl-8 mt-8 lg:mt-0 flex flex-col justify-between">
+                <div className="mb-3">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
+                    SEVERIDADE E MÉDIA VEICULAR POR MODALIDADE
+                  </span>
+                  <h3 className="text-xl font-bold text-stone-950 mt-0.5">
+                    Mortos a cada 100 Acidentes (%) vs. Total de Mortos
+                  </h3>
+                </div>
+
+                <div className="h-[380px] w-full my-auto">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <ComposedChart
+                      layout="vertical"
+                      data={[...TIPO_ACIDENTE_VEICULOS_DATA].sort((a, b) => b.taxa_mortalidade - a.taxa_mortalidade).slice(0, 10)}
+                      margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke="#d6d3d1" />
+                      <XAxis type="number" tick={{ fill: '#57534e', fontSize: 11 }} />
+                      <YAxis
+                        dataKey="tipo_acidente"
+                        type="category"
+                        width={160}
+                        tick={{ fill: '#1c1917', fontSize: 11, fontWeight: 600 }}
+                      />
+                      <Tooltip
+                        contentStyle={{ backgroundColor: '#ffffff', borderColor: '#d6d3d1', fontSize: '12px' }}
+                        formatter={(val, name) => [
+                          name.includes('%') ? `${val}%` : val.toLocaleString('pt-BR'),
+                          name
+                        ]}
+                      />
+                      <Legend wrapperStyle={{ fontSize: '12px' }} />
+                      <Bar dataKey="taxa_mortalidade" name="Letalidade (Mortos / 100 acid. %)" fill="#dc2626" radius={[0, 3, 3, 0]} />
+                      <Bar dataKey="media_veiculos" name="Média de Veículos por Acidente" fill="#d97706" radius={[0, 3, 3, 0]} />
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <p className="text-xs text-stone-600 mt-2">
+                  A colisão frontal mata 39,12 pessoas a cada 100 acidentes; o engavetamento envolve 4,10 veículos por batida.
+                </p>
+              </div>
+            </div>
+
+            {/* LINHA 2: Ficha Síntese de Causas, Veículos e Pessoas (embaixo da divisão de 2 colunas, igual à aba 27 UFs) */}
+            <div className="bg-[#ebe6dc] border-y border-stone-300 py-5 px-6 rounded-xl">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 pb-4 border-b border-stone-300">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
+                    FICHA TÉCNICA • MECÂNICA DO SINISTRO E FATOR HUMANO
+                  </span>
+                </div>
+                <span className="text-xs text-stone-700 font-medium">
+                  Indicadores consolidados da perícia da Polícia Rodoviária Federal (2021 a 2026)
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 pt-4">
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">Líder em Veículos</span>
+                  <p className="text-xl font-extrabold text-stone-950 mt-0.5">184.672 veíc.</p>
+                  <span className="text-[11px] text-stone-600 block">Colisão traseira (75.496 acid.)</span>
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">Maior Média / Batida</span>
+                  <p className="text-xl font-extrabold text-stone-950 mt-0.5">4,10 veículos</p>
+                  <span className="text-[11px] text-stone-600 block">Engavetamento (27.364 veíc.)</span>
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">Líder em Pessoas</span>
+                  <p className="text-xl font-extrabold text-stone-950 mt-0.5">138.036 pessoas</p>
+                  <span className="text-[11px] text-stone-600 block">Reação tardia ou ineficiente</span>
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800 block">Tipo Mais Mortal</span>
+                  <p className="text-xl font-extrabold text-red-700 mt-0.5">10.248 mortos</p>
+                  <span className="text-[11px] text-stone-600 block">Colisão frontal (39,12% letal.)</span>
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-red-800 block">Causa Mais Letal</span>
+                  <p className="text-xl font-extrabold text-red-700 mt-0.5">4.812 mortos</p>
+                  <span className="text-[11px] text-stone-600 block">Transitar na contramão (3,55 pess./acid.)</span>
                 </div>
               </div>
             </div>
 
-            {/* 2. Causa do Acidente x Total de Pessoas Envolvidas integrado direto na página */}
-            <div className="border-t border-stone-300 pt-8">
-              <div className="mb-6">
-                <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
-                  2. DISPERSÃO E ESCALA HUMANA POR CAUSA DO ACIDENTE
-                </span>
-                <h3 className="text-xl sm:text-2xl font-bold text-stone-950 mt-0.5">
-                  Relação entre Causa do Acidente e Total de Pessoas Envolvidas
-                </h3>
-                <p className="text-xs sm:text-sm text-stone-600 mt-1">
-                  À esquerda, cada causa é representada por agrupamentos de silhuetas humanas proporcionais ao total de envolvidos. À direita, cada ícone equivale a 5.000 pessoas atingidas.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start lg:divide-x lg:divide-stone-300">
-                {/* Scatter Plot com Símbolos de Pessoas */}
-                <div className="lg:col-span-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-stone-700">
-                      Dispersão: Ocorrências (X) vs. Pessoas Envolvidas (Y)
+            {/* LINHA 3 (2 Colunas 50%/50% alinhadas): Scatter Plot de Pessoas | Matriz Pictográfica de Pessoas */}
+            <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-start">
+              {/* Esquerda: Scatter Plot com Símbolos de Pessoas */}
+              <div className="lg:col-span-6 lg:pr-8">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
+                      2. DISPERSÃO DE CAUSAS X PESSOAS ENVOLVIDAS
                     </span>
-                    <div className="flex items-center gap-3 text-xs font-semibold">
-                      <span className="flex items-center gap-1 text-purple-800">
-                        <span className="w-2.5 h-2.5 rounded-full bg-purple-800 inline-block"></span> Volume
-                      </span>
-                      <span className="flex items-center gap-1 text-red-700">
-                        <span className="w-2.5 h-2.5 rounded-full bg-red-600 inline-block"></span> +3.000 mortos
-                      </span>
-                    </div>
+                    <h3 className="text-xl font-bold text-stone-950 mt-0.5">
+                      Ocorrências (X) vs. Total de Pessoas (Y)
+                    </h3>
                   </div>
-                  <div className="h-[380px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 10 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#d6d3d1" />
-                        <XAxis
-                          type="number"
-                          dataKey="acidentes"
-                          name="Acidentes"
-                          tick={{ fill: '#57534e', fontSize: 11 }}
-                          label={{ value: 'Total de Acidentes', position: 'insideBottom', offset: -10, fontSize: 11, fill: '#57534e' }}
-                        />
-                        <YAxis
-                          type="number"
-                          dataKey="pessoas"
-                          name="Total de Pessoas"
-                          tick={{ fill: '#57534e', fontSize: 11 }}
-                        />
-                        <ZAxis type="number" dataKey="mortos" range={[100, 600]} name="Mortos" />
-                        <Tooltip
-                          cursor={{ strokeDasharray: '3 3' }}
-                          content={({ active, payload }) => {
-                            if (!active || !payload || !payload.length) return null;
-                            const d = payload[0].payload;
-                            return (
-                              <div className="bg-stone-950 border border-stone-700 p-3 rounded shadow-lg text-xs text-stone-100">
-                                <p className="font-bold text-white mb-1">{d.causa}</p>
-                                <p className="text-stone-300">Pessoas envolvidas: <strong className="text-purple-300">{d.pessoas.toLocaleString('pt-BR')}</strong></p>
-                                <p className="text-stone-300">Acidentes: <strong>{d.acidentes.toLocaleString('pt-BR')}</strong></p>
-                                <p className="text-stone-300">Média por acidente: <strong>{d.media_pessoas} pessoas</strong></p>
-                                <p className="text-red-400">Vítimas fatais: <strong>{d.mortos.toLocaleString('pt-BR')}</strong></p>
-                              </div>
-                            );
-                          }}
-                        />
-                        <Scatter
-                          name="Causas de Acidentes"
-                          data={CAUSA_PESSOAS_DATA}
-                          shape={<CustomPersonClusterShape />}
-                        />
-                      </ScatterChart>
-                    </ResponsiveContainer>
+                  <div className="flex items-center gap-3 text-xs font-semibold">
+                    <span className="flex items-center gap-1 text-purple-800">
+                      <span className="w-2.5 h-2.5 rounded-full bg-purple-800 inline-block"></span> Volume
+                    </span>
+                    <span className="flex items-center gap-1 text-red-700">
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-600 inline-block"></span> +3.000 mortos
+                    </span>
                   </div>
                 </div>
 
-                {/* Matriz Pictográfica de Símbolos de Pessoas */}
-                <div className="lg:col-span-6 lg:pl-8">
-                  <div className="flex items-center justify-between mb-3 border-b border-stone-300 pb-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-stone-700">
-                      Escala Humana: 1 símbolo = 5.000 envolvidos
+                <div className="h-[380px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 10 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#d6d3d1" />
+                      <XAxis
+                        type="number"
+                        dataKey="acidentes"
+                        name="Acidentes"
+                        tick={{ fill: '#57534e', fontSize: 11 }}
+                        label={{ value: 'Total de Acidentes', position: 'insideBottom', offset: -10, fontSize: 11, fill: '#57534e' }}
+                      />
+                      <YAxis
+                        type="number"
+                        dataKey="pessoas"
+                        name="Total de Pessoas"
+                        tick={{ fill: '#57534e', fontSize: 11 }}
+                      />
+                      <ZAxis type="number" dataKey="mortos" range={[100, 600]} name="Mortos" />
+                      <Tooltip
+                        cursor={{ strokeDasharray: '3 3' }}
+                        content={({ active, payload }) => {
+                          if (!active || !payload || !payload.length) return null;
+                          const d = payload[0].payload;
+                          return (
+                            <div className="bg-stone-950 border border-stone-700 p-3 rounded shadow-lg text-xs text-stone-100">
+                              <p className="font-bold text-white mb-1">{d.causa}</p>
+                              <p className="text-stone-300">Pessoas envolvidas: <strong className="text-purple-300">{d.pessoas.toLocaleString('pt-BR')}</strong></p>
+                              <p className="text-stone-300">Acidentes: <strong>{d.acidentes.toLocaleString('pt-BR')}</strong></p>
+                              <p className="text-stone-300">Média por acidente: <strong>{d.media_pessoas} pessoas</strong></p>
+                              <p className="text-red-400">Vítimas fatais: <strong>{d.mortos.toLocaleString('pt-BR')}</strong></p>
+                            </div>
+                          );
+                        }}
+                      />
+                      <Scatter
+                        name="Causas de Acidentes"
+                        data={CAUSA_PESSOAS_DATA}
+                        shape={<CustomPersonClusterShape />}
+                      />
+                    </ScatterChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Direita: Matriz Pictográfica de Símbolos de Pessoas */}
+              <div className="lg:col-span-6 lg:pl-8 mt-8 lg:mt-0">
+                <div className="flex items-center justify-between mb-3 border-b border-stone-300 pb-2">
+                  <div>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
+                      ESCALA HUMANA POR CAUSA
                     </span>
-                    <span className="text-xs text-stone-500">Top 10 causas</span>
+                    <h3 className="text-xl font-bold text-stone-950 mt-0.5">
+                      1 símbolo humano = 5.000 pessoas envolvidas
+                    </h3>
                   </div>
-                  <div className="space-y-3 max-h-[370px] overflow-y-auto pr-1">
-                    {CAUSA_PESSOAS_DATA.slice(0, 10).map((item) => {
-                      const iconCount = Math.max(1, Math.round(item.pessoas / 5000));
-                      const isCritical = item.mortos >= 3000;
-                      return (
-                        <div key={item.causa} className="pb-2.5 border-b border-stone-200">
-                          <div className="flex items-center justify-between text-xs mb-1.5">
-                            <span className="font-semibold text-stone-900">{item.causa}</span>
-                            <span className="text-stone-700">
-                              <strong>{item.pessoas.toLocaleString('pt-BR')}</strong> pessoas ({item.mortos.toLocaleString('pt-BR')} mortos)
-                            </span>
-                          </div>
-                          <div className="flex flex-wrap items-center gap-1">
-                            {Array.from({ length: iconCount }).map((_, idx) => (
-                              <span
-                                key={idx}
-                                title={`${item.causa}: ~${((idx + 1) * 5000).toLocaleString('pt-BR')} pessoas`}
-                                className={`inline-flex items-center justify-center w-5 h-5 rounded ${
-                                  isCritical ? 'bg-red-100 text-red-700' : 'bg-purple-100 text-purple-800'
-                                }`}
-                              >
-                                <Users className="w-3.5 h-3.5" />
-                              </span>
-                            ))}
-                          </div>
+                </div>
+                <div className="space-y-3 max-h-[370px] overflow-y-auto pr-1">
+                  {CAUSA_PESSOAS_DATA.slice(0, 10).map((item) => {
+                    const iconCount = Math.max(1, Math.round(item.pessoas / 5000));
+                    const isCritical = item.mortos >= 3000;
+                    return (
+                      <div key={item.causa} className="pb-2.5 border-b border-stone-200">
+                        <div className="flex items-center justify-between text-xs mb-1.5">
+                          <span className="font-semibold text-stone-900">{item.causa}</span>
+                          <span className="text-stone-700">
+                            <strong>{item.pessoas.toLocaleString('pt-BR')}</strong> pessoas ({item.mortos.toLocaleString('pt-BR')} mortos)
+                          </span>
                         </div>
-                      );
-                    })}
-                  </div>
+                        <div className="flex flex-wrap items-center gap-1">
+                          {Array.from({ length: iconCount }).map((_, idx) => (
+                            <span
+                              key={idx}
+                              title={`${item.causa}: ~${((idx + 1) * 5000).toLocaleString('pt-BR')} pessoas`}
+                              className={`inline-flex items-center justify-center w-5 h-5 rounded ${
+                                isCritical ? 'bg-red-100 text-red-700' : 'bg-purple-100 text-purple-800'
+                              }`}
+                            >
+                              <Users className="w-3.5 h-3.5" />
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -1634,13 +1799,14 @@ export default function App() {
         )}
 
         {/* =====================================================================
-            CADERNO 03: 3. OCORRÊNCIAS, FERIDOS E MORTES - INTEGRADO À PÁGINA
+            CADERNO 03: 3. OCORRÊNCIAS, FERIDOS E MORTES
+            (Mantido no layout que a usuária elogiou, com a notícia e insight em coluna dupla no topo)
            ===================================================================== */}
         {selectedAnalysis === 'ocorrencias_mortes' && (
           <div className="space-y-12">
-            {/* Bloco 1: Série Histórica 2021-2026 e Dias da Semana integrados na página */}
-            <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:divide-x lg:divide-stone-300">
-              <div>
+            {/* Bloco 1: Série Histórica 2021-2026 e Dias da Semana integrados na página (colunas 6/12 | 6/12 simétricas com o topo) */}
+            <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300">
+              <div className="lg:col-span-6 lg:pr-8">
                 <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
                   EVOLUÇÃO ANUAL • 2021 A 2026*
                 </span>
@@ -1670,7 +1836,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="lg:pl-8">
+              <div className="lg:col-span-6 lg:pl-8 mt-8 lg:mt-0">
                 <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
                   CICLO SEMANAL • SEGUNDA A DOMINGO
                 </span>
@@ -1750,8 +1916,8 @@ export default function App() {
                 ))}
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:divide-x lg:divide-stone-300">
-                <div>
+              <div className="grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300">
+                <div className="lg:col-span-6 lg:pr-8">
                   <h4 className="text-base font-bold text-stone-950 mb-1">
                     Volume Absoluto: Ocorrências, Feridos e Mortes por Turno
                   </h4>
@@ -1777,7 +1943,7 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="lg:pl-8">
+                <div className="lg:col-span-6 lg:pl-8 mt-8 lg:mt-0">
                   <h4 className="text-base font-bold text-stone-950 mb-1">
                     Severidade: Taxa de Mortalidade (%) e Mortos por 100 Feridos
                   </h4>
