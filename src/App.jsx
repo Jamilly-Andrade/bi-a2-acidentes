@@ -622,7 +622,7 @@ export default function App() {
   const activeClimaObj = CLIMA_VITIMAS_DATA.find((c) => c.condicao === selectedClima) || CLIMA_VITIMAS_DATA[0];
 
   return (
-    <div className="min-h-screen bg-[#f4f1ea] text-stone-900">
+    <div className="min-h-screen bg-[#f4f1ea] text-stone-900 overflow-x-hidden">
       {/* =====================================================================
           PARTE INICIAL ESCURA (#09090b)
          ===================================================================== */}
@@ -644,7 +644,7 @@ export default function App() {
 
         {/* Hero Section Escura */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-10">
-          <AnimatedContent distance={30} duration={0.7} stagger={0.1} trigger="mount" className="max-w-5xl mx-auto text-center">
+          <AnimatedContent distance={55} duration={0.9} stagger={0.12} delay={0.1} trigger="mount" className="max-w-5xl mx-auto text-center">
             {/* Único título em fonte serifada, igual a como estava antes */}
             <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15] max-w-5xl mx-auto">
               O quanto você sabe sobre os acidentes em rodovias brasileiras?
@@ -656,13 +656,13 @@ export default function App() {
             </p>
           </AnimatedContent>
 
-          {/* Galeria Interativa no tamanho original (w-20 sm:w-24 hover:w-64 sm:hover:w-80) e em preto e branco (grayscale) com as 8 fotos novas */}
-          <div className="mt-10 overflow-x-auto pb-4 pt-2 scrollbar-none">
-            <AnimatedContent distance={30} duration={0.6} stagger={0.05} delay={0.1} trigger="mount" className="flex items-center justify-center gap-2 sm:gap-3 min-w-[750px] px-4">
+          {/* Galeria Interativa responsiva: 2 linhas de 4 em telas menores/divididas, 1 linha de 8 no tablet e efeito acordeão no desktop */}
+          <div className="mt-10 pb-4 pt-2">
+            <AnimatedContent distance={45} duration={0.8} stagger={0.07} delay={0.25} trigger="mount" className="grid grid-cols-4 md:grid-cols-8 lg:flex lg:items-center lg:justify-center gap-2 sm:gap-3 max-w-6xl mx-auto">
               {HERO_IMAGES.map((imgUrl, idx) => (
                 <div
                   key={idx}
-                  className="group relative h-72 sm:h-80 w-20 sm:w-24 hover:w-64 sm:hover:w-80 transition-all duration-500 ease-out rounded-lg overflow-hidden border border-neutral-800 hover:border-red-600 shadow-lg cursor-pointer flex-shrink-0"
+                  className="group relative h-36 sm:h-52 md:h-60 lg:h-80 w-full lg:w-24 lg:hover:w-80 transition-all duration-500 ease-out rounded-lg overflow-hidden border border-neutral-800 hover:border-red-600 shadow-lg cursor-pointer lg:flex-shrink-0"
                 >
                   <img
                     src={imgUrl}
@@ -676,27 +676,27 @@ export default function App() {
             </AnimatedContent>
           </div>
 
-          {/* 4 Contadores com redução proporcional de 10% no padding, tipografia e largura máxima */}
-          <AnimatedContent distance={35} duration={0.7} stagger={0.08} delay={0.2} trigger="mount" className="mt-7 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-            <div className="py-4 px-4 rounded-xl border border-neutral-800 bg-[#111113]">
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400">Total de Acidentes</p>
+          {/* 4 Contadores em cinza grafite mais claro para maior contraste com o fundo escuro */}
+          <AnimatedContent distance={55} duration={0.9} stagger={0.12} delay={0.35} trigger="mount" className="mt-7 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            <div className="py-4 px-4 rounded-xl border border-neutral-700 bg-[#232329]">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300">Total de Acidentes</p>
               <p className="text-2xl sm:text-3xl font-black text-white mt-1">391.382</p>
-              <p className="text-[11px] text-neutral-400 mt-1">Ocorrências atendidas pela PRF</p>
+              <p className="text-[11px] text-neutral-300 mt-1">Ocorrências atendidas pela PRF</p>
             </div>
-            <div className="py-4 px-4 rounded-xl border border-neutral-800 bg-[#111113]">
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400">Veículos Envolvidos</p>
+            <div className="py-4 px-4 rounded-xl border border-neutral-700 bg-[#232329]">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300">Veículos Envolvidos</p>
               <p className="text-2xl sm:text-3xl font-black text-white mt-1">746.587</p>
-              <p className="text-[11px] text-neutral-400 mt-1">Média de 1,91 veículo por sinistro</p>
+              <p className="text-[11px] text-neutral-300 mt-1">Média de 1,91 veículo por sinistro</p>
             </div>
-            <div className="py-4 px-4 rounded-xl border border-neutral-800 bg-[#111113]">
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400">Total de Feridos</p>
+            <div className="py-4 px-4 rounded-xl border border-neutral-700 bg-[#232329]">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300">Total de Feridos</p>
               <p className="text-2xl sm:text-3xl font-black text-white mt-1">447.565</p>
-              <p className="text-[11px] text-neutral-400 mt-1">114,3 feridos a cada 100 acidentes</p>
+              <p className="text-[11px] text-neutral-300 mt-1">114,3 feridos a cada 100 acidentes</p>
             </div>
-            <div className="py-4 px-4 rounded-xl border-2 border-red-600 bg-[#111113]">
+            <div className="py-4 px-4 rounded-xl border-2 border-red-600 bg-[#232329]">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-red-400">Vítimas Fatais</p>
               <p className="text-2xl sm:text-3xl font-black text-white mt-1">32.792</p>
-              <p className="text-[11px] text-neutral-400 mt-1">Letalidade média de 8,38%</p>
+              <p className="text-[11px] text-neutral-300 mt-1">Letalidade média de 8,38%</p>
             </div>
           </AnimatedContent>
 
@@ -774,7 +774,7 @@ export default function App() {
          ===================================================================== */}
       <section className="bg-[#ebe6dc] border-b border-stone-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
-          <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2.5 text-xs uppercase tracking-wider text-stone-700">
               <span className="px-2.5 py-1 bg-stone-900 text-stone-100 font-bold rounded">
                 EDIÇÃO ESPECIAL
@@ -785,15 +785,17 @@ export default function App() {
               </strong>
             </div>
 
-            {/* Botão do Filtro Dropdown */}
-            <div className="relative w-full md:w-auto">
+            {/* Botão do Filtro Dropdown com alto contraste para indicar interatividade */}
+            <div className="relative w-full lg:w-auto">
               <button
                 type="button"
                 onClick={() => setIsFilterOpen((prev) => !prev)}
-                className="w-full md:min-w-[380px] flex items-center justify-between gap-4 bg-[#faf8f5] hover:bg-white border border-stone-400 rounded-lg px-4 py-2.5 text-left transition shadow-sm"
+                className="w-full lg:min-w-[400px] flex items-center justify-between gap-4 bg-white hover:bg-stone-50 border-2 border-stone-800 hover:border-red-700 rounded-xl px-4 py-2.5 text-left transition shadow-md cursor-pointer group"
               >
                 <div className="flex items-center gap-3">
-                  <Filter className="w-4 h-4 text-red-700 shrink-0" />
+                  <div className="p-2 rounded-lg bg-red-50 border border-red-200 text-red-700 shrink-0">
+                    <Filter className="w-4 h-4" />
+                  </div>
                   <div>
                     <span className="text-[11px] font-semibold uppercase tracking-wider text-stone-500 block">
                       Selecionar tema da análise
@@ -803,16 +805,19 @@ export default function App() {
                     </span>
                   </div>
                 </div>
-                <ChevronDown
-                  className={`w-4 h-4 text-stone-900 transition-transform duration-200 shrink-0 ${
-                    isFilterOpen ? 'rotate-180' : ''
-                  }`}
-                />
+                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-stone-900 group-hover:bg-red-700 text-white text-xs font-semibold transition shrink-0">
+                  <span>Trocar</span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isFilterOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </div>
               </button>
 
               {/* Lista de opções UMA EMBAIXO DA OUTRA ao clicar no filtro */}
               {isFilterOpen && (
-                <div className="absolute right-0 left-0 md:left-auto md:w-[440px] mt-1.5 bg-[#faf8f5] border border-stone-400 rounded-lg shadow-xl z-50 overflow-hidden">
+                <div className="absolute right-0 left-0 lg:left-auto lg:w-[440px] mt-1.5 bg-[#faf8f5] border-2 border-stone-800 rounded-xl shadow-xl z-50 overflow-hidden">
                   <div className="px-4 py-2 bg-stone-900 text-stone-200 text-xs font-semibold uppercase tracking-wider flex items-center justify-between">
                     <span>Índice de Cadernos</span>
                     <span>Selecione uma opção</span>
@@ -871,7 +876,7 @@ export default function App() {
         {/* CABEÇALHO DO JORNAL + DIVISÃO EM 2 COLUNAS SIMÉTRICAS (6/12 | 6/12):
             ESQUERDA: Título da Notícia + Subtítulo-resumo de até 5 linhas com 1 marca-texto vermelho
             DIREITA: Insight da Edição ("Em destaque na edição") */}
-        <AnimatedContent key={`article-${selectedAnalysis}`} distance={25} duration={0.6} trigger="mount">
+        <AnimatedContent key={`article-${selectedAnalysis}`} distance={50} duration={0.8} threshold={0.05}>
           <article className="mb-8">
           <div className="newspaper-double-rule py-2 flex flex-wrap items-center justify-between gap-2 text-xs font-semibold uppercase tracking-wider text-stone-600">
             <span className="text-red-800 font-bold">{activeCaderno.numero} • {activeCaderno.editoria}</span>
@@ -937,7 +942,7 @@ export default function App() {
           <div className="space-y-10">
             {/* LINHA 1: Mapa de Calor (Esquerda 6/12) | Sazonalidade Semanal da UF (Direita 6/12)
                 A linha vertical central está 100% simétrica com a divisão entre a Notícia e o Insight acima! */}
-            <AnimatedContent key="estados-l1" distance={40} duration={0.7} delay={0.1} trigger="mount">
+            <AnimatedContent key="estados-l1" distance={50} duration={0.8} threshold={0.05}>
             <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-stretch">
               {/* Esquerda: Mapa de Calor do Brasil */}
               <div className="lg:col-span-6 lg:pr-8 flex flex-col justify-between">
@@ -1298,7 +1303,7 @@ export default function App() {
         {selectedAnalysis === 'clima' && (
           <div className="space-y-10">
             {/* LINHA 1 (2 Colunas 50%/50% simétricas à divisão do topo) */}
-            <AnimatedContent key="clima-l1" distance={40} duration={0.7} delay={0.1} trigger="mount">
+            <AnimatedContent key="clima-l1" distance={50} duration={0.8} threshold={0.05}>
             <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-stretch">
               {/* Esquerda: Pizza da Condição Selecionada com Seletor Dropdown Limpo */}
               <div className="lg:col-span-6 lg:pr-8 flex flex-col justify-between">
@@ -1589,7 +1594,7 @@ export default function App() {
         {selectedAnalysis === 'causas' && (
           <div className="space-y-10">
             {/* LINHA 1 (2 Colunas 50%/50% simétricas à divisão do topo) */}
-            <AnimatedContent key="causas-l1" distance={40} duration={0.7} delay={0.1} trigger="mount">
+            <AnimatedContent key="causas-l1" distance={50} duration={0.8} threshold={0.05}>
             <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-stretch">
               {/* Esquerda: Tipo de Acidente x Total de Veículos (Teal #0d9488 para Veículos e Roxo #6b21a8 para Acidentes) */}
               <div className="lg:col-span-6 lg:pr-8 flex flex-col justify-between">
@@ -1877,7 +1882,7 @@ export default function App() {
         {selectedAnalysis === 'ocorrencias_mortes' && (
           <div className="space-y-12">
             {/* Bloco 1: Série Histórica 2021-2026 e Dias da Semana integrados na página (colunas 6/12 | 6/12 simétricas com o topo) */}
-            <AnimatedContent key="ocorrencias-l1" distance={40} duration={0.7} delay={0.1} trigger="mount">
+            <AnimatedContent key="ocorrencias-l1" distance={50} duration={0.8} threshold={0.05}>
             <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300">
               <div className="lg:col-span-6 lg:pr-8">
                 <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
