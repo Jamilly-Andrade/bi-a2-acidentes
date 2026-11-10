@@ -16,6 +16,7 @@ import {
 } from './data/novasAnalisesData';
 import { CADERNOS_JORNAL } from './data/noticiasJornalData';
 import Version1App from './Version1App';
+import AnimatedContent from './components/AnimatedContent';
 
 // 8 imagens do documento enviado pela usuária (sem títulos sobrepostos e com bordas arredondadas)
 const HERO_IMAGES = [
@@ -643,7 +644,7 @@ export default function App() {
 
         {/* Hero Section Escura */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-10">
-          <div className="max-w-5xl mx-auto text-center">
+          <AnimatedContent distance={30} duration={0.7} stagger={0.1} trigger="mount" className="max-w-5xl mx-auto text-center">
             {/* Único título em fonte serifada, igual a como estava antes */}
             <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15] max-w-5xl mx-auto">
               O quanto você sabe sobre os acidentes em rodovias brasileiras?
@@ -653,11 +654,11 @@ export default function App() {
             <p className="mt-5 text-base sm:text-lg text-neutral-300 leading-relaxed max-w-3xl mx-auto">
               Entre janeiro de 2021 e os registros parciais de 2026, mais de 390 mil ocorrências registradas pela Polícia Rodoviária Federal. Mais de 447 mil feridos e <span className="mark-dark-red">32 mil mortes</span>.
             </p>
-          </div>
+          </AnimatedContent>
 
           {/* Galeria Interativa no tamanho original (w-20 sm:w-24 hover:w-64 sm:hover:w-80) e em preto e branco (grayscale) com as 8 fotos novas */}
           <div className="mt-10 overflow-x-auto pb-4 pt-2 scrollbar-none">
-            <div className="flex items-center justify-center gap-2 sm:gap-3 min-w-[750px] px-4">
+            <AnimatedContent distance={30} duration={0.6} stagger={0.05} delay={0.1} trigger="mount" className="flex items-center justify-center gap-2 sm:gap-3 min-w-[750px] px-4">
               {HERO_IMAGES.map((imgUrl, idx) => (
                 <div
                   key={idx}
@@ -672,11 +673,11 @@ export default function App() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent opacity-80 group-hover:opacity-30 transition" />
                 </div>
               ))}
-            </div>
+            </AnimatedContent>
           </div>
 
           {/* 4 Contadores com redução proporcional de 10% no padding, tipografia e largura máxima */}
-          <div className="mt-7 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <AnimatedContent distance={35} duration={0.7} stagger={0.08} delay={0.2} trigger="mount" className="mt-7 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
             <div className="py-4 px-4 rounded-xl border border-neutral-800 bg-[#111113]">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400">Total de Acidentes</p>
               <p className="text-2xl sm:text-3xl font-black text-white mt-1">391.382</p>
@@ -697,7 +698,7 @@ export default function App() {
               <p className="text-2xl sm:text-3xl font-black text-white mt-1">32.792</p>
               <p className="text-[11px] text-neutral-400 mt-1">Letalidade média de 8,38%</p>
             </div>
-          </div>
+          </AnimatedContent>
 
           {/* Quiz Opcional na Abertura Escura */}
           {showQuiz && (
@@ -870,7 +871,8 @@ export default function App() {
         {/* CABEÇALHO DO JORNAL + DIVISÃO EM 2 COLUNAS SIMÉTRICAS (6/12 | 6/12):
             ESQUERDA: Título da Notícia + Subtítulo-resumo de até 5 linhas com 1 marca-texto vermelho
             DIREITA: Insight da Edição ("Em destaque na edição") */}
-        <article className="mb-8">
+        <AnimatedContent key={`article-${selectedAnalysis}`} distance={25} duration={0.6} trigger="mount">
+          <article className="mb-8">
           <div className="newspaper-double-rule py-2 flex flex-wrap items-center justify-between gap-2 text-xs font-semibold uppercase tracking-wider text-stone-600">
             <span className="text-red-800 font-bold">{activeCaderno.numero} • {activeCaderno.editoria}</span>
             <span>{activeCaderno.autorLinha}</span>
@@ -923,6 +925,7 @@ export default function App() {
             </div>
           </div>
         </article>
+        </AnimatedContent>
 
         {/* =====================================================================
             CADERNO INICIAL: ESTADOS E RODOVIAS (27 UFs)
@@ -934,6 +937,7 @@ export default function App() {
           <div className="space-y-10">
             {/* LINHA 1: Mapa de Calor (Esquerda 6/12) | Sazonalidade Semanal da UF (Direita 6/12)
                 A linha vertical central está 100% simétrica com a divisão entre a Notícia e o Insight acima! */}
+            <AnimatedContent key="estados-l1" distance={40} duration={0.7} delay={0.1} trigger="mount">
             <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-stretch">
               {/* Esquerda: Mapa de Calor do Brasil */}
               <div className="lg:col-span-6 lg:pr-8 flex flex-col justify-between">
@@ -1078,8 +1082,10 @@ export default function App() {
                 </p>
               </div>
             </div>
+            </AnimatedContent>
 
             {/* LINHA 2: Ficha Estadual em preto seguindo o padrão do Insight da Notícia */}
+            <AnimatedContent distance={35} duration={0.7} threshold={0.08}>
             <div className="bg-[#111113] text-stone-100 py-6 px-6 rounded-xl border border-stone-800 border-l-4 border-l-red-600 shadow-sm">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 pb-4 border-b border-stone-800">
                 <div className="flex flex-wrap items-center gap-2.5">
@@ -1130,8 +1136,10 @@ export default function App() {
                 </div>
               </div>
             </div>
+            </AnimatedContent>
 
             {/* LINHA 3 (2 Colunas 50%/50% alinhadas): Ranking de UFs | Corredores BRs Críticos citados nas notícias */}
+            <AnimatedContent distance={40} duration={0.7} threshold={0.08}>
             <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-stretch">
               {/* Esquerda: Ranking das 12 UFs */}
               <div className="lg:col-span-6 lg:pr-8 flex flex-col justify-between">
@@ -1277,6 +1285,7 @@ export default function App() {
                 </p>
               </div>
             </div>
+            </AnimatedContent>
           </div>
         )}
 
@@ -1289,6 +1298,7 @@ export default function App() {
         {selectedAnalysis === 'clima' && (
           <div className="space-y-10">
             {/* LINHA 1 (2 Colunas 50%/50% simétricas à divisão do topo) */}
+            <AnimatedContent key="clima-l1" distance={40} duration={0.7} delay={0.1} trigger="mount">
             <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-stretch">
               {/* Esquerda: Pizza da Condição Selecionada com Seletor Dropdown Limpo */}
               <div className="lg:col-span-6 lg:pr-8 flex flex-col justify-between">
@@ -1406,8 +1416,10 @@ export default function App() {
                 </p>
               </div>
             </div>
+            </AnimatedContent>
 
             {/* LINHA 2: Ficha Meteorológica em preto com seletor integrado e limpo (no mesmo padrão da Ficha Estadual) */}
+            <AnimatedContent distance={35} duration={0.7} threshold={0.08}>
             <div className="bg-[#111113] text-stone-100 py-6 px-6 rounded-xl border border-stone-800 border-l-4 border-l-red-600 shadow-sm">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 border-b border-stone-800">
                 <div className="flex flex-wrap items-center gap-2.5">
@@ -1471,8 +1483,10 @@ export default function App() {
                 </div>
               </div>
             </div>
+            </AnimatedContent>
 
             {/* LINHA 3: Botão Expansível para o Painel Comparativo Completo das 10 Condições Meteorológicas */}
+            <AnimatedContent distance={30} duration={0.6} threshold={0.05}>
             <div className="border-t border-stone-300 pt-6">
               <button
                 type="button"
@@ -1562,6 +1576,7 @@ export default function App() {
                 </div>
               )}
             </div>
+            </AnimatedContent>
           </div>
         )}
 
@@ -1574,6 +1589,7 @@ export default function App() {
         {selectedAnalysis === 'causas' && (
           <div className="space-y-10">
             {/* LINHA 1 (2 Colunas 50%/50% simétricas à divisão do topo) */}
+            <AnimatedContent key="causas-l1" distance={40} duration={0.7} delay={0.1} trigger="mount">
             <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-stretch">
               {/* Esquerda: Tipo de Acidente x Total de Veículos (Teal #0d9488 para Veículos e Roxo #6b21a8 para Acidentes) */}
               <div className="lg:col-span-6 lg:pr-8 flex flex-col justify-between">
@@ -1693,8 +1709,10 @@ export default function App() {
                 </p>
               </div>
             </div>
+            </AnimatedContent>
 
             {/* LINHA 2: Ficha Técnica em preto seguindo o padrão do Insight da Notícia */}
+            <AnimatedContent distance={35} duration={0.7} threshold={0.08}>
             <div className="bg-[#111113] text-stone-100 py-6 px-6 rounded-xl border border-stone-800 border-l-4 border-l-red-600 shadow-sm">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 pb-4 border-b border-stone-800">
                 <div className="flex flex-wrap items-center gap-2.5">
@@ -1735,8 +1753,10 @@ export default function App() {
                 </div>
               </div>
             </div>
+            </AnimatedContent>
 
             {/* LINHA 3 (2 Colunas 50%/50% alinhadas): Scatter Plot de Pessoas | Matriz Pictográfica de Pessoas */}
+            <AnimatedContent distance={40} duration={0.7} threshold={0.08}>
             <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300 items-start">
               {/* Esquerda: Scatter Plot com Símbolos de Pessoas */}
               <div className="lg:col-span-6 lg:pr-8">
@@ -1846,6 +1866,7 @@ export default function App() {
                 </div>
               </div>
             </div>
+            </AnimatedContent>
           </div>
         )}
 
@@ -1856,6 +1877,7 @@ export default function App() {
         {selectedAnalysis === 'ocorrencias_mortes' && (
           <div className="space-y-12">
             {/* Bloco 1: Série Histórica 2021-2026 e Dias da Semana integrados na página (colunas 6/12 | 6/12 simétricas com o topo) */}
+            <AnimatedContent key="ocorrencias-l1" distance={40} duration={0.7} delay={0.1} trigger="mount">
             <div className="border-t border-stone-300 pt-8 grid grid-cols-1 lg:grid-cols-12 lg:divide-x lg:divide-stone-300">
               <div className="lg:col-span-6 lg:pr-8">
                 <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
@@ -1916,8 +1938,10 @@ export default function App() {
                 </div>
               </div>
             </div>
+            </AnimatedContent>
 
             {/* Bloco 2: Ocorrências, Feridos e Mortes por Turno e Luminosidade */}
+            <AnimatedContent distance={40} duration={0.7} threshold={0.08}>
             <div className="border-t border-stone-300 pt-8">
               <div className="mb-6">
                 <span className="text-xs font-semibold uppercase tracking-wider text-red-800">
@@ -2019,6 +2043,7 @@ export default function App() {
                 </div>
               </div>
             </div>
+            </AnimatedContent>
           </div>
         )}
       </main>
